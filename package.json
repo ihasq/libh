@@ -1,0 +1,19 @@
+{
+  "name": "libh",
+  "version": "0.0.1",
+  "description": "Library For HTML",
+  "main": "libh.js",
+  "scripts": {
+    "build": ""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ihasq/libh.git"
+  },
+  "author": "ihasq",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ihasq/libh/issues"
+  },
+  "homepage": "https://github.com/ihasq/libh#readme"
+}
