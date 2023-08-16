@@ -1,8 +1,13 @@
 let username = "taro";
 
 function libh(str, ...val) {
+	let strArray = str;
 	return (public) => {
-		return (str[0] + [...val][0]() + str[1]).replace(/\n|\t/g, "")
+		let result = "";
+		for(let i = 0; i < val.length; i++) {
+			result += strArray[i] + val[i]()
+		}
+		return (result + strArray[val.length]).replace(/\n|\t/g, "")
 	}
 }
 
