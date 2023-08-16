@@ -1,54 +1,48 @@
 const libhcore = {
-	registry: []
+	elementRegistry: [],
+	portRegistry: [
+	/*
+		{
+			
+		}
+	 */
+	]
 }
 
 export function libh(str, ...val) {
-	libhcore.registry.push({
-		generatorId: Date.now().toString() + Math.random().toString(),
-		relMap: []
-	})
-	let strArray = str;
-	function generator(...arg) {
-		function render(intervalType) {
+	if(typeof val[0] === "object") {
+		console.log(val[0])
+	}
+	libhcore.elementRegistry.push({
+		variables: val
+	});
 
-		}
-		if((!!arg)) {
-			let intervalType = "";
-			if(!arg[1] || arg[1].interval === "animationFrame" || arg[1].interval <= 0) {
-				intervalType = "animationFrame";
-			} else if(typeof arg[1].interval === "number") {
-				intervalType = arg[1].interval;
-				if(intervalType > 0) {
-					setInterval(render, (1000 / intervalType))
-				}
+	function html() {
+		const nonce = "libh:" + Math.random().toString() + Date.now().toString()
+		setTimeout(() => {
+			try {
+				document.getElementById(nonce).parentElement.id = "libh:" + libhcore.portRegistry.length;
+			} catch(error) {
+				throw new Error("Cannot find render target");
 			}
-			console.log(intervalType)
+			libhcore.portRegistry.push({
+				
+			})
+			document.getElementById(nonce).remove();
 			function render() {
-				let result = "";
-				for(let i = 0; i < val.length; i++) {
-					result += strArray[i] + val[i]()
-				}
-				arg[0].innerHTML = (result + strArray[val.length]).replace(/\n|\t/g, "")
-				if(intervalType === "animationFrame") {
-					requestAnimationFrame(render)
-				}
-			};
-			render()
-		} else {
-			let result = "";
-			for(let i = 0; i < val.length; i++) {
-				result += strArray[i] + val[i]()
+				document.getElementById("libh:0").innerHTML = val[1]()
+				requestAnimationFrame(render)
 			}
-			return (result + strArray[val.length]).replace(/\n|\t/g, "")
-		}
+			requestAnimationFrame(render)
+		}, 0)
+		return `<libh:identifier id="${nonce}"/>`
 	}
-	generator.append = (...arg) => {
-		generator(...arg)
+
+	html.addEventListener = (eventName, callback) => {
+		callback()
 	}
-	generator.pause = () => {
-	}
-	generator.addEventListener = (eventName, callback) => {
+	html.delete = () => {
 
 	}
-	return generator
+	return html
 }
