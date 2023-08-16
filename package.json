@@ -2,6 +2,7 @@
   "name": "libh",
   "version": "0.0.1",
   "description": "Library For HTML",
+  "type": "module",
   "main": "libh.js",
   "scripts": {
     "build": ""
