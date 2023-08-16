@@ -2,19 +2,12 @@ let username = "taro";
 
 function libh(str, ...val) {
 	return (public) => {
-		return [...val][1]()
+		return (str[0] + [...val][0]() + str[1]).replace(/\n|\t/g, "")
 	}
 }
 
 const bodyElement = libh`
-	<label ${{
-		onclick() {
-			console.log(username)
-		},
-		onmouseover() {
-
-		}
-	}}>${() => username}</label>
+	<label>${() => username}</label>
 `;
 
 console.log(bodyElement())
