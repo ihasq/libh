@@ -1,5 +1,3 @@
-import { html } from "./std/html.js"
-
 const core = {
 	elementRegistry: Object.create(null),
 	portRegistry: [
@@ -65,32 +63,39 @@ const core = {
 
 };
 
-const libh = function(strings, ...keys) {
+// html
+
+const html = function(strings, ...keys){
 	return core.init(strings, ...keys);
 };
 
-/**
- * @param { init } init 
- */
+html.render = "app";
 
-libh.config = function(init) {
-	core.config = init;
-	if(init.sweep) {
-		document.querySelectorAll("script").forEach(element => {
-			element.remove();
-		})
-	};
-	Object.freeze(libh);
-};
+const sass = function() {};
 
-libh.attribute = {
-	define: function(className, init) {
+sass.test = "a";
 
+const libh = {
+	html: html,
+	sass: sass,
+	config: function(init) {
+		core.config = init;
+		if(init.sweep) {
+			document.querySelectorAll("script").forEach(element => {
+				element.remove();
+			})
+		};
+		Object.freeze(libh);
 	},
-	bind: function(className) {
-		
+	attribute: {
+		define: function(className, init) {
+	
+		},
+		bind: function(className) {
+			
+		}
 	}
-};
+}
 
 /**
  * @param { string } selector 
@@ -106,27 +111,11 @@ libh.class = {
 
 };
 
-const html = function(strings, ...keys){
-	return core.init(strings, ...keys);
-};
-
-html.render = "app";
-
 const docs = function() {
 
 }
 
 docs.test = "aa";
-
-const sass = function() {};
-
-sass.test = "a";
-
-Object.assign(libh, {
-	html: html,
-	docs: docs,
-	sass: sass,
-})
 
 libh.render = function(LibhElementPort) {
 	if(!core.state.isRunning) {
