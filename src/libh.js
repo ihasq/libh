@@ -1,114 +1,43 @@
-const core = {
-	elementRegistry: Object.create(null),
-	portRegistry: [
-	/*
-		{
-			
-		}
-	 */
-	],
-	functionRegistry: [],
-	DOMParser: new DOMParser(),
-	stringCache: {},
-	placeholderCache: [],
-	keyCache: Object.create(null),
-	funcCache: Object.create(null),
+import { core } from "./core.js";
 
-	init(str, ...key) {
-		// parse string
-
-		if(typeof key[0] === "function") {
-			const funcStr = key[0].toString();
-			const funcInfo = {
-				body: funcStr.match(),
-			}
-			// parse function
-			let objectRoot = {
-				this: {
-					_count: 0,
-					style: {
-						"*": {
-							color: "red"
-						}
-					},
-					src: "app.com"
-				},
-				prop: {
-					"hx-swap": {
-						avatarURL: "google.png"
-					}
-				}
-			}
-			const funcPrototype = key[0](objectRoot);
-			console.log(funcPrototype);
-			return funcPrototype;
-		} else if(typeof key[0] === "function") {
-			console.log(key[0]);
-			return {};
-		}
-	},
-
-	config: {},
-	compile: {},
-	property: {
-		version: "0.0.1"
-	},
-	state: {
-		isRunning: false,
-	},
-	renderTask: [],
-	createPortRegistry: function() {
-
-	},
-
-};
-
-// html
-
-const html = function(strings, ...keys){
-	return core.init(strings, ...keys);
-};
-
-html.render = "app";
+import { html } from "./html.js";
 
 const sass = function() {};
 
 sass.test = "a";
 
-const libh = {
-	html: html,
-	sass: sass,
-	config: function(init) {
-		core.config = init;
-		if(init.sweep) {
-			document.querySelectorAll("script").forEach(element => {
-				element.remove();
-			})
-		};
-		Object.freeze(libh);
+const config = function(init) {
+	core.config = init;
+	if(init.sweep) {
+		document.querySelectorAll("script").forEach(element => {
+			element.remove();
+		})
+	};
+	Object.freeze(libh);
+};
+
+const attribute = {
+	define: function(init) {
+
 	},
-	attribute: {
-		define: function(className, init) {
-	
-		},
-		bind: function(className) {
-			
-		}
-	}
-}
-
-/**
- * @param { string } selector 
- */
-
-libh.select = function(selector) {
-	if(!!selector.isLibhElement && !!core.elementRegistry[selector.libhIdentifier]) {
-
+	bind: function(className) {
+		
 	}
 };
 
-libh.class = {
+const testAPI = function(strings, ...keys) {
+	return core.constructorTest(strings, ...keys)
+};
 
+/**
+ * @param { querySelectorString } selector 
+ */
+
+
+const select = function(selector) {
+	if(!!selector.isLibhElement && !!core.elementRegistry[selector.libhIdentifier]) {
+
+	}
 };
 
 const docs = function() {
@@ -117,18 +46,21 @@ const docs = function() {
 
 docs.test = "aa";
 
-libh.render = function(LibhElementPort) {
-	if(!core.state.isRunning) {
-		// renderer setup
-		core.state.isRunning = true;
-	};
-	const portString = LibhElementPort.toString();
-	const portRefArg = (portString)
-	portString.split()
-};
 
 Number.prototype.call = function() {
 	console.log(this)
 }
 
-export { libh };
+
+const libh = Object.create(null);
+
+Object.assign(libh, {
+	html,
+	sass,
+	attribute,
+	select,
+	render,
+	config,
+});
+
+export default libh
