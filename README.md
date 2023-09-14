@@ -1,1 +1,1 @@
-<h1 style="font-family:monospace;"><a href="https://ihasq.github.io/libh">libh - html library</a></h1>
+<h1><code><a href="https://ihasq.github.io/libh">libh - html library</a></code></h1>
