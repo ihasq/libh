@@ -1,1 +1,1 @@
-# [``libh - html library``](https://ihasq.github.io/libh)
+<h1 style="font-family:monospace;"><a href="https://ihasq.github.io/libh">libh - html library</a></h1>
