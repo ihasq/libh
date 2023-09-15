@@ -29,6 +29,6 @@ const reactiveButton = html`{
 reactiveButton.define("reactive-button");
 
 document.body.innerHTML = html`{
-    <reactiveButton></reactiveButton>
-}`()
+    <reactive-button></reactive-button>
+}`();
 ```
