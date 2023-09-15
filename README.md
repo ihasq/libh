@@ -26,8 +26,8 @@ document.body.innerHTML = html`{
 // ...
 
 const reactiveButton = html`{
-    <button onclick=${$ => $.this.count++}>
-        I got clicked ${$ => $.this.count} times!
+    <button onclick=${$ => $.count++}>
+        I got clicked ${$ => $.count} times!
     </button>
 }`;
 
