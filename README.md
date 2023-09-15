@@ -6,6 +6,7 @@
 ---
 
 ### Quick start
+[Stackblitz](https://stackblitz.com/project)
 
 ```javascript
 import libh from "https://unpkg.com/libh";
