@@ -6,6 +6,7 @@
 ---
 
 ### Quick start
+[Stackblitz](https://stackblitz.com/project)
 
 ```javascript
 import { html } from "https://unpkg.com/libh";
@@ -28,8 +29,10 @@ const reactiveButton = html`{
     </button>
 }`;
 
+reactiveButton.define("reactive-button");
+
 document.body.innerHTML = html`{
-    <${reactiveButton} />
+    <reactive-button></reactive-button>
 }`();
 ```
 
