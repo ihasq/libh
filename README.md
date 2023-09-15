@@ -9,9 +9,7 @@
 [Stackblitz](https://stackblitz.com/project)
 
 ```javascript
-import libh from "https://unpkg.com/libh";
-
-const { html } = libh;
+import { html } from "https://unpkg.com/libh";
 
 document.body.innerHTML = html`{
     <label>Current time is ${Date}</label>
@@ -41,7 +39,9 @@ document.body.innerHTML = html`{
 ### Create custom attributes
 
 ```javascript
-libh.attribute.define({
+import { attribute } from "https://unpkg.com/libh"
+
+attribute.define({
     "my-custom-attribute"(value, $) {
         $.innerText = value;
     }
