@@ -1,5 +1,7 @@
-<img src="./docs/title.svg" ></img>
-<h4 align="center">high performance html framework</h4>
+<div align="center">
+	<img src="./docs/title.svg" width="300" height="150"></img>
+	<h4>high performance html framework</h4>
+</div>
 
 ---
 
