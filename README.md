@@ -9,7 +9,7 @@
 import { html } from "https://unpkg.com/libh";
 
 document.body.innerHTML = html`{
-	<label>Current time is ${Date}</label>
+    <label>Current time is ${Date}</label>
 }`();
 
 // Reactive state should be set as a function. like "Date", not "Date()"
@@ -21,14 +21,14 @@ document.body.innerHTML = html`{
 // ...
 
 const reactiveButton = html`{
-	<button ${$ => ({
-		onclick: $.this.count++;
-	})}>I got clicked ${$ => $.this.count} times!</button>
+    <button ${$ => ({
+        onclick: $.this.count++;
+    })}>I got clicked ${$ => $.this.count} times!</button>
 }`;
 
 reactiveButton.define("reactive-button");
 
 document.body.innerHTML = html`{
-	<reactiveButton></reactiveButton>
+    <reactiveButton></reactiveButton>
 }`()
 ```
