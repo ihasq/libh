@@ -23,14 +23,24 @@ document.body.innerHTML = html`{
 // ...
 
 const reactiveButton = html`{
-    <button onclick=${$ => $.this.count++}>
-        I got clicked ${$ => $.this.count} times!
+    <button onclick=${$ => $.count++}>
+        I got clicked ${$ => $.count} times!
     </button>
 }`;
 
-reactiveButton.define("reactive-button");
-
 document.body.innerHTML = html`{
-    <reactive-button></reactive-button>
+    <${reactiveButton} />
 }`();
+```
+
+### Create custom attributes
+
+```javascript
+import { attribute } from "https://unpkg.com/libh"
+
+attribute.define({
+    "my-custom-attribute"(value, $) {
+        $.innerText = value;
+    }
+})
 ```
