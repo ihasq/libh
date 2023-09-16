@@ -39,7 +39,7 @@ document.body.innerHTML = html`{
 ### Create custom attributes
 
 ```javascript
-import { attribute } from "https://unpkg.com/libh"
+// ...
 
 html.attribute.define({
     "my-custom-attribute"(value, $) {
