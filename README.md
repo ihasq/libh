@@ -41,7 +41,7 @@ document.body.innerHTML = html`{
 ```javascript
 import { attribute } from "https://unpkg.com/libh"
 
-attribute.define({
+html.attribute.define({
     "my-custom-attribute"(value, $) {
         $.innerText = value;
     }

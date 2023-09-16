@@ -15,6 +15,10 @@ const html = function(strings, ...keys) {
 	}
 };
 
-html.prototype = undefined
+html.attribute = {
+	define: function(init) {
+
+	},
+}
 
 export { html }
