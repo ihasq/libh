@@ -1,7 +1,7 @@
 {
   "name": "libh",
   "version": "0.0.1",
-  "description": "Library For HTML",
+  "description": "high performance html",
   "type": "module",
   "main": "libh.js",
   "scripts": {
