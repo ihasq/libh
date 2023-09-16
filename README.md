@@ -47,3 +47,9 @@ attribute.define({
     }
 })
 ```
+then put into plain html, reactively changes when the attribute has changed
+
+```html
+<div my-custom-attribute="value from custom attribute"></div>
+<!-- attribute is reactive --->
+```
