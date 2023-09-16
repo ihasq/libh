@@ -7,9 +7,10 @@ const core = {
 		}
 	 */
 	],
-	functionRegistry: [],
+	functionRegistry: Object.create(null),
+	functionRegistryLength: 0,
 	DOMParser: new DOMParser(),
-	stringCache: {},
+	stringCache: Object.create(null),
 	placeholderCache: [],
 	keyCache: Object.create(null),
 	funcCache: Object.create(null),
