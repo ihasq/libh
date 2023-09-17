@@ -4,9 +4,11 @@
 </div>
 
 ---
+### [Documentation](./docs/docs.md)
+
 
 ### Quick start
-[Stackblitz](https://stackblitz.com/project) [Documentation](./docs/docs.md)
+[Stackblitz](https://stackblitz.com/project)
 
 ```javascript
 import { html } from "https://unpkg.com/libh";
