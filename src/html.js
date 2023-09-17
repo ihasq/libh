@@ -1,6 +1,6 @@
 import { core } from "./core.js"
 
-const html = function(strings, ...keys) {
+function html(strings, ...keys) {
 	for(let i = 0; i < keys.length; i++) {
 		if((typeof keys[i]) === "function") {
 			core.functionRegistry[core.functionRegistryLength] = {
@@ -17,7 +17,7 @@ const html = function(strings, ...keys) {
 
 html.attribute = {
 	define: function(init) {
-		for(const index of init) {
+		for(const index in init) {
 			console.log(index);
 		}
 	},
