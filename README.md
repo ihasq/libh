@@ -1,7 +1,6 @@
 <div align="center">
 	<img src="./docs/resources/title.svg" width="300" height="110"></img>
 	<h4>high performance html</h4>
-    <a href="./docs/documentation/index.md">Documentation</a> | <a href="./docs/examples/index.md">Examples</a>
 </div>
 
 ---
