@@ -1,7 +1,7 @@
 <div align="center">
 	<img src="./docs/resources/title.svg" width="300" height="110"></img>
-	<h4>high performance html</h4>
-    <a href="./docs/documentation/index.md">Documentation</a> | <a href="./docs/examples/index.md">Examples</a> | <a href="./docs/docs.md">Contributing</a>
+	<h3>high performance html</h3>
+	<span><a href="./docs/documentation/index.md">Documentation</a> | <a href="./docs/examples/index.md">Examples</a> | <a href="./docs/docs.md">Contributing</a></span>
 </div>
 
 ---
