@@ -1,7 +1,7 @@
 <svg
 	xmlns="http://www.w3.org/2000/svg"
 	width="300"
-	height="80"
-	viewBox="0 0 300 80">
-	<text x="0" y="80" font-family="JetBrains Mono" font-size="120" fill="#0c8aff" align="center" font-weight="normal">libh</text>
+	height="120"
+	viewBox="0 0 300 120">
+	<text x="50%" y="120" text-anchor="middle" font-family="JetBrains Mono" font-size="120" fill="#0c8aff" font-weight="normal">libh</text>
 </svg>
