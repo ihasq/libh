@@ -6,7 +6,7 @@
 ---
 
 ### Quick start
-[Stackblitz](https://stackblitz.com/project)
+[Stackblitz](https://stackblitz.com/project) [Documentation](./docs/docs.md)
 
 ```javascript
 import { html } from "https://unpkg.com/libh";
