@@ -1,5 +1,9 @@
 import { core } from "./core.js"
 
+function keyParser(key) {
+	
+}
+
 function html(strings, ...keys) {
 	for(let i = 0; i < keys.length; i++) {
 		if((typeof keys[i]) === "function") {

@@ -14,7 +14,7 @@ const core = {
 	placeholderCache: [],
 	keyCache: Object.create(null),
 	funcCache: Object.create(null),
-
+	attributeRegistry: Object.create(null),
 	init(str, ...key) {
 		// parse string
 
