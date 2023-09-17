@@ -1,6 +1,6 @@
 <div align="center">
-	<img src="./docs/text.svg" width="300" height="110"></img>
-	<h4>high performance html</h4>
+	<img src="./docs/text.svg" width="300" height="110"></img><br>
+	<b>high performance html</b>
 </div>
 
 ---
