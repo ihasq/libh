@@ -17,8 +17,10 @@ const html = function(strings, ...keys) {
 
 html.attribute = {
 	define: function(init) {
-
+		for(const index of init) {
+			console.log(index);
+		}
 	},
-}
+};
 
 export { html }
