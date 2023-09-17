@@ -1,10 +1,10 @@
 <div align="center">
 	<img src="./docs/resources/title.svg" width="300" height="110"></img>
 	<h4>high performance html</h4>
+    <h4><a href="./docs/docs.md">Documentation</a> | <a href="./docs/docs.md">Examples</a> | <a href="./docs/docs.md">Contributing</a></h4>
 </div>
 
 ---
-### [Documentation](./docs/docs.md)
 
 
 ### Quick start
