@@ -1,5 +1,5 @@
 <div align="center">
-	<img src="./docs/resources/title.svg" width="300" height="110"></img>
+	<img src="./docs/title.svg" width="300" height="110"></img>
 	<h4>high performance html</h4>
 </div>
 
