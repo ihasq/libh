@@ -4,42 +4,40 @@
 [Stackblitz](https://stackblitz.com/project)
 
 ```javascript
-import { html } from "https://libh.js.org/esm";
+import { html } from "https://unpkg.com/libh";
 
 document.body.innerHTML = html`{
-    <label>Current time is ${Date}</label>
+	<label>Current time is ${Date}</label>
 }`();
 
 // Reactive state should be set as a function. like "Date", not "Date()"
 ```
 
-### Create and register web components
+### Create and use component
 
 ```javascript
 // ...
 
 const reactiveButton = html`{
-    <button onclick=${$ => $.count++}>
-        I got clicked ${$ => $.count} times!
-    </button>
+	<button onclick=${$ => $.count++}>
+		I got clicked ${$ => $.count} times!
+	</button>
 }`;
 
-reactiveButton.define("reactive-button");
-
 document.body.innerHTML = html`{
-    <reactive-button></reactive-button>
+	<${reactiveButton} />
 }`();
 ```
 
 ### Create custom attributes
 
 ```javascript
-// ...
+import { attr } from "https://unpkg.com/libh";
 
-html.attribute.define({
-    "my-custom-attribute"(value, $) {
-        $.innerText = value;
-    }
+attr.define({
+	"my-custom-attribute"(value, $) {
+		$.innerText = value;
+	}
 })
 ```
 then put into plain html, reactively changes when the attribute has changed
