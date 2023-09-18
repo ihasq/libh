@@ -9,12 +9,22 @@ import { core } from "../core.js"
 */
 const parseBuffer = {
 	HTMLParser: new DOMParser(),
-	resetBuffer() {
+	reset() {
 		Object.assign(this, {
-			scope: {
-				"{": false,
+			template: {
+				strings: {
+					joined: "",
+					join(functionStringArray) {
+						for(let i = 0; i < functionStringArray.length; i++) {
+							this.joined += functionStringArray[i].replace(/\0/g, "") + ((i + 1 !== functionStringArray.length)? `\0${i}\0` : "")
+						};
+						console.log(this.joined);
+						this.joined = this.joined.replace(/[\s\S].*{|}[\s\S].*/g, "");
+						console.log(this.joined);
+					}
+				},
+				keys: [],
 			},
-			endIndex: -1,
 			unifiedString: "",
 			templateString: "",
 			templateDOM: Object.create(null),
@@ -23,28 +33,12 @@ const parseBuffer = {
 	}
 };
 
-parseBuffer.resetBuffer();
+parseBuffer.reset();
 
 function html(strings, ...keys) {
 	// parse string
-	for(let i = strings.length - 1; -1 < i; i--) {
-		if(/}/.test(strings[i])) {
-			parseBuffer.endIndex = i;
-			break;
-		};
-	};
-	if(parseBuffer.endIndex === -1) {
-		throw new Error("Parse error");
-	};
-	console.log(parseBuffer.endIndex);
+	parseBuffer.template.strings.join(strings);
 	for(let i = 0; i < parseBuffer.endIndex; i++) {
-		parseBuffer.keyLocation.push(strings[i].length);
-		if(/{/.test(strings[i])) {
-			parseBuffer.scope["{"] = true;
-			parseBuffer.templateString += strings[i].replace(/[\s\S]*{/, " ");
-		} else if(parseBuffer.scope["{"]) {
-			parseBuffer.templateString += strings[i];
-		};
 		if((typeof keys[i]) === "function") {
 			const registry = Object.create(null);
 			/*
@@ -72,7 +66,7 @@ function html(strings, ...keys) {
 	parseBuffer.templateDOM = parseBuffer.HTMLParser.parseFromString(parseBuffer.templateString, "text/html");
 	console.log(parseBuffer.templateDOM.body);
 	// reset buffer
-	parseBuffer.resetBuffer();
+	parseBuffer.reset();
 };
 
 html.getReservedKey = [
