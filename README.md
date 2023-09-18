@@ -1,5 +1,7 @@
 # ``libh - html in javascript``
 
+### Notice: These examples are just a proof-of-concept. this project does not publish any packages, unpkg url is invalid.
+
 ### Quick start
 [Stackblitz](https://stackblitz.com/project)
 
