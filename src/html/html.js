@@ -9,18 +9,25 @@ import { core } from "../core.js"
 */
 const parseBuffer = {
 	HTMLParser: new DOMParser(),
+	regex: {
+		begin: new RegExp(/{/g),
+		end: new RegExp(/}$/g)
+	},
 	reset() {
 		Object.assign(this, {
 			template: {
 				strings: {
-					joined: "",
+					joinedString: "",
 					join(functionStringArray) {
+						this.joinedString = "";
 						for(let i = 0; i < functionStringArray.length; i++) {
-							this.joined += functionStringArray[i].replace(/\0/g, "") + ((i + 1 !== functionStringArray.length)? `\0${i}\0` : "")
+							this.joinedString += functionStringArray[i].replace(/\0/g, "") + ((i + 1 !== functionStringArray.length)? `\0${i}\0` : "")
 						};
-						console.log(this.joined);
-						this.joined = this.joined.replace(/[\s\S].*{|}[\s\S].*/g, "");
-						console.log(this.joined);
+						console.log(this.joinedString);
+						parseBuffer.regex.begin.test(this.joinedString);
+						parseBuffer.regex.end.test(this.joinedString);
+						this.joinedString = this.joinedString.slice(parseBuffer.regex.begin.lastIndex, parseBuffer.regex.end.lastIndex - 1);
+						console.log(this.joinedString)
 					}
 				},
 				keys: [],
@@ -38,6 +45,7 @@ parseBuffer.reset();
 function html(strings, ...keys) {
 	// parse string
 	parseBuffer.template.strings.join(strings);
+	parseBuffer.template.keys = keys;
 	for(let i = 0; i < parseBuffer.endIndex; i++) {
 		if((typeof keys[i]) === "function") {
 			const registry = Object.create(null);
