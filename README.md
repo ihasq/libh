@@ -1,6 +1,6 @@
 # ``libh - html in javascript``
 
-### Notice: examples are all PoC. this repo does not publish any packages.
+### Notice: examples are all PoC, under development.
 
 ### Quick start
 [Stackblitz](https://stackblitz.com/project)
