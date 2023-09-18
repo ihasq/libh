@@ -4,7 +4,7 @@
 [Stackblitz](https://stackblitz.com/project)
 
 ```javascript
-import { html } from "https://libh.js.org/esm";
+import { html } from "https://unpkg.com/libh";
 
 document.body.innerHTML = html`{
 	<label>Current time is ${Date}</label>
@@ -32,7 +32,7 @@ document.body.innerHTML = html`{
 ### Create custom attributes
 
 ```javascript
-import { attr } from "./src/libh.js"
+import { attr } from "https://unpkg.com/libh";
 
 attr.define({
 	"my-custom-attribute"(value, $) {
