@@ -1,4 +1,4 @@
-# libh
+# ``libh - html in javascript``
 
 ### Quick start
 [Stackblitz](https://stackblitz.com/project)
