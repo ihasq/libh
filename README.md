@@ -4,7 +4,7 @@
 [Stackblitz](https://stackblitz.com/project)
 
 ```javascript
-import { html } from "https://unpkg.com/libh";
+import { html } from "https://libh.js.org/esm";
 
 document.body.innerHTML = html`{
     <label>Current time is ${Date}</label>

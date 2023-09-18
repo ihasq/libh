@@ -1,4 +1,4 @@
-import { core } from "./core.js"
+import { core } from "../core.js"
 
 /*
 	html instance constructor
@@ -8,8 +8,20 @@ import { core } from "./core.js"
 	2. 
 */
 
+const HTMLParser = new DOMParser();
+
 function html(strings, ...keys) {
-	// workflow[1]
+	// parse string
+	const strMap = [];
+	for(let i = 0; i < strings.length; i++) {
+		if(/{/.test(strings[i])) {
+			strMap.push(strings[i].length - ((i === 0 || i === strings.length - 1)? 1 : 0))
+		}
+	};
+	console.log(strMap);
+	const parseTemp = strings.join("").match(/\{([\s\S]*)\}/)[1];
+	// console.log(HTMLParser.parseFromString(strings.join("'libh-blank-value'").match(/\{([\s\S]*)\}/)[1], "application/xml"));
+
 	for(let i = 0; i < keys.length; i++) {
 		if((typeof keys[i]) === "function") {
 			const registry = Object.create(null);
@@ -37,12 +49,13 @@ function html(strings, ...keys) {
 	}
 };
 
-html.attribute = {
-	define: function(init) {
-		for(const index in init) {
-			console.log(index);
-		}
-	},
-};
+html.getReservedKey = [
+	"shared",
+	"prop",
+	"this",
+	"static",
+	"method",
+	"meta"
+]
 
 export { html }

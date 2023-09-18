@@ -9,7 +9,6 @@ const core = {
 	],
 	functionRegistry: Object.create(null),
 	functionRegistryLength: 0,
-	DOMParser: new DOMParser(),
 	stringCache: Object.create(null),
 	placeholderCache: [],
 	keyCache: Object.create(null),
