@@ -7,19 +7,28 @@ import { core } from "../core.js"
 	1. parse joined template literal string, search where the key comes from
 	2. 
 */
-
-const HTMLParser = new DOMParser();
+const parseBuffer = {
+	templateString: "",
+	templateDOM: Object.create(null),
+	keyLocation: [],
+	HTMLParser: new DOMParser()
+};
 
 function html(strings, ...keys) {
 	// parse string
-	const strMap = [];
 	for(let i = 0; i < strings.length; i++) {
+		parseBuffer.keyLocation.push(strings[i].length);
 		if(/{/.test(strings[i])) {
-			strMap.push(strings[i].length - ((i === 0 || i === strings.length - 1)? 1 : 0))
-		}
+			parseBuffer.templateString += strings[i].replace(/[\s\S]*{/, " ");
+		} else if(/}/.test(strings[i])) {
+			parseBuffer.templateString += strings[i].replace(/}[\s\S]*/, " ");
+			break;
+		} else {
+			parseBuffer.templateString += strings[i];
+		};
 	};
-	console.log(strMap);
-	const parseTemp = strings.join("").match(/\{([\s\S]*)\}/)[1];
+	parseBuffer.templateDOM = parseBuffer.HTMLParser.parseFromString(parseBuffer.templateString, "application/xml");
+	console.log(parseBuffer.templateDOM);
 
 	for(let i = 0; i < keys.length; i++) {
 		if((typeof keys[i]) === "function") {
@@ -45,7 +54,13 @@ function html(strings, ...keys) {
 		} else {
 
 		}
-	}
+	};
+	// reset buffer
+	Object.assign(parseBuffer, {
+		templateString: "",
+		templateDOM: Object.create(null),
+		keyLocation: [],
+	});
 };
 
 html.getReservedKey = [
