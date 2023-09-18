@@ -20,7 +20,6 @@ function html(strings, ...keys) {
 	};
 	console.log(strMap);
 	const parseTemp = strings.join("").match(/\{([\s\S]*)\}/)[1];
-	// console.log(HTMLParser.parseFromString(strings.join("'libh-blank-value'").match(/\{([\s\S]*)\}/)[1], "application/xml"));
 
 	for(let i = 0; i < keys.length; i++) {
 		if((typeof keys[i]) === "function") {
