@@ -1,0 +1,4 @@
+const document = {
+	
+}
+export { document };

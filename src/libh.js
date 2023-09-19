@@ -3,3 +3,4 @@ export { css } from "./css.js";
 export { scss } from "./scss.js";
 export { sass } from "./sass.js";
 export { attr } from "./attr.js";
+export { document } from "./attr.js";
