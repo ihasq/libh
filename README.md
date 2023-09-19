@@ -1,6 +1,4 @@
-<div align="center">
-    <h1>libh</h1>
-</div>
+# ``libh - html in javascript``
 
 ```javascript
 import { html } from "libh";
