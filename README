@@ -10,7 +10,7 @@ html in javascript framework
 Quick Start:
 ╭ index.js ───────────────────────────────────────────────╮
 │                                                         │
-│  import { html } from "https://unpkg.com/libh";         │
+│  import { html } from "libh";                           │
 │                                                         │
 │  document.body.innerHTML = html`{                       │
 │      <label>Current date is ${Date}</label>             │
