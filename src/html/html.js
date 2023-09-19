@@ -9,30 +9,24 @@ import { core } from "../core.js"
 */
 const parseBuffer = {
 	HTMLParser: new DOMParser(),
-	regex: {
-		begin: new RegExp(/{/g),
-		end: new RegExp(/}$/g)
-	},
 	reset() {
 		Object.assign(this, {
 			template: {
 				strings: {
+					regex: {},
+					stringTemplate: [],
 					joinedString: "",
-					query: {
-						instance: "",
-						extender: ""
-					},
 					join(functionStringArray) {
 						this.joinedString = "";
 						for(let i = 0; i < functionStringArray.length; i++) {
-							this.joinedString += functionStringArray[i].replace(/\0/g, "") + ((i + 1 !== functionStringArray.length)? `\0${i}\0` : "")
+							this.joinedString += functionStringArray[i].replace(/\0/g, "");
+							if(i + 1 !== functionStringArray.length) {
+								this.joinedString += "\0" + i + "\0";
+							}
 						};
-						parseBuffer.regex.begin.test(this.joinedString);
-						parseBuffer.regex.end.test(this.joinedString);
-						this.query.extender = this.joinedString.slice(0, parseBuffer.regex.begin.lastIndex - 1);
-						this.query.instance = this.joinedString.slice(parseBuffer.regex.begin.lastIndex, parseBuffer.regex.end.lastIndex - 1);
-						console.log(this.query.instance);
-						console.log(parseBuffer.HTMLParser.parseFromString(this.query.instance.replace(/\0[1-9]\0/g, ""), "text/html").body)
+						this.joinedString = this.joinedString.slice(this.joinedString.indexOf("{") + 1, this.joinedString.lastIndexOf("}"));
+						console.log(this.joinedString);
+						console.log(parseBuffer.HTMLParser.parseFromString(this.joinedString, "text/html").body);
 					}
 				},
 				keys: [],
@@ -77,7 +71,6 @@ function html(strings, ...keys) {
 		}
 	};
 	// reset buffer
-	parseBuffer.reset();
 };
 
 html.getReservedKey = [
