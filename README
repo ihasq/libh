@@ -1,1 +1,20 @@
+╭───╮ ╭──╮╭──╮     ╭──╮
+╰┐  │ ╰──╯│  │     │  │
+ │  │ ╭──╮│  └────╮│  └────╮
+ │  │ │  ││  ┌─┐  ││  ┌─┐  │
+ │  │ │  ││  │ │  ││  │ │  │
+╭┘  └╮│  ││  └─┘  ││  │ │  │
+╰────╯╰──╯╰───────╯╰──╯ ╰──╯
+html in javascript framework
 
+Quick Start:
+╭ index.js ───────────────────────────────────────────────╮
+│                                                         │
+│  import { html } from "https://unpkg.com/libh";         │
+│                                                         │
+│  document.body.innerHTML = html`{                       │
+│      <label>Current date is ${Date}</label>             │
+│  }`;                                                    │
+│                                                         │
+╰─────────────────────────────────────────────────────────╯
+Try on StackBlitz: https://stackblitz.com
