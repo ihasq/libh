@@ -8,7 +8,6 @@
                 ╰────╯╰──╯╰───────╯╰──╯ ╰──╯
                 html in javascript framework
 
-    Try on StackBlitz: https://stackblitz.com/edit/libh
 
 ╭── index.js ──────────────────────────────────────────────╮
 │                                                          │
@@ -18,6 +17,6 @@
 │       <label>Current date is ${Date}</label>             │
 │   }`();                                                  │
 │                                                          │
-│   // reactive parts should be placed as functions        │
+│   // live example: https://stackblitz.com/edit/libh      │
 │                                                          │
 ╰──────────────────────────────────────────────────────────╯
