@@ -1,13 +1,14 @@
-╭───╮ ╭──╮╭──╮     ╭──╮
-╰┐  │ ╰──╯│  │     │  │
- │  │ ╭──╮│  └────╮│  └────╮
- │  │ │  ││  ┌─┐  ││  ┌─┐  │
- │  │ │  ││  │ │  ││  │ │  │
-╭┘  └╮│  ││  └─┘  ││  │ │  │
-╰────╯╰──╯╰───────╯╰──╯ ╰──╯
-html in javascript framework
 
-Try on StackBlitz: https://stackblitz.com/edit/libh
+                ╭───╮ ╭──╮╭──╮     ╭──╮
+                ╰┐  │ ╰──╯│  │     │  │
+                 │  │ ╭──╮│  └────╮│  └────╮
+                 │  │ │  ││  ┌─┐  ││  ┌─┐  │
+                 │  │ │  ││  │ │  ││  │ │  │
+                ╭┘  └╮│  ││  └─┘  ││  │ │  │
+                ╰────╯╰──╯╰───────╯╰──╯ ╰──╯
+                html in javascript framework
+
+    Try on StackBlitz: https://stackblitz.com/edit/libh
 
 ╭── index.js ──────────────────────────────────────────────╮
 │                                                          │
@@ -16,5 +17,7 @@ Try on StackBlitz: https://stackblitz.com/edit/libh
 │   document.body.innerHTML = html`{                       │
 │       <label>Current date is ${Date}</label>             │
 │   }`;                                                    │
+│                                                          │
+│   // reactive parts should be placed as functions        │
 │                                                          │
 ╰──────────────────────────────────────────────────────────╯
