@@ -16,7 +16,7 @@
 │                                                          │
 │   document.body.innerHTML = html`{                       │
 │       <label>Current date is ${Date}</label>             │
-│   }`;                                                    │
+│   }`();                                                  │
 │                                                          │
 │   // reactive parts should be placed as functions        │
 │                                                          │
