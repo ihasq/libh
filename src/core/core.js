@@ -1,0 +1,1 @@
+export { getKeyIdentifier } from "./getKeyIdentifier.js";

@@ -1,4 +1,4 @@
-import { core } from "../core.js"
+import * as core from "../core/core.js"
 
 /*
 	html instance constructor
@@ -7,6 +7,7 @@ import { core } from "../core.js"
 	1. parse joined template literal string. search where the key relates to (attribute or textNode)
 	2. parse function
 */
+
 const parseBuffer = {
 	HTMLParser: new DOMParser(),
 	reset() {
@@ -16,12 +17,13 @@ const parseBuffer = {
 					regex: {},
 					stringTemplate: [],
 					joinedString: "",
+					instanceId: core.getKeyIdentifier(),
 					join(functionStringArray) {
 						this.joinedString = "";
 						for(let i = 0; i < functionStringArray.length; i++) {
-							this.joinedString += functionStringArray[i].replace(/\0/g, "");
+							this.joinedString += functionStringArray[i];
 							if(i + 1 !== functionStringArray.length) {
-								this.joinedString += "\0" + i + "\0";
+								this.joinedString += "${libh-key-" + this.instanceId + ":" + i + "}";
 							}
 						};
 						this.joinedString = this.joinedString.slice(this.joinedString.indexOf("{") + 1, this.joinedString.lastIndexOf("}"));
