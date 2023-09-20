@@ -1,4 +1,5 @@
 import * as core from "../core/core.js"
+core.frameloop.ignite()
 
 /*
 	html instance constructor
@@ -9,6 +10,7 @@ import * as core from "../core/core.js"
 */
 
 const parseBuffer = {
+	registry: Object.create(null),
 	HTMLParser: new DOMParser(),
 	reset() {
 		Object.assign(this, {
@@ -38,9 +40,28 @@ const parseBuffer = {
 	}
 };
 
+function createHTMLInstance(id, strings, keys) {
+	let keyMap = "", keyRegistry = Object.create(null);
+	for(let i = 0; i < strings.length; i++) {
+		keyMap += strings[i] + ((i + 1 !== strings.length)? ("${" + id + ":" + i + "}") : "")
+	};
+	keyMap = keyMap.slice(keyMap.indexOf("{") + 1, keyMap.lastIndexOf("}"));
+	for(let i = 0; i < keys.length; i++) {
+		if(typeof keys[i] === "function") {
+		} else {
+			throw new Error("dumb ass");
+		}
+	}
+	return {
+		keyMap
+	}
+};
+
 parseBuffer.reset();
 
 function html(strings, ...keys) {
+	const INSTANCE_ID = core.generateKeyIdentifier();
+	parseBuffer.registry[INSTANCE_ID] = createHTMLInstance(INSTANCE_ID, strings, keys);
 	// parse string
 	parseBuffer.template.strings.join(strings);
 	parseBuffer.template.keys = keys;
@@ -71,6 +92,15 @@ function html(strings, ...keys) {
 	};
 	// reset buffer
 };
+
+addEventListener("keydown", event => {
+	console.log(Date.now())
+	if(event.code === "Enter") {
+		core.frameloop.push(function () {
+			console.log(Date.now())
+		});
+	}
+})
 
 html.getReservedKey = [
 	"shared",
