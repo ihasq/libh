@@ -16,7 +16,7 @@ const parseBuffer = {
 function createHTMLInstance(id, strings, keys) {
 	let keyMap = "", keyRegistry = Object.create(null);
 	for(let i = 0; i < strings.length; i++) {
-		keyMap += strings[i] + " " + ((i + 1 !== strings.length)? `\${${id}:${"0".repeat(6 - ("" + i).length) + i}}` : "") + " "
+		keyMap += strings[i] + ((i + 1 !== strings.length)? ` \${${id}:${i}} ` : "")
 	};
 	const SELECTOR = new RegExp(` \\$\\{${id}:[0-9]{6}\\} `, "g");
 	console.log(keyMap);
@@ -24,27 +24,15 @@ function createHTMLInstance(id, strings, keys) {
 		keyMap.slice(keyMap.indexOf("{") + 1, keyMap.lastIndexOf("}")),
 		"text/html"
 	).body;
+	console.log(TEMPLATE)
 
 	for(let i = 0; i < keys.length; i++) {
 		if(typeof keys[i] === "function") {
-			console.dir(keys[i].constructor.name);
-		} else {
-			throw new Error("dumb ass");
-		}
-	};
-	parseBuffer.registry[id] = {
-		keyMap
-	};
-};
-
-function html(strings, ...keys) {
-	createHTMLInstance(core.generateKeyIdentifier(), strings, keys);
-	for(let i = 0; i < keys.length; i++) {
-		if((typeof keys[i]) === "function") {
-			// if(keys[i].constructor.name === ("AsyncFunction" || "AsyncGeneratorFunction")) {
-			// 	throw new Error("Can not use async function")
-			// }
-			const registry = Object.create(null);
+			if(keys[i].constructor.name === (
+				"GeneratorFunction" || "AsyncFunction" || "AsyncGeneratorFunction"
+			)) {
+				throw new Error("Can not use async function")
+			};
 			/*
 				registry = {
 					tempFnString: "$ => ({...})" | "function($) { return ... }"
@@ -56,12 +44,18 @@ function html(strings, ...keys) {
 				}
 			*/
 		} else if((typeof keys[i]) === "object") {
-
+			throw new Error("dumb ass");
 		} else {
 
-		}
+		};
 	};
-	// reset buffer
+	parseBuffer.registry[id] = {
+		keyMap
+	};
+};
+
+function html(strings, ...keys) {
+	return createHTMLInstance(core.generateKeyIdentifier(), strings, keys);
 };
 
 html.getReservedKey = [
