@@ -27,14 +27,14 @@ function createHTMLInstance(id, strings, keys) {
 
 	for(let i = 0; i < keys.length; i++) {
 		if(typeof keys[i] === "function") {
-			console.dir(keys[i].constructor.name)
+			console.dir(keys[i].constructor.name);
 		} else {
 			throw new Error("dumb ass");
 		}
 	};
 	parseBuffer.registry[id] = {
 		keyMap
-	}
+	};
 };
 
 function html(strings, ...keys) {
