@@ -18,7 +18,7 @@ const reactiveButton = html`{
 }`;
 
 document.body.innerHTML = html`{
-    <${reactiveButton} ${$ => {
+    <${reactiveButton} onclick=${$ => {
         $.super();
         $.alert("I clicked!");
     }}/>
