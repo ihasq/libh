@@ -23,7 +23,7 @@ const parseBuffer = {
 						for(let i = 0; i < functionStringArray.length; i++) {
 							this.joinedString += functionStringArray[i];
 							if(i + 1 !== functionStringArray.length) {
-								this.joinedString += "${libh-key-" + this.instanceId + ":" + i + "}";
+								this.joinedString += "${" + this.instanceId + ":" + i + "}";
 							}
 						};
 						this.joinedString = this.joinedString.slice(this.joinedString.indexOf("{") + 1, this.joinedString.lastIndexOf("}"));

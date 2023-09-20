@@ -1,1 +1,1 @@
-export { getKeyIdentifier } from "./getKeyIdentifier.js";
+export { generateKeyIdentifier } from "./getKeyIdentifier.js";
