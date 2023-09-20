@@ -21,10 +21,7 @@ const parseBuffer = {
 					join(functionStringArray) {
 						this.joinedString = "";
 						for(let i = 0; i < functionStringArray.length; i++) {
-							this.joinedString += functionStringArray[i];
-							if(i + 1 !== functionStringArray.length) {
-								this.joinedString += "${" + this.instanceId + ":" + i + "}";
-							}
+							this.joinedString += functionStringArray[i] + ((i + 1 !== functionStringArray.length)? ("${" + this.instanceId + ":" + i + "}") : "")
 						};
 						this.joinedString = this.joinedString.slice(this.joinedString.indexOf("{") + 1, this.joinedString.lastIndexOf("}"));
 						console.log(this.joinedString);
