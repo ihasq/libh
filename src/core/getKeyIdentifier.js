@@ -1,10 +1,9 @@
 const getKeyIdentifier = function() {
-	let keyString = [];
+	let codeArray = [];
 	for(let i = 0; i < 16; i++) {
-		keyString.push(Math.floor(Math.random() * 256));
+		codeArray.push(Math.floor(Math.random() * 256));
 	};
-	keyString = window.btoa(String.fromCharCode.apply(null, keyString)).replace(/=/g, "")
-	return keyString;
+	return window.btoa(String.fromCharCode.apply(null, codeArray)).replace(/=/g, "");
 };
 
 export { getKeyIdentifier };
