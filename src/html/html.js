@@ -4,8 +4,8 @@ import { core } from "../core.js"
 	html instance constructor
 
 	workflow:
-	1. parse joined template literal string, search where the key comes from
-	2. 
+	1. parse joined template literal string. search where the key relates to (attribute or textNode)
+	2. parse function
 */
 const parseBuffer = {
 	HTMLParser: new DOMParser(),
