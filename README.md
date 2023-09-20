@@ -1,6 +1,7 @@
 # ``libh - html in javascript``
 [![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://ihasq.com)
-proof of concept
+
+proof of concept: this does not work
 
 ```javascript
 import { html } from "libh";
@@ -14,7 +15,9 @@ document.body.innerHTML = html`{
 // ...
 
 const reactiveButton = html`{
-    <button onclick=${$ => $.count++}>I got clicked ${$ => $.count} times!</button>
+    <button onclick=${$ => $.count++}>
+        I got clicked ${$ => $.count} times!
+    </button>
 }`;
 
 document.body.innerHTML = html`{
