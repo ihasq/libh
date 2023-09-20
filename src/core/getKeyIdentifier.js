@@ -1,4 +1,4 @@
-const getKeyIdentifier = function() {
+const generateKeyIdentifier = function() {
 	let codeArray = [];
 	for(let i = 0; i < 16; i++) {
 		codeArray.push(Math.floor(Math.random() * 256));
@@ -6,4 +6,4 @@ const getKeyIdentifier = function() {
 	return window.btoa(String.fromCharCode.apply(null, codeArray)).replace(/=/g, "");
 };
 
-export { getKeyIdentifier };
+export { generateKeyIdentifier };

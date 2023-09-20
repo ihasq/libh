@@ -17,7 +17,7 @@ const parseBuffer = {
 					regex: {},
 					stringTemplate: [],
 					joinedString: "",
-					instanceId: core.getKeyIdentifier(),
+					instanceId: core.generateKeyIdentifier(),
 					join(functionStringArray) {
 						this.joinedString = "";
 						for(let i = 0; i < functionStringArray.length; i++) {
