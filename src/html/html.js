@@ -1,5 +1,4 @@
 import * as core from "../core/core.js"
-core.frameloop.ignite()
 
 /*
 	html instance constructor
@@ -12,42 +11,20 @@ core.frameloop.ignite()
 const parseBuffer = {
 	registry: Object.create(null),
 	HTMLParser: new DOMParser(),
-	reset() {
-		Object.assign(this, {
-			template: {
-				strings: {
-					regex: {},
-					stringTemplate: [],
-					joinedString: "",
-					instanceId: core.generateKeyIdentifier(),
-					join(functionStringArray) {
-						this.joinedString = "";
-						for(let i = 0; i < functionStringArray.length; i++) {
-							this.joinedString += functionStringArray[i] + ((i + 1 !== functionStringArray.length)? ("${" + this.instanceId + ":" + i + "}") : "")
-						};
-						this.joinedString = this.joinedString.slice(this.joinedString.indexOf("{") + 1, this.joinedString.lastIndexOf("}"));
-						console.log(this.joinedString);
-						console.log(parseBuffer.HTMLParser.parseFromString(this.joinedString, "text/html").body);
-					}
-				},
-				keys: [],
-			},
-			unifiedString: "",
-			templateString: "",
-			templateDOM: Object.create(null),
-			keyLocation: [],
-		})
-	}
 };
 
 function createHTMLInstance(id, strings, keys) {
 	let keyMap = "", keyRegistry = Object.create(null);
 	for(let i = 0; i < strings.length; i++) {
-		keyMap += strings[i] + ((i + 1 !== strings.length)? ("${" + id + ":" + i + "}") : "")
+		keyMap += strings[i] + ((i + 1 !== strings.length)? (
+			"${" + id + ":" + "0".repeat(6 - ("" + i).length) + i + "}"
+		) : "")
 	};
 	keyMap = keyMap.slice(keyMap.indexOf("{") + 1, keyMap.lastIndexOf("}"));
+	console.log(keyMap)
 	for(let i = 0; i < keys.length; i++) {
 		if(typeof keys[i] === "function") {
+			console.dir(keys[i].constructor.name)
 		} else {
 			throw new Error("dumb ass");
 		}
@@ -57,16 +34,14 @@ function createHTMLInstance(id, strings, keys) {
 	}
 };
 
-parseBuffer.reset();
-
 function html(strings, ...keys) {
 	const INSTANCE_ID = core.generateKeyIdentifier();
 	parseBuffer.registry[INSTANCE_ID] = createHTMLInstance(INSTANCE_ID, strings, keys);
-	// parse string
-	parseBuffer.template.strings.join(strings);
-	parseBuffer.template.keys = keys;
-	for(let i = 0; i < parseBuffer.endIndex; i++) {
+	for(let i = 0; i < keys.length; i++) {
 		if((typeof keys[i]) === "function") {
+			// if(keys[i].constructor.name === ("AsyncFunction" || "AsyncGeneratorFunction")) {
+			// 	throw new Error("Can not use async function")
+			// }
 			const registry = Object.create(null);
 			/*
 				registry = {
@@ -78,12 +53,6 @@ function html(strings, ...keys) {
 					}
 				}
 			*/
-			registry.templateString = keys[i].toString();
-
-			core.functionRegistry[core.functionRegistryLength] = {
-				templateString: keys[i].toString(),
-			};
-			core.functionRegistryLength++;
 		} else if((typeof keys[i]) === "object") {
 
 		} else {
@@ -92,15 +61,6 @@ function html(strings, ...keys) {
 	};
 	// reset buffer
 };
-
-addEventListener("keydown", event => {
-	console.log(Date.now())
-	if(event.code === "Enter") {
-		core.frameloop.push(function () {
-			console.log(Date.now())
-		});
-	}
-})
 
 html.getReservedKey = [
 	"shared",
