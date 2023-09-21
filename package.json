@@ -1,11 +1,11 @@
 {
   "name": "libh",
-  "version": "0.0.6",
+  "version": "0.0.8",
   "description": "html in javascript",
   "type": "module",
-  "main": "./src/libh.js",
+  "main": "./build/libh.js",
   "scripts": {
-    "build": ""
+    "build": "esbuild ./src/libh.js --bundle --minify --outfile=./build/libh.js"
   },
   "repository": {
     "type": "git",
