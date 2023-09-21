@@ -1,6 +1,6 @@
 {
   "name": "libh",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "html in javascript",
   "type": "module",
   "main": "./build/libh.js",
