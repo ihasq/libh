@@ -1,8 +1,6 @@
-dev
-scripts
-src
-CONTRIBUTING.md
-index.html
-index.js
-libh.config.js
-examples
+./***
+!build/*
+!LICENSE
+!package.json
+!package-lock.json
+!README.md
