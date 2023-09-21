@@ -3,3 +3,4 @@ dev
 index.html
 index.js
 libh.config.js
+!examples/*/*
