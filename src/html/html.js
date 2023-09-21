@@ -13,11 +13,11 @@ const parseBuffer = {
 	HTMLParser: new DOMParser(),
 };
 
-function createHTMLInstance(id, strings, keys) {
+function createHTMLInstance(id, stringCollection, keys) {
 	let keyMap = "", keyRegistry = Object.create(null);
-	for(let i = 0; i < strings.length; i++) {
-		keyMap += strings[i] + ((i + 1 !== strings.length)? ` \${${id}:${i}} ` : "");
-	};
+	stringCollection.forEach((string, index) => {
+		keyMap += string + ((index + 1 !== stringCollection.length)? ` \${${id}:${index}} ` : "")
+	});
 	console.log(keyMap);
 	const SELECTOR = new RegExp(` \\$\\{${id}:[0-9]{6}\\} `, "g");
 	const TEMPLATE = parseBuffer.HTMLParser.parseFromString(
@@ -26,27 +26,29 @@ function createHTMLInstance(id, strings, keys) {
 	).body;
 	console.log(TEMPLATE);
 
-	for(let i = 0; i < keys.length; i++) {
-		if(typeof keys[i] === "function") {
-			if(keys[i].constructor.name === (
-				"GeneratorFunction" || "AsyncFunction" || "AsyncGeneratorFunction"
-			)) {
-				throw new Error("Can not use async function")
-			};
-			/*
-				registry = {
-					tempFnString: "$ => ({...})" | "function($) { return ... }"
-					tempFnType: "arrow" | "standard",
-					tempFnArg: "$" or what else
-					tempHandleMap: {
-						count: 0
+	for(const key of keys) {
+		switch(typeof key) {
+			case "function":
+				if(key.constructor.name === (
+					"GeneratorFunction" || "AsyncFunction" || "AsyncGeneratorFunction"
+				)) {
+					throw new Error("Can not use async function")
+				};
+				/*
+					registry = {
+						tempFnString: "$ => ({...})" | "function($) { return ... }"
+						tempFnType: "arrow" | "standard",
+						tempFnArg: "$" or what else
+						tempHandleMap: {
+							count: 0
+						}
 					}
-				}
-			*/
-		} else if((typeof keys[i]) === "object") {
-			throw new Error("dumb ass");
-		} else {
-
+				*/
+				break;
+			case "object":
+				throw new Error("dumb ass");
+				break;
+			default:
 		};
 	};
 	parseBuffer.registry[id] = {
