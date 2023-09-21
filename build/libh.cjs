@@ -99,11 +99,3 @@ function sass(strings, ...keys) {
 
 // src/document.js
 var document = {};
-// Annotate the CommonJS export names for ESM import in node:
-0 && (module.exports = {
-  css,
-  document,
-  html,
-  sass,
-  scss
-});

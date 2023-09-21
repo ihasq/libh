@@ -60,6 +60,5 @@ import esbuild from "esbuild";
 	{
 		bundle: true,
 		entryPoints: ["./src/libh.js"],
-		platform: "node"
 	}
 )))
