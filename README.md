@@ -1,4 +1,7 @@
 # ``libh - html in javascript``
+```
+> npm i libh
+```
 [![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://ihasq.com)
 
 proof of concept: this does not work
