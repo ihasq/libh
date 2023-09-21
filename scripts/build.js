@@ -57,8 +57,10 @@ import esbuild from "esbuild";
 	}
 
 ].forEach(async index => await esbuild.build(Object.assign(index,
+
 	{
 		bundle: true,
 		entryPoints: ["./src/libh.js"],
 	}
+
 )))
