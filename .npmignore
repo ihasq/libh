@@ -1,4 +1,7 @@
+dev
 docs
 .gitignore
 CONTRIBUTING.md
-README.md
+index.html
+index.js
+libh.config.js
