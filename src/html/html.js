@@ -16,15 +16,15 @@ const parseBuffer = {
 function createHTMLInstance(id, strings, keys) {
 	let keyMap = "", keyRegistry = Object.create(null);
 	for(let i = 0; i < strings.length; i++) {
-		keyMap += strings[i] + ((i + 1 !== strings.length)? ` \${${id}:${i}} ` : "")
+		keyMap += strings[i] + ((i + 1 !== strings.length)? ` \${${id}:${i}} ` : "");
 	};
-	const SELECTOR = new RegExp(` \\$\\{${id}:[0-9]{6}\\} `, "g");
 	console.log(keyMap);
+	const SELECTOR = new RegExp(` \\$\\{${id}:[0-9]{6}\\} `, "g");
 	const TEMPLATE = parseBuffer.HTMLParser.parseFromString(
 		keyMap.slice(keyMap.indexOf("{") + 1, keyMap.lastIndexOf("}")),
 		"text/html"
 	).body;
-	console.log(TEMPLATE)
+	console.log(TEMPLATE);
 
 	for(let i = 0; i < keys.length; i++) {
 		if(typeof keys[i] === "function") {
