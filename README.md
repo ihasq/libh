@@ -2,7 +2,7 @@
 ```
 npm i libh
 ```
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://ihasq.com)
+[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/edit/js-kydnun?file=index.js)
 
 proof of concept: this does not work
 

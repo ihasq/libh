@@ -3,7 +3,7 @@
   "version": "0.0.5",
   "description": "html in javascript",
   "type": "module",
-  "main": "libh.js",
+  "main": "src/libh.js",
   "scripts": {
     "build": ""
   },

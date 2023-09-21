@@ -3,7 +3,6 @@
 	libh - html in javascript
 
 	features:
-	+ frameloop: custom event loop built on javascript, depends on rAF
 
  */
 
