@@ -15,7 +15,7 @@ document.body.innerHTML = html`{
     <h1>Current date is ${Date}</h1>
 }`();
 
-// Reactive values ​​should be placed as pre-execution function entities rather than primitives.
+// Reactive values ​​should be placed as pre-execution functions and not as primitive types.
 ```
 
 ```javascript
