@@ -13,18 +13,19 @@ const parseBuffer = {
 	HTMLParser: new DOMParser(),
 };
 
-function createHTMLInstance(instanceId, stringCollection, keyCollection) {
-	let keyMap = "", keyRegistry = Object.create(null);
+function createHTMLInstance(instanceId, strings, keys) {
 
-	for(let index = 0; index < stringCollection.length; index++) {
-		keyMap += stringCollection[index];
-		if(index + 1 !== stringCollection.length) {
-			keyMap += ` \${${instanceId}:${index}} `;
-			switch(typeof keyCollection[index]) {
+	const buffer = {
+		keyMap: "",
+	};
+
+	for(let index = 0; index < strings.length; index++) {
+		buffer.keyMap += strings[index];
+		if(index + 1 !== strings.length) {
+			buffer.keyMap += ` \${${instanceId}:${index}} `;
+			switch(typeof keys[index]) {
 				case "function":
-					if(keyCollection[index].constructor.name === (
-						"GeneratorFunction" || "AsyncFunction" || "AsyncGeneratorFunction"
-					)) {
+					if(keys[index].constructor.name !== "Function") {
 						throw new Error("Can not use async function")
 					};
 					/*
@@ -45,16 +46,19 @@ function createHTMLInstance(instanceId, stringCollection, keyCollection) {
 		}
 	};
 	
-	console.log(keyMap);
+	console.log(buffer.keyMap);
 	const SELECTOR = new RegExp(` \\$\\{${instanceId}:[0-9]{6}\\} `, "g");
 	const TEMPLATE = parseBuffer.HTMLParser.parseFromString(
-		keyMap.slice(keyMap.indexOf("{") + 1, keyMap.lastIndexOf("}")),
+		buffer.keyMap.slice(buffer.keyMap.indexOf("{") + 1, buffer.keyMap.lastIndexOf("}")),
 		"text/html"
 	).body;
 	console.log(TEMPLATE);
-	parseBuffer.registry[instanceId] = {
-		keyMap
-	};
+	parseBuffer.registry[instanceId] = Object.assign(buffer, {
+		instanceId,
+		keys: {
+
+		}
+	});
 };
 
 function html(strings, ...keys) {
