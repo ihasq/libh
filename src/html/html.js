@@ -62,7 +62,8 @@ function createHTMLInstance(instanceId, strings, keys) {
 };
 
 function html(strings, ...keys) {
-	return createHTMLInstance(core.generateInstanceId(), strings, keys);
+	createHTMLInstance(core.generateInstanceId(), strings, keys);
+	return;
 };
 
 html.getReservedKey = [
