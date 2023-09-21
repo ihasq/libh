@@ -13,51 +13,52 @@ const parseBuffer = {
 	HTMLParser: new DOMParser(),
 };
 
-function createHTMLInstance(id, stringCollection, keys) {
+function createHTMLInstance(instanceId, stringCollection, keyCollection) {
 	let keyMap = "", keyRegistry = Object.create(null);
-	stringCollection.forEach((string, index) => {
-		keyMap += string + ((index + 1 !== stringCollection.length)? ` \${${id}:${index}} ` : "")
-	});
+
+	for(let index = 0; index < stringCollection.length; index++) {
+		keyMap += stringCollection[index];
+		if(index + 1 !== stringCollection.length) {
+			keyMap += ` \${${instanceId}:${index}} `;
+			switch(typeof keyCollection[index]) {
+				case "function":
+					if(keyCollection[index].constructor.name === (
+						"GeneratorFunction" || "AsyncFunction" || "AsyncGeneratorFunction"
+					)) {
+						throw new Error("Can not use async function")
+					};
+					/*
+						registry = {
+							tempFnString: "$ => ({...})" | "function($) { return ... }"
+							tempFnType: "arrow" | "standard",
+							tempFnArg: "$" or what else
+							tempHandleMap: {
+								count: 0
+							}
+						}
+					*/
+					break;
+				case "object":
+					throw new Error("dumb ass");
+				default:
+			};
+		}
+	};
+	
 	console.log(keyMap);
-	const SELECTOR = new RegExp(` \\$\\{${id}:[0-9]{6}\\} `, "g");
+	const SELECTOR = new RegExp(` \\$\\{${instanceId}:[0-9]{6}\\} `, "g");
 	const TEMPLATE = parseBuffer.HTMLParser.parseFromString(
 		keyMap.slice(keyMap.indexOf("{") + 1, keyMap.lastIndexOf("}")),
 		"text/html"
 	).body;
 	console.log(TEMPLATE);
-
-	for(const key of keys) {
-		switch(typeof key) {
-			case "function":
-				if(key.constructor.name === (
-					"GeneratorFunction" || "AsyncFunction" || "AsyncGeneratorFunction"
-				)) {
-					throw new Error("Can not use async function")
-				};
-				/*
-					registry = {
-						tempFnString: "$ => ({...})" | "function($) { return ... }"
-						tempFnType: "arrow" | "standard",
-						tempFnArg: "$" or what else
-						tempHandleMap: {
-							count: 0
-						}
-					}
-				*/
-				break;
-			case "object":
-				throw new Error("dumb ass");
-				break;
-			default:
-		};
-	};
-	parseBuffer.registry[id] = {
+	parseBuffer.registry[instanceId] = {
 		keyMap
 	};
 };
 
 function html(strings, ...keys) {
-	return createHTMLInstance(core.generateKeyIdentifier(), strings, keys);
+	return createHTMLInstance(core.generateInstanceId(), strings, keys);
 };
 
 html.getReservedKey = [
