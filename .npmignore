@@ -1,6 +1,8 @@
-./***
-!build/*
-!LICENSE
-!package.json
-!package-lock.json
-!README.md
+dev
+examples
+scripts
+src
+CONTRIBUTING.md
+index.html
+!examples/**
+index.html

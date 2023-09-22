@@ -1,6 +1,4 @@
-node_modules
 dev
+node_modules
 index.html
-index.js
-libh.config.js
-!examples/**
+!examples/*/index.html
