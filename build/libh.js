@@ -61,7 +61,7 @@ function createHTMLInstance(instanceId, strings, keys) {
   }
   ;
   console.log(buffer.keyMap);
-  const SELECTOR = new RegExp(` \\$\\{${instanceId}:[0-9]{6}\\} `, "g");
+  const SELECTOR = new RegExp(` \\$\\{${instanceId}:[0-9]\\} `, "g");
   const TEMPLATE = parseBuffer.HTMLParser.parseFromString(
     buffer.keyMap.slice(buffer.keyMap.indexOf("{") + 1, buffer.keyMap.lastIndexOf("}")),
     "text/html"

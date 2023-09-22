@@ -1,7 +1,4 @@
 # ``libh - html in javascript``
-```
-npm i libh
-```
 [![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/edit/js-kydnun?file=index.js)
 
 proof of concept: this does not work
@@ -34,4 +31,14 @@ document.body.innerHTML = html`{
 // or
 
 export { reactiveButton };
+```
+### installation (npm)
+```
+npm i libh
+```
+
+### build from source
+```
+git clone https://github.com/ihasq/libh.git
+npm run build
 ```
