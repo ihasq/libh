@@ -25,7 +25,9 @@ class TurboArray {
 	};
 
 	forEach(callbackFn) {
-
+		for(let index = 0; index < this.#private.length; index++) {
+			callbackFn(this.#private.table[index], index);
+		};
 	};
 
 	get length() {
