@@ -56,11 +56,11 @@ import esbuild from "esbuild";
 		format: "esm",	
 	}
 
-].forEach(async index => await esbuild.build(Object.assign(index,
+].forEach(async index => {
 
-	{
+	await esbuild.build(Object.assign(index, {
 		bundle: true,
-		entryPoints: ["./src/libh.js"],
-	}
+		entryPoints: ["./src/libh.js"]
+	}))
 
-)))
+});
