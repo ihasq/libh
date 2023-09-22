@@ -2,5 +2,5 @@ dev
 examples
 scripts
 src
-index.html
-!examples/**
+/index.html
+examples/**
