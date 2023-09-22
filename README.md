@@ -8,9 +8,9 @@ import { html } from "libh";
 
 document.body.innerHTML = html`{
     <h1>Current date is ${Date}</h1>
-}`; // This returns compiled HTMLElement
+}`;
 
-// Reactive values ​​should be placed as pre-execution functions and not as primitive types.
+// Reactive values ​​should be placed as pre-execution functions, not as primitive type
 ```
 
 ```javascript
