@@ -20,7 +20,6 @@ var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: tru
 var libh_exports = {};
 __export(libh_exports, {
   css: () => css,
-  document: () => document,
   html: () => html,
   sass: () => sass,
   scss: () => scss
@@ -32,7 +31,7 @@ var generateInstanceId = function() {
   return (Math.floor(Math.random() * (32 ** 6 - 32 ** 5 - 1)) + 32 ** 5).toString(32);
 };
 
-// src/html/html.js
+// src/html.js
 var parseBuffer = {
   registry: /* @__PURE__ */ Object.create(null),
   HTMLParser: new DOMParser()
@@ -101,20 +100,16 @@ html.getReservedKey = [
 function css(strings, ...keys) {
 }
 
-// src/scss/scss.js
+// src/scss.js
 function scss(strings, ...keys) {
 }
 
 // src/sass.js
 function sass(strings, ...keys) {
 }
-
-// src/document.js
-var document = {};
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
   css,
-  document,
   html,
   sass,
   scss

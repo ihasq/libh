@@ -3,7 +3,7 @@ var generateInstanceId = function() {
   return (Math.floor(Math.random() * (32 ** 6 - 32 ** 5 - 1)) + 32 ** 5).toString(32);
 };
 
-// src/html/html.js
+// src/html.js
 var parseBuffer = {
   registry: /* @__PURE__ */ Object.create(null),
   HTMLParser: new DOMParser()
@@ -72,19 +72,15 @@ html.getReservedKey = [
 function css(strings, ...keys) {
 }
 
-// src/scss/scss.js
+// src/scss.js
 function scss(strings, ...keys) {
 }
 
 // src/sass.js
 function sass(strings, ...keys) {
 }
-
-// src/document.js
-var document = {};
 export {
   css,
-  document,
   html,
   sass,
   scss
