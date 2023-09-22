@@ -7,7 +7,7 @@ proof of concept: this does not work
 import { html } from "libh";
 
 document.body.innerHTML = html`{
-    <h1>Current date is ${Date}</h1>
+    <h1>Current date is ${() => Date()}</h1>
 }`;
 
 // Reactive values ​​should be placed as pre-execution functions, not as primitive type
