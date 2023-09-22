@@ -27,7 +27,9 @@ function createHTMLInstance(instanceId, strings, keys) {
 				case "function":
 					if(keys[index].constructor.name !== "Function") {
 						throw new Error("Can not use async function")
-					};
+					} else {
+						// core.frameloop.func.push(keyFn);
+					}
 					/*
 						registry = {
 							tempFnString: "$ => ({...})" | "function($) { return ... }"
@@ -52,7 +54,8 @@ function createHTMLInstance(instanceId, strings, keys) {
 		buffer.keyMap.slice(buffer.keyMap.indexOf("{") + 1, buffer.keyMap.lastIndexOf("}")),
 		"text/html"
 	).body;
-	console.log(TEMPLATE);
+	console.dir(TEMPLATE.children);
+	// for(let index = 0; index < TEMPLATE.childNodes)
 	parseBuffer.registry[instanceId] = Object.assign(buffer, {
 		instanceId,
 		keys: {
@@ -73,6 +76,6 @@ html.getReservedKey = [
 	"static",
 	"method",
 	"meta"
-]
+];
 
-export { html }
+export { html };
