@@ -1,4 +1,0 @@
-const document = {
-	
-}
-export { document };
