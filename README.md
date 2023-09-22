@@ -10,7 +10,7 @@ import { html } from "libh";
 
 document.body.innerHTML = html`{
     <h1>Current date is ${Date}</h1>
-}`(); // This returns compiled HTMLElement
+}`; // This returns compiled HTMLElement
 
 // Reactive values ​​should be placed as pre-execution functions and not as primitive types.
 ```
@@ -26,7 +26,7 @@ const reactiveButton = html`{
 
 document.body.innerHTML = html`{
     <${reactiveButton} />
-}`();
+}`;
 
 // or
 
