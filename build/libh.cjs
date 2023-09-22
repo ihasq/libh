@@ -137,43 +137,51 @@ var parseBuffer = {
   registry: /* @__PURE__ */ Object.create(null),
   HTMLParser: new DOMParser()
 };
-function createHTMLInstance(instanceId, strings, keys) {
-  const buffer = {
-    keyMap: ""
+function functionParser(fnBody) {
+  const TEMPLATE_STRING = "" + fnBody;
+  const FUNC_TYPE = fnBody.hasOwnProperty("prototype") ? "normal" : keys[index].name ? "normal" : "arrow";
+  console.log(FUNC_TYPE);
+  console.log(buffer.funcList.at(index).templateString);
+}
+function createHTMLInstance(instanceId, strings, keys2) {
+  const buffer2 = {
+    keyMap: "",
+    funcList: new TurboArray()
   };
-  for (let index = 0; index < strings.length; index++) {
-    buffer.keyMap += strings[index];
-    if (index + 1 !== strings.length) {
-      buffer.keyMap += ` \${${instanceId}:${index}} `;
-      switch (typeof keys[index]) {
+  for (let index2 = 0; index2 < strings.length; index2++) {
+    buffer2.keyMap += strings[index2];
+    if (index2 + 1 !== strings.length) {
+      buffer2.keyMap += ` \${${instanceId}:${index2}} `;
+      switch (typeof keys2[index2]) {
         case "function":
-          if (keys[index].constructor.name !== "Function") {
+          if (keys2[index2].constructor.name !== "Function") {
             throw new Error("Can not use async function");
           } else {
+            buffer2.funcList.push(functionParser(keys2[index2]));
           }
           break;
         case "object":
-          throw new Error("dumb ass");
+          throw new Error("not yet");
         default:
       }
       ;
     }
   }
   ;
-  console.log(buffer.keyMap);
+  console.log(buffer2.keyMap);
   const SELECTOR = new RegExp(` \\$\\{${instanceId}:[0-9]\\} `, "g");
   const TEMPLATE = parseBuffer.HTMLParser.parseFromString(
-    buffer.keyMap.slice(buffer.keyMap.indexOf("{") + 1, buffer.keyMap.lastIndexOf("}")),
+    buffer2.keyMap.slice(buffer2.keyMap.indexOf("{") + 1, buffer2.keyMap.lastIndexOf("}")),
     "text/html"
   ).body;
   console.dir(TEMPLATE.children);
-  parseBuffer.registry[instanceId] = Object.assign(buffer, {
+  parseBuffer.registry[instanceId] = Object.assign(buffer2, {
     instanceId,
     keys: {}
   });
 }
-function html(strings, ...keys) {
-  createHTMLInstance(generateInstanceId(), strings, keys);
+function html(strings, ...keys2) {
+  createHTMLInstance(generateInstanceId(), strings, keys2);
   return;
 }
 html.getReservedKey = [
@@ -186,15 +194,15 @@ html.getReservedKey = [
 ];
 
 // src/css.js
-function css(strings, ...keys) {
+function css(strings, ...keys2) {
 }
 
 // src/scss/scss.js
-function scss(strings, ...keys) {
+function scss(strings, ...keys2) {
 }
 
 // src/sass.js
-function sass(strings, ...keys) {
+function sass(strings, ...keys2) {
 }
 
 // src/document.js

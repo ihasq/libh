@@ -1,6 +1,5 @@
 import * as core from "../core/core.js"
 import { TurboArray } from "../util/util.js";
-import { functionParser } from "./functionParser.js";
 
 /*
 	html instance constructor
@@ -13,6 +12,13 @@ import { functionParser } from "./functionParser.js";
 const parseBuffer = {
 	registry: Object.create(null),
 	HTMLParser: new DOMParser(),
+};
+
+function functionParser(fnBody) {
+	const TEMPLATE_STRING = "" + fnBody; // === toString()
+	const FUNC_TYPE = fnBody.hasOwnProperty("prototype")? "normal" : keys[index].name? "normal" : "arrow";
+	console.log(FUNC_TYPE);
+	console.log(buffer.funcList.at(index).templateString);
 };
 
 function createHTMLInstance(instanceId, strings, keys) {
@@ -32,7 +38,6 @@ function createHTMLInstance(instanceId, strings, keys) {
 						throw new Error("Can not use async function")
 					} else {
 						buffer.funcList.push(functionParser(keys[index]));
-						// core.frameloop.func.push(keyFn);
 					}
 					/*
 						registry = {
