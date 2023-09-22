@@ -4,8 +4,6 @@
 proof of concept: this does not work
 
 ```javascript
-// quick start
-
 import { html } from "libh";
 
 document.body.innerHTML = html`{
@@ -16,7 +14,7 @@ document.body.innerHTML = html`{
 ```
 
 ```javascript
-// create component
+// ...
 
 const reactiveButton = html`{
     <button onclick=${$ => $.count++}>
