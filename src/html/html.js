@@ -1,5 +1,4 @@
 import * as core from "../core/core.js"
-import { TurboArray } from "../util/util.js";
 
 /*
 	html instance constructor
@@ -28,7 +27,7 @@ function createHTMLInstance(instanceId, strings, keys) {
 
 	const buffer = {
 		keyMap: "",
-		funcList: new TurboArray(),
+		funcList: [],
 	};
 
 	for(let index = 0; index < strings.length; index++) {
@@ -41,7 +40,7 @@ function createHTMLInstance(instanceId, strings, keys) {
 						throw new Error("Can not use async function")
 					} else {
 						buffer.funcList.push(functionParser(keys[index]));
-						console.log(buffer.funcList.at(index).TEMPLATE_STRING);
+						console.log(buffer.funcList[index].TEMPLATE_STRING);
 					}
 					/*
 						registry = {

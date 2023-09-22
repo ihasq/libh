@@ -1,5 +1,3 @@
-import { TurboArray } from "../util/util.js";
-
 const frameloop = {
 	isActive: false,
 	rafID: "",
@@ -15,11 +13,11 @@ const frameloop = {
 		this.isActive = false;
 	},
 	func: {
-		stack: new TurboArray(),
+		stack: [],
 		pendedDiff: Object.create(null),
 	},
 	task: {
-		stack: new TurboArray()
+		stack: []
 	},
 	registerNewFunction(keyFn) {
 		this.func.stack.push({
@@ -34,16 +32,16 @@ const frameloop = {
 	run() {
 		if(frameloop.func.stack.length !== 0) {
 			for(let i = 0; i < frameloop.func.stack.length; i++) {
-				if(frameloop.func.stack.at(i).result !== frameloop.func.stack.at(i).funcBody()) {
+				if(frameloop.func.stack[i].result !== frameloop.func.stack[i].funcBody()) {
 				}
 			}
 		}
 		if(frameloop.task.stack.length !== 0) {
 			for(let i = 0; i < frameloop.task.stack.length; i++) {
-				frameloop.task.stack.at(i)();
+				frameloop.task.stack[i]();
 			}
 		};
-		frameloop.task.stack.flush();
+		frameloop.task.stack = [];
 		window.requestAnimationFrame(frameloop.run);
 	},
 
