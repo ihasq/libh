@@ -16,9 +16,12 @@ const parseBuffer = {
 
 function functionParser(fnBody) {
 	const TEMPLATE_STRING = "" + fnBody; // === toString()
-	const FUNC_TYPE = fnBody.hasOwnProperty("prototype")? "normal" : keys[index].name? "normal" : "arrow";
+	const FUNC_TYPE = fnBody.hasOwnProperty("prototype")? "normal" : fnBody.name? "normal" : "arrow";
 	console.log(FUNC_TYPE);
-	console.log(buffer.funcList.at(index).templateString);
+	return {
+		TEMPLATE_STRING,
+		FUNC_TYPE
+	}
 };
 
 function createHTMLInstance(instanceId, strings, keys) {
@@ -38,6 +41,7 @@ function createHTMLInstance(instanceId, strings, keys) {
 						throw new Error("Can not use async function")
 					} else {
 						buffer.funcList.push(functionParser(keys[index]));
+						console.log(buffer.funcList.at(index).TEMPLATE_STRING);
 					}
 					/*
 						registry = {
