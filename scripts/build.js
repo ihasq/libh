@@ -10,7 +10,8 @@ import esbuild from "esbuild";
 			".js": ".mjs"
 		},
 		platform: "node",
-		format: "cjs"
+		format: "cjs",
+		target: "node14",
 	},
 
 	//	libh.min.js
@@ -21,6 +22,7 @@ import esbuild from "esbuild";
 			".js": ".mjs"
 		},
 		platform: "browser",
+		target: "chrome58",
 	},
 
 	//	libh.cjs
@@ -32,6 +34,7 @@ import esbuild from "esbuild";
 		},
 		platform: "browser",
 		format: "cjs",
+		target: "chrome58",
 	},
 
 	//	libh.esm.js
@@ -42,7 +45,8 @@ import esbuild from "esbuild";
 			".js": ".mjs"
 		},
 		platform: "browser",
-		format: "esm",	
+		format: "esm",
+		target: "chrome58",
 	},
 
 	//	libh.esm.min.js
@@ -53,14 +57,15 @@ import esbuild from "esbuild";
 			".js": ".mjs"
 		},
 		platform: "browser",
-		format: "esm",	
+		format: "esm",
+		target: "chrome58",
 	}
 
 ].forEach(async index => {
 
 	await esbuild.build(Object.assign(index, {
 		bundle: true,
-		entryPoints: ["./src/libh.js"]
+		entryPoints: ["./src/libh.js"],
 	}))
 
 });
