@@ -1,3 +1,5 @@
+import { TurboArray } from "../util/util.js";
+
 const frameloop = {
 	isActive: false,
 	rafID: "",
@@ -13,39 +15,35 @@ const frameloop = {
 		this.isActive = false;
 	},
 	func: {
-		stack: Object.create(null),
-		index: 0,
+		stack: new TurboArray(),
 		pendedDiff: Object.create(null),
 	},
 	task: {
-		stack: Object.create(null),
-		index: 0,
+		stack: new TurboArray()
 	},
 	registerNewFunction(keyFn) {
-		this.func.stack[this.func.index] = {
+		this.func.stack.push({
 			funcBody: keyFn,
 			result: null,
-		};
-		this.func.index++;
+		})
 	},
 	pushNewTask(taskFn) {
-		this.task.stack[this.task.index] = taskFn;
-		this.task.index++;
+		this.task.stack.push(taskFn);
 	},
 
 	run() {
-		if(frameloop.func.index !== 0) {
-			for(let i = 0; i < frameloop.func.index; i++) {
-				if(frameloop.func.stack[i].result !== frameloop.func.stack[i].funcBody()) {
+		if(frameloop.func.stack.length !== 0) {
+			for(let i = 0; i < frameloop.func.stack.length; i++) {
+				if(frameloop.func.stack.at(i).result !== frameloop.func.stack.at(i).funcBody()) {
 				}
 			}
 		}
-		if(frameloop.task.index !== 0) {
-			for(let i = 0; i < frameloop.task.index; i++) {
-				frameloop.task.stack[i]();
+		if(frameloop.task.stack.length !== 0) {
+			for(let i = 0; i < frameloop.task.stack.length; i++) {
+				frameloop.task.stack.at(i)();
 			}
 		};
-		frameloop.task.index = 0;
+		frameloop.task.stack.flush();
 		window.requestAnimationFrame(frameloop.run);
 	},
 

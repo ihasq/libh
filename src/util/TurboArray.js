@@ -1,34 +1,36 @@
 class TurboArray {
-	#object;
-	#index;
-	#proxy;
-	constructor(array) {
-		this = {};
-		this.#object = Object.create(null);
-		this.#index = 0;
-	}
-
-	push(content) {
-
+	#private;
+	constructor() {
+		this.#private = {
+			table: Object.create(null),
+			length: 0,
+		}
 	};
 
-	splice(...args) {
-		/**
-		 * (start) ...
-		 * (start, deleteCount)...
-		 * 
-		 */
+	at(arrayIndex) {
+		if(this.#private.length) {
+			return this.#private.table[arrayIndex % this.#private.length]
+		} else {
+			return undefined
+		}
 	};
 
-	get length() {
-		return this.index
+	push(property) {
+		this.#private.table[this.#private.length] = property;
+		this.#private.length++;
+	};
+
+	flush() {
+		this.#private.length = 0;
 	};
 
 	forEach(callbackFn) {
 
 	};
+
+	get length() {
+		return this.#private.length;
+	};
 };
 
-const test = new TurboArray();
-
-export { TurboArray as FastArray }
+export { TurboArray };
