@@ -37,7 +37,7 @@ function createHTMLInstance(instanceId, strings, keys) {
 			switch(typeof keys[index]) {
 				case "function":
 					if(keys[index].constructor.name !== "Function") {
-						throw new Error("Can not use async function")
+						throw new Error("Can not use async function");
 					} else {
 						buffer.funcList.push(functionParser(keys[index]));
 						console.log(buffer.funcList[index].TEMPLATE_STRING);
