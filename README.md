@@ -1,5 +1,5 @@
 # ``libh - html in javascript``
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/edit/js-kydnun?file=index.js)
+[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/ihasq/libh/tree/main/examples/quick_start?file=index.js)
 
 proof of concept: this does not work
 
