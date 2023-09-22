@@ -1,1 +1,1 @@
-export { FastArray } from "./FastArray.js";
+export { FastArray } from "./TurboArray.js";
