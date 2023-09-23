@@ -1,4 +1,4 @@
-import * as core from "./core.js"
+import * as core from "./core.js";
 
 /*
 	html instance constructor
@@ -92,8 +92,21 @@ function createHTMLInstance(instanceId, strings, keys) {
 };
 
 function html(strings, ...keys) {
-	createHTMLInstance(crypto.randomUUID(), strings, keys);
-	return;
+	const IDENTIFIER_UUID = "libh-element-identifier:" + core.getStaticUUID();
+	const HTML_INSTANCE = new String("<span id=" + IDENTIFIER_UUID + "></span>");
+	HTML_INSTANCE.isLibhInstance = true;
+	setTimeout(() => {
+		const getTarget = document.getElementById(IDENTIFIER_UUID);
+		if(!getTarget) {
+			// instance created
+			console.log("instance created");
+			createHTMLInstance(core.getStaticUUID(), strings, keys);
+		} else {
+			// appended in html
+			console.log("html appended")
+		}
+	}, 0);
+	return HTML_INSTANCE;
 };
 
 html.getReservedKey = [
