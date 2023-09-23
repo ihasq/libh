@@ -51,14 +51,14 @@ const STATIC_UUID = {
 	index: 0,
 	reset() {
 		for(let i = 0; i < 256; i++) {
-			this.registry[i] = crypto.randomUUID();
+			this.registry[i] = window.crypto.randomUUID();
 		};
-		this.index = 0;
+		this.index = -1;
 	}
 };
 
 function getStaticUUID() {
-	if(STATIC_UUID.index === 255) {
+	if(STATIC_UUID.index === 254) {
 		setTimeout(STATIC_UUID.reset, 0);	
 	};
 	STATIC_UUID.index++;
