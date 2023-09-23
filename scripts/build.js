@@ -1,9 +1,9 @@
 import esbuild from "esbuild";
 import fs from "node:fs";
 
-const CURRENT_VERSION = "0.0.10";
+const RELEASE_VERSION = "0.0.10";
 
-[ "libh", "libh-html" ].forEach((PKG_NAME, PKG_INDEX) => {
+["libh", "libh-html"].forEach((PKG_NAME, PKG_INDEX) => {
 	[
 		{
 			minify: false,
@@ -71,7 +71,7 @@ const CURRENT_VERSION = "0.0.10";
 		`./packages/${PKG_NAME}/package.json`,
 		`{
 		    "name": "${PKG_NAME}",
-		    "version": "${CURRENT_VERSION}",
+		    "version": "${RELEASE_VERSION}",
 		    "description": "html in javascript",
 		    "type": "module",
 		    "main": "./${PKG_NAME}.esm.min.js",
@@ -94,10 +94,10 @@ const CURRENT_VERSION = "0.0.10";
 		`./examples/${EXAMPLE_NAME}/package.json`,
 		`{
 		    "name": "libh-example-${EXAMPLE_NAME}",
-		    "version": "${CURRENT_VERSION}",
+		    "version": "${RELEASE_VERSION}",
 		    "license": "MIT",
 		    "dependencies": {
-		        "libh-html": "^${CURRENT_VERSION}"
+		        "libh-html": "^${RELEASE_VERSION}"
 		    },
 		    "devDependencies": {
 		        "vite": "^3.0.1"
