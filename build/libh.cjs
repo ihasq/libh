@@ -26,10 +26,10 @@ __export(libh_exports, {
 });
 module.exports = __toCommonJS(libh_exports);
 
-// src/core/getKeyIdentifier.js
-var generateInstanceId = function() {
+// src/core.js
+function generateInstanceId() {
   return (Math.floor(Math.random() * (32 ** 6 - 32 ** 5 - 1)) + 32 ** 5).toString(32);
-};
+}
 
 // src/html.js
 var parseBuffer = {
