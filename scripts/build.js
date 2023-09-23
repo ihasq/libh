@@ -3,7 +3,7 @@ import fs from "node:fs";
 
 const RELEASE_VERSION = "0.0.10";
 
-["libh", "libh-html"].forEach((PKG_NAME, PKG_INDEX) => {
+["libh", "libh-html", "libh-core"].forEach((PKG_NAME, PKG_INDEX) => {
 	[
 		{
 			minify: false,

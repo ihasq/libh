@@ -46,6 +46,12 @@ const frameloop = {
 	},
 };
 
+if(!window.libh) {
+	window.libh = {
+		
+	}
+}
+
 const STATIC_UUID = {
 	registry: Object.create(null),
 	index: 0,

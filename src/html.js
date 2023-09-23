@@ -1,4 +1,4 @@
-import * as core from "./core.js";
+import * as CORE from "./core.js";
 
 /*
 	html instance constructor
@@ -91,23 +91,24 @@ function createHTMLInstance(INSTANCE_ID, STRINGS, KEYS) {
 	});
 };
 
-function html(strings, ...keys) {
-	const IDENTIFIER_UUID = core.getStaticUUID();
-	const HTML_INSTANCE = new String("<span id=" + IDENTIFIER_UUID + " hidden></span>");
-	HTML_INSTANCE.libh = {
-	};
+function html(STRINGS, ...KEYS) {
+	const IDENTIFIER_UUID = CORE.getStaticUUID();
+	const HTML_INSTANCE = Object.assign(new String("<span id=" + IDENTIFIER_UUID + " hidden></span>"), {
+		LIBH_UUID: IDENTIFIER_UUID,
+
+	});
 	setTimeout(() => {
 		const TARGET = document.getElementById(IDENTIFIER_UUID);
 		if(!TARGET) {
 			// instance creation process
-			console.log("instance created");
+			console.log(`instance created: ${IDENTIFIER_UUID}`);
 		} else {
 			// appending process
 			console.log("html appended");
 			const APPEND_TARGET = TARGET.parentElement;
 			TARGET.remove();
-			createHTMLInstance(core.getStaticUUID(), strings, keys);
-		}
+			createHTMLInstance(CORE.getStaticUUID(), STRINGS, KEYS);
+		};
 	}, 0);
 	return HTML_INSTANCE;
 };

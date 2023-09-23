@@ -24,19 +24,22 @@ __export(html_exports, {
 module.exports = __toCommonJS(html_exports);
 
 // src/core.js
+if (!window.libh) {
+  window.libh = {};
+}
 var STATIC_UUID = {
   registry: /* @__PURE__ */ Object.create(null),
   index: 0,
   reset() {
     for (let i = 0; i < 256; i++) {
-      this.registry[i] = crypto.randomUUID();
+      this.registry[i] = window.crypto.randomUUID();
     }
     ;
-    this.index = 0;
+    this.index = -1;
   }
 };
 function getStaticUUID() {
-  if (STATIC_UUID.index === 255) {
+  if (STATIC_UUID.index === 254) {
     setTimeout(STATIC_UUID.reset, 0);
   }
   ;
@@ -108,20 +111,22 @@ function createHTMLInstance(INSTANCE_ID, STRINGS, KEYS) {
     keys: {}
   });
 }
-function html(strings, ...keys) {
+function html(STRINGS, ...KEYS) {
   const IDENTIFIER_UUID = getStaticUUID();
-  const HTML_INSTANCE = new String("<span id=" + IDENTIFIER_UUID + " hidden></span>");
-  HTML_INSTANCE.libh = {};
+  const HTML_INSTANCE = Object.assign(new String("<span id=" + IDENTIFIER_UUID + " hidden></span>"), {
+    LIBH_UUID: IDENTIFIER_UUID
+  });
   setTimeout(() => {
     const TARGET = document.getElementById(IDENTIFIER_UUID);
     if (!TARGET) {
-      console.log("instance created");
+      console.log(`instance created: ${IDENTIFIER_UUID}`);
     } else {
       console.log("html appended");
       const APPEND_TARGET = TARGET.parentElement;
       TARGET.remove();
-      createHTMLInstance(getStaticUUID(), strings, keys);
+      createHTMLInstance(getStaticUUID(), STRINGS, KEYS);
     }
+    ;
   }, 0);
   return HTML_INSTANCE;
 }
