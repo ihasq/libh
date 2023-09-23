@@ -5,8 +5,7 @@
 	"type": "module",
 	"main": "./build/libh.esm.min.js",
 	"scripts": {
-		"build": "node ./scripts/build",
-		"example": "node ./scripts/example $npm_config_project"
+		"build": "node ./scripts/build"
 	},
 	"repository": {
 		"type": "git",
