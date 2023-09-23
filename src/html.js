@@ -8,15 +8,21 @@ import * as core from "./core.js"
 	2. parse function
 */
 
-const parseBuffer = {
+const PARSE_BUFFER = {
 	registry: Object.create(null),
 	HTMLParser: new DOMParser(),
 };
 
 function functionParser(fnBody) {
+
 	const TEMPLATE_STRING = "" + fnBody; // === toString()
 	const FUNC_TYPE = fnBody.hasOwnProperty("prototype")? "normal" : fnBody.name? "normal" : "arrow";
-	console.log(FUNC_TYPE);
+	let FUNC_ARG = "";
+	if(FUNC_TYPE === "normal") {
+		FUNC_ARG = TEMPLATE_STRING.slice(TEMPLATE_STRING.indexOf("function"))
+	}
+
+	console.log(FUNC_ARG);
 	return {
 		TEMPLATE_STRING,
 		FUNC_TYPE
@@ -25,22 +31,22 @@ function functionParser(fnBody) {
 
 function createHTMLInstance(instanceId, strings, keys) {
 
-	const buffer = {
+	const BUFFER = {
 		keyMap: "",
 		funcList: [],
 	};
 
 	for(let index = 0; index < strings.length; index++) {
-		buffer.keyMap += strings[index];
+		BUFFER.keyMap += strings[index];
 		if(index + 1 !== strings.length) {
-			buffer.keyMap += ` \${${instanceId}:${index}} `;
+			BUFFER.keyMap += ` \${${instanceId}:${index}} `;
 			switch(typeof keys[index]) {
 				case "function":
 					if(keys[index].constructor.name !== "Function") {
 						throw new Error("Can not use async function");
 					} else {
-						buffer.funcList.push(functionParser(keys[index]));
-						console.log(buffer.funcList[index].TEMPLATE_STRING);
+						BUFFER.funcList.push(functionParser(keys[index]));
+						console.log(BUFFER.funcList[index].TEMPLATE_STRING);
 					}
 					/*
 						registry = {
@@ -60,15 +66,15 @@ function createHTMLInstance(instanceId, strings, keys) {
 		}
 	};
 	
-	console.log(buffer.keyMap);
+	console.log(BUFFER.keyMap);
 	const SELECTOR = new RegExp(` \\$\\{${instanceId}:[0-9]\\} `, "g");
-	const TEMPLATE = parseBuffer.HTMLParser.parseFromString(
-		buffer.keyMap.slice(buffer.keyMap.indexOf("{") + 1, buffer.keyMap.lastIndexOf("}")),
+	const TEMPLATE = PARSE_BUFFER.HTMLParser.parseFromString(
+		BUFFER.keyMap.slice(BUFFER.keyMap.indexOf("{") + 1, BUFFER.keyMap.lastIndexOf("}")),
 		"text/html"
 	).body;
 	console.dir(TEMPLATE.children);
 	// for(let index = 0; index < TEMPLATE.childNodes)
-	parseBuffer.registry[instanceId] = Object.assign(buffer, {
+	PARSE_BUFFER.registry[instanceId] = Object.assign(BUFFER, {
 		instanceId,
 		keys: {
 
