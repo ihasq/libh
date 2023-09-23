@@ -106,7 +106,7 @@ html.getReservedKey = [
 	"meta",
 	"event",
 	"onclick",
-	"oneffect"
+	"onchange"
 ];
 
 export { html };
