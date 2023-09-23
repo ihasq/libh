@@ -1,11 +1,11 @@
 # ``libh - html in javascript``
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz_small.svg)](https://stackblitz.com/github/ihasq/libh/tree/main/examples/quick_start?file=index.js)
+[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz_small.svg)](https://stackblitz.com/github/ihasq/libh/tree/main/examples/quick-start?file=index.js)
 ![](https://img.shields.io/badge/license-MIT-red)
 
 proof of concept: this does not work
 
 ```javascript
-import { html } from "libh";
+import { html } from "libh-html";
 
 document.body.innerHTML = html`{
     <h1>Current date is ${Date}</h1>

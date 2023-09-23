@@ -1,6 +1,7 @@
 import esbuild from "esbuild";
 import fs from "node:fs";
 
+const CURRENT_VERSION = "0.0.10";
 
 [ "libh", "libh-html" ].forEach((pkgName, pkgIndex) => {
 	[
@@ -70,7 +71,7 @@ import fs from "node:fs";
 		`./packages/${pkgName}/package.json`,
 		`{
 		    "name": "${pkgName}",
-		    "version": "0.0.10",
+		    "version": "${CURRENT_VERSION}",
 		    "description": "html in javascript",
 		    "type": "module",
 		    "main": "./${pkgName}.esm.min.js",
@@ -85,5 +86,25 @@ import fs from "node:fs";
 		    },
 		    "homepage": "https://github.com/ihasq/libh#readme"
 		}`.replace(/\t/g, "").replace(/    /g, "\t")
+	);
+});
+
+["quick-start", "component"].forEach((EXAMPLE_NAME) => {
+	fs.writeFileSync(
+		`./examples/${EXAMPLE_NAME}/package.json`,
+		`{
+		    "name": "libh-example-${EXAMPLE_NAME}",
+		    "version": "${CURRENT_VERSION}",
+		    "license": "MIT",
+		    "dependencies": {
+		        "libh-html": "^${CURRENT_VERSION}"
+		    },
+		    "devDependencies": {
+		        "vite": "^3.0.1"
+		    },
+		    "stackblitz": {
+		        "startCommand": "vite"
+		    }
+		}`.replace(/\t/g, "").replace(/    /g, "\t")
 	)
-})
+});
