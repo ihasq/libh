@@ -3,11 +3,11 @@ import fs from "node:fs";
 
 const CURRENT_VERSION = "0.0.10";
 
-[ "libh", "libh-html" ].forEach((pkgName, pkgIndex) => {
+[ "libh", "libh-html" ].forEach((PKG_NAME, PKG_INDEX) => {
 	[
 		{
 			minify: false,
-			outfile: `./packages/${pkgName}/${pkgName}.js`,
+			outfile: `./packages/${PKG_NAME}/${PKG_NAME}.js`,
 			outExtension: {
 				".js": ".mjs"
 			},
@@ -18,7 +18,7 @@ const CURRENT_VERSION = "0.0.10";
 
 		{
 			minify: true,
-			outfile: `./packages/${pkgName}/${pkgName}.min.js`,
+			outfile: `./packages/${PKG_NAME}/${PKG_NAME}.min.js`,
 			outExtension: {
 				".js": ".mjs"
 			},
@@ -28,7 +28,7 @@ const CURRENT_VERSION = "0.0.10";
 
 		{
 			minify: false,
-			outfile: `./packages/${pkgName}/${pkgName}.cjs`,
+			outfile: `./packages/${PKG_NAME}/${PKG_NAME}.cjs`,
 			outExtension: {
 				".js": ".mjs"
 			},
@@ -39,7 +39,7 @@ const CURRENT_VERSION = "0.0.10";
 
 		{
 			minify: false,
-			outfile: `./packages/${pkgName}/${pkgName}.esm.js`,
+			outfile: `./packages/${PKG_NAME}/${PKG_NAME}.esm.js`,
 			outExtension: {
 				".js": ".mjs"
 			},
@@ -50,7 +50,7 @@ const CURRENT_VERSION = "0.0.10";
 
 		{
 			minify: true,
-			outfile: `./packages/${pkgName}/${pkgName}.esm.min.js`,
+			outfile: `./packages/${PKG_NAME}/${PKG_NAME}.esm.min.js`,
 			outExtension: {
 				".js": ".mjs"
 			},
@@ -59,22 +59,22 @@ const CURRENT_VERSION = "0.0.10";
 			target: "chrome58",
 		}
 
-	].forEach(async config => {
+	].forEach(async CONFIG => {
 	
-		await esbuild.build(Object.assign(config, {
+		await esbuild.build(Object.assign(CONFIG, {
 			bundle: true,
-			entryPoints: [`./src/${(pkgIndex === 0)? pkgName : pkgName.slice(5)}.js`],
+			entryPoints: [`./src/${(PKG_INDEX === 0)? PKG_NAME : PKG_NAME.slice(5)}.js`],
 		}));
 	
 	});
 	fs.writeFileSync(
-		`./packages/${pkgName}/package.json`,
+		`./packages/${PKG_NAME}/package.json`,
 		`{
-		    "name": "${pkgName}",
+		    "name": "${PKG_NAME}",
 		    "version": "${CURRENT_VERSION}",
 		    "description": "html in javascript",
 		    "type": "module",
-		    "main": "./${pkgName}.esm.min.js",
+		    "main": "./${PKG_NAME}.esm.min.js",
 		    "repository": {
 		        "type": "git",
 		        "url": "git+https://github.com/ihasq/libh.git"
