@@ -28,18 +28,18 @@ module.exports = __toCommonJS(libh_exports);
 
 // src/core.js
 var STATIC_UUID = {
-  registry: [],
-  index: -1,
+  registry: /* @__PURE__ */ Object.create(null),
+  index: 0,
   reset() {
     for (let i = 0; i < 256; i++) {
       this.registry[i] = crypto.randomUUID();
     }
     ;
-    this.index = -1;
+    this.index = 0;
   }
 };
 function getStaticUUID() {
-  if (!STATIC_UUID.registry.length || STATIC_UUID.index === 15) {
+  if (STATIC_UUID.index === 255) {
     setTimeout(STATIC_UUID.reset, 0);
   }
   ;
@@ -113,16 +113,16 @@ function createHTMLInstance(INSTANCE_ID, STRINGS, KEYS) {
 }
 function html(strings, ...keys) {
   const IDENTIFIER_UUID = getStaticUUID();
-  const HTML_INSTANCE = new String("<span id=" + IDENTIFIER_UUID + "></span>");
-  HTML_INSTANCE.libh = {
-    struct
-  };
+  const HTML_INSTANCE = new String("<span id=" + IDENTIFIER_UUID + " hidden></span>");
+  HTML_INSTANCE.libh = {};
   setTimeout(() => {
     const TARGET = document.getElementById(IDENTIFIER_UUID);
     if (!TARGET) {
       console.log("instance created");
     } else {
       console.log("html appended");
+      const APPEND_TARGET = TARGET.parentElement;
+      TARGET.remove();
       createHTMLInstance(getStaticUUID(), strings, keys);
     }
   }, 0);
