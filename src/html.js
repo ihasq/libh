@@ -18,11 +18,20 @@ function functionParser(fnBody) {
 	const TEMPLATE_STRING = "" + fnBody; // === toString()
 	const FUNC_TYPE = fnBody.hasOwnProperty("prototype")? "normal" : fnBody.name? "normal" : "arrow";
 	let FUNC_ARG = "";
+	let FUNC_NAME;
 	if(FUNC_TYPE === "normal") {
-		FUNC_ARG = TEMPLATE_STRING.slice(TEMPLATE_STRING.indexOf("function"))
+		if(fnBody.name) {
+			FUNC_ARG = TEMPLATE_STRING.slice(TEMPLATE_STRING.indexOf(`function ${fnBody.name}`));
+		} else {
+
+		}
+		FUNC_ARG = TEMPLATE_STRING.slice(TEMPLATE_STRING.indexOf("function"));
+		FUNC_NAME = fnBody.name;
+	} else {
+
 	}
 
-	console.log(FUNC_ARG);
+	console.log(FUNC_NAME);
 	return {
 		TEMPLATE_STRING,
 		FUNC_TYPE
@@ -83,17 +92,21 @@ function createHTMLInstance(instanceId, strings, keys) {
 };
 
 function html(strings, ...keys) {
-	createHTMLInstance(core.generateInstanceId(), strings, keys);
+	createHTMLInstance(crypto.randomUUID(), strings, keys);
 	return;
 };
 
 html.getReservedKey = [
+	"global",
 	"shared",
 	"prop",
 	"this",
 	"static",
 	"method",
-	"meta"
+	"meta",
+	"event",
+	"onclick",
+	"oneffect"
 ];
 
 export { html };
