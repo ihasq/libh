@@ -26,6 +26,28 @@ __export(libh_exports, {
 });
 module.exports = __toCommonJS(libh_exports);
 
+// src/core.js
+var STATIC_UUID = {
+  registry: [],
+  index: -1,
+  reset() {
+    for (let i = 0; i < 256; i++) {
+      this.registry[i] = crypto.randomUUID();
+    }
+    ;
+    this.index = -1;
+  }
+};
+function getStaticUUID() {
+  if (!STATIC_UUID.registry.length || STATIC_UUID.index === 15) {
+    setTimeout(STATIC_UUID.reset, 0);
+  }
+  ;
+  STATIC_UUID.index++;
+  return STATIC_UUID.registry[STATIC_UUID.index];
+}
+STATIC_UUID.reset();
+
 // src/html.js
 var PARSE_BUFFER = {
   registry: /* @__PURE__ */ Object.create(null),
@@ -51,21 +73,21 @@ function functionParser(fnBody) {
     FUNC_TYPE
   };
 }
-function createHTMLInstance(instanceId, strings, keys) {
+function createHTMLInstance(INSTANCE_ID, STRINGS, KEYS) {
   const BUFFER = {
     keyMap: "",
     funcList: []
   };
-  for (let index = 0; index < strings.length; index++) {
-    BUFFER.keyMap += strings[index];
-    if (index + 1 !== strings.length) {
-      BUFFER.keyMap += ` \${${instanceId}:${index}} `;
-      switch (typeof keys[index]) {
+  for (let index = 0; index < STRINGS.length; index++) {
+    BUFFER.keyMap += STRINGS[index];
+    if (index + 1 !== STRINGS.length) {
+      BUFFER.keyMap += ` \${${INSTANCE_ID}:${index}} `;
+      switch (typeof KEYS[index]) {
         case "function":
-          if (keys[index].constructor.name !== "Function") {
+          if (KEYS[index].constructor.name !== "Function") {
             throw new Error("Can not use async function");
           } else {
-            BUFFER.funcList.push(functionParser(keys[index]));
+            BUFFER.funcList.push(functionParser(KEYS[index]));
             console.log(BUFFER.funcList[index].TEMPLATE_STRING);
           }
           break;
@@ -78,20 +100,33 @@ function createHTMLInstance(instanceId, strings, keys) {
   }
   ;
   console.log(BUFFER.keyMap);
-  const SELECTOR = new RegExp(` \\$\\{${instanceId}:[0-9]\\} `, "g");
+  const SELECTOR = new RegExp(` \\$\\{${INSTANCE_ID}:[0-9]\\} `, "g");
   const TEMPLATE = PARSE_BUFFER.HTMLParser.parseFromString(
     BUFFER.keyMap.slice(BUFFER.keyMap.indexOf("{") + 1, BUFFER.keyMap.lastIndexOf("}")),
     "text/html"
   ).body;
   console.dir(TEMPLATE.children);
-  PARSE_BUFFER.registry[instanceId] = Object.assign(BUFFER, {
-    instanceId,
+  PARSE_BUFFER.registry[INSTANCE_ID] = Object.assign(BUFFER, {
+    instanceId: INSTANCE_ID,
     keys: {}
   });
 }
 function html(strings, ...keys) {
-  createHTMLInstance(crypto.randomUUID(), strings, keys);
-  return;
+  const IDENTIFIER_UUID = getStaticUUID();
+  const HTML_INSTANCE = new String("<span id=" + IDENTIFIER_UUID + "></span>");
+  HTML_INSTANCE.libh = {
+    struct
+  };
+  setTimeout(() => {
+    const TARGET = document.getElementById(IDENTIFIER_UUID);
+    if (!TARGET) {
+      console.log("instance created");
+    } else {
+      console.log("html appended");
+      createHTMLInstance(getStaticUUID(), strings, keys);
+    }
+  }, 0);
+  return HTML_INSTANCE;
 }
 html.getReservedKey = [
   "global",
@@ -103,7 +138,7 @@ html.getReservedKey = [
   "meta",
   "event",
   "onclick",
-  "oneffect"
+  "onchange"
 ];
 
 // src/css.js
