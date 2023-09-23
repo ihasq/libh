@@ -1,24 +1,24 @@
 {
-  "name": "libh",
-  "version": "0.0.10",
-  "description": "html in javascript",
-  "type": "module",
-  "main": "./build/libh.esm.min.js",
-  "scripts": {
-    "build": "node ./scripts/build",
-    "example": "node ./scripts/example $npm_config_project"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/ihasq/libh.git"
-  },
-  "author": "ihasq",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/ihasq/libh/issues"
-  },
-  "homepage": "https://github.com/ihasq/libh#readme",
-  "devDependencies": {
-    "esbuild": "^0.19.3"
-  }
+	"name": "libh",
+	"version": "0.0.10",
+	"description": "html in javascript",
+	"type": "module",
+	"main": "./build/libh.esm.min.js",
+	"scripts": {
+		"build": "node ./scripts/build",
+		"example": "node ./scripts/example $npm_config_project"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/ihasq/libh.git"
+	},
+	"author": "ihasq",
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/ihasq/libh/issues"
+	},
+	"homepage": "https://github.com/ihasq/libh#readme",
+	"devDependencies": {
+		"esbuild": "^0.19.3"
+	}
 }
