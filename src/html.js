@@ -93,18 +93,19 @@ function createHTMLInstance(INSTANCE_ID, STRINGS, KEYS) {
 
 function html(strings, ...keys) {
 	const IDENTIFIER_UUID = core.getStaticUUID();
-	const HTML_INSTANCE = new String("<span id=" + IDENTIFIER_UUID + "></span>");
+	const HTML_INSTANCE = new String("<span id=" + IDENTIFIER_UUID + " hidden></span>");
 	HTML_INSTANCE.libh = {
-		struct
 	};
 	setTimeout(() => {
 		const TARGET = document.getElementById(IDENTIFIER_UUID);
 		if(!TARGET) {
-			// instance created
+			// instance creation process
 			console.log("instance created");
 		} else {
-			// appended in html
+			// appending process
 			console.log("html appended");
+			const APPEND_TARGET = TARGET.parentElement;
+			TARGET.remove();
 			createHTMLInstance(core.getStaticUUID(), strings, keys);
 		}
 	}, 0);

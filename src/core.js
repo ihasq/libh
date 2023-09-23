@@ -48,18 +48,18 @@ const frameloop = {
 };
 
 const STATIC_UUID = {
-	registry: [],
-	index: -1,
+	registry: Object.create(null),
+	index: 0,
 	reset() {
 		for(let i = 0; i < 256; i++) {
 			this.registry[i] = crypto.randomUUID();
 		};
-		this.index = -1;
+		this.index = 0;
 	}
 };
 
 function getStaticUUID() {
-	if((!STATIC_UUID.registry.length) || STATIC_UUID.index === 15) {
+	if(STATIC_UUID.index === 255) {
 		setTimeout(STATIC_UUID.reset, 0);	
 	};
 	STATIC_UUID.index++;
