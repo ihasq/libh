@@ -1,19 +1,13 @@
 import esbuild from "esbuild";
 
 
-[
-	"libh",
-	"libh-html",
-	"libh-css",
-	"libh-scss",
-	"libh-sass"
-].forEach((pkgName, pkgIndex) => {
+[ "libh", "libh-html", "libh-css", "libh-scss", "libh-sass" ].forEach((pkgName, pkgIndex) => {
 	[
 
 		//	libh.js
 		{
 			minify: false,
-			outfile: `./packages/${pkgName}/lib.js`,
+			outfile: `./packages/${pkgName}/${pkgName}.js`,
 			outExtension: {
 				".js": ".mjs"
 			},
@@ -25,7 +19,7 @@ import esbuild from "esbuild";
 		//	libh.min.js
 		{
 			minify: true,
-			outfile: `./packages/${pkgName}/lib.min.js`,
+			outfile: `./packages/${pkgName}/${pkgName}.min.js`,
 			outExtension: {
 				".js": ".mjs"
 			},
@@ -36,7 +30,7 @@ import esbuild from "esbuild";
 		//	libh.cjs
 		{
 			minify: false,
-			outfile: `./packages/${pkgName}/lib.cjs`,
+			outfile: `./packages/${pkgName}/${pkgName}.cjs`,
 			outExtension: {
 				".js": ".mjs"
 			},
@@ -48,7 +42,7 @@ import esbuild from "esbuild";
 		//	libh.esm.js
 		{
 			minify: false,
-			outfile: `./packages/${pkgName}/lib.esm.js`,
+			outfile: `./packages/${pkgName}/${pkgName}.esm.js`,
 			outExtension: {
 				".js": ".mjs"
 			},
@@ -60,7 +54,7 @@ import esbuild from "esbuild";
 		//	libh.esm.min.js
 		{
 			minify: true,
-			outfile: `./packages/${pkgName}/lib.esm.min.js`,
+			outfile: `./packages/${pkgName}/${pkgName}.esm.min.js`,
 			outExtension: {
 				".js": ".mjs"
 			},
@@ -69,9 +63,9 @@ import esbuild from "esbuild";
 			target: "chrome58",
 		}
 	
-	].forEach(async index => {
+	].forEach(async config => {
 	
-		await esbuild.build(Object.assign(index, {
+		await esbuild.build(Object.assign(config, {
 			bundle: true,
 			entryPoints: [`./src/${(pkgIndex === 0)? pkgName : pkgName.slice(5)}.js`],
 		}))
