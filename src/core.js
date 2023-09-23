@@ -44,7 +44,6 @@ const frameloop = {
 		frameloop.task.stack = [];
 		window.requestAnimationFrame(frameloop.run);
 	},
-
 };
 
 const STATIC_UUID = {
