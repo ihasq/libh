@@ -1,10 +1,9 @@
 import esbuild from "esbuild";
+import fs from "node:fs";
 
 
-[ "libh", "libh-html", "libh-css", "libh-scss", "libh-sass" ].forEach((pkgName, pkgIndex) => {
+[ "libh", "libh-html" ].forEach((pkgName, pkgIndex) => {
 	[
-
-		//	libh.js
 		{
 			minify: false,
 			outfile: `./packages/${pkgName}/${pkgName}.js`,
@@ -15,8 +14,7 @@ import esbuild from "esbuild";
 			format: "cjs",
 			target: "node14",
 		},
-	
-		//	libh.min.js
+
 		{
 			minify: true,
 			outfile: `./packages/${pkgName}/${pkgName}.min.js`,
@@ -26,8 +24,7 @@ import esbuild from "esbuild";
 			platform: "browser",
 			target: "chrome58",
 		},
-	
-		//	libh.cjs
+
 		{
 			minify: false,
 			outfile: `./packages/${pkgName}/${pkgName}.cjs`,
@@ -38,8 +35,7 @@ import esbuild from "esbuild";
 			format: "cjs",
 			target: "chrome58",
 		},
-	
-		//	libh.esm.js
+
 		{
 			minify: false,
 			outfile: `./packages/${pkgName}/${pkgName}.esm.js`,
@@ -50,8 +46,7 @@ import esbuild from "esbuild";
 			format: "esm",
 			target: "chrome58",
 		},
-	
-		//	libh.esm.min.js
+
 		{
 			minify: true,
 			outfile: `./packages/${pkgName}/${pkgName}.esm.min.js`,
@@ -62,13 +57,33 @@ import esbuild from "esbuild";
 			format: "esm",
 			target: "chrome58",
 		}
-	
+
 	].forEach(async config => {
 	
 		await esbuild.build(Object.assign(config, {
 			bundle: true,
 			entryPoints: [`./src/${(pkgIndex === 0)? pkgName : pkgName.slice(5)}.js`],
-		}))
+		}));
 	
 	});
+	fs.writeFileSync(
+		`./packages/${pkgName}/package.json`,
+		`{
+		    "name": "${pkgName}",
+		    "version": "0.0.10",
+		    "description": "html in javascript",
+		    "type": "module",
+		    "main": "./${pkgName}.esm.min.js",
+		    "repository": {
+		        "type": "git",
+		        "url": "git+https://github.com/ihasq/libh.git"
+		    },
+		    "author": "ihasq",
+		    "license": "MIT",
+		    "bugs": {
+		        "url": "https://github.com/ihasq/libh/issues"
+		    },
+		    "homepage": "https://github.com/ihasq/libh#readme"
+		}`.replace(/\t/g, "").replace(/    /g, "\t")
+	)
 })

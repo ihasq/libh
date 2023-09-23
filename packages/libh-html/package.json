@@ -1,9 +1,9 @@
 {
 	"name": "libh-html",
-	"version": "0.0.1",
+	"version": "0.0.10",
 	"description": "html in javascript",
 	"type": "module",
-	"main": "./lib.esm.min.js",
+	"main": "./libh-html.esm.min.js",
 	"repository": {
 		"type": "git",
 		"url": "git+https://github.com/ihasq/libh.git"
