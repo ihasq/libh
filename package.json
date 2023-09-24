@@ -4,7 +4,6 @@
 		"build": "node ./scripts/build"
 	},
 	"devDependencies": {
-		"rollup": "^3.29.2",
-		"rollup-plugin-exclude-dependencies-from-bundle": "^1.1.23"
+		"esbuild": "^0.19.3"
 	}
 }
