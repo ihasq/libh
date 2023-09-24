@@ -23,10 +23,10 @@ __export(libh_exports, {
   scss: () => import_scss.scss
 });
 module.exports = __toCommonJS(libh_exports);
-var import_html = require("./html.js");
-var import_css = require("./css.js");
-var import_scss = require("./scss.js");
-var import_sass = require("./sass.js");
+var import_html = require("./html");
+var import_css = require("./css");
+var import_scss = require("./scss");
+var import_sass = require("./sass");
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
   css,

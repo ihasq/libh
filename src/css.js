@@ -1,4 +1,4 @@
-import * as core from "libh-core";
+import * as core from "./core";
 
 function css(strings, ...keys) {};
 

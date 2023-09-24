@@ -1,4 +1,4 @@
-import * as core from "libh-core"
+import * as core from "./core"
 
 function sass(strings, ...keys) {}
 

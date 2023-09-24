@@ -1,7 +1,7 @@
-import { html } from "./html.js";
-import { css } from "./css.js";
-import { scss } from "./scss.js";
-import { sass } from "./sass.js";
+import { html } from "./html";
+import { css } from "./css";
+import { scss } from "./scss";
+import { sass } from "./sass";
 export {
   css,
   html,
