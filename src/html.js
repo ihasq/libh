@@ -92,7 +92,7 @@ function createHTMLInstance(INSTANCE_ID, STRINGS, KEYS) {
 };
 
 function html(STRINGS, ...KEYS) {
-	const IDENTIFIER_UUID = CORE.getStaticUUID();
+	const IDENTIFIER_UUID = window.crypto.randomUUID();
 	const HTML_INSTANCE = Object.assign(new String("<span id=" + IDENTIFIER_UUID + " hidden></span>"), {
 		LIBH_UUID: IDENTIFIER_UUID,
 
