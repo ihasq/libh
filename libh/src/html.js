@@ -1,4 +1,4 @@
-import * as CORE from "./core.js";
+import * as CORE from "libh-core";
 
 /*
 	html instance constructor

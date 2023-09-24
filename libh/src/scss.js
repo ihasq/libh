@@ -1,4 +1,4 @@
-import * as core from "./core.js"
+import * as core from "libh-core"
 
 function scss(strings, ...keys) {}
 

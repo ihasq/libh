@@ -1,0 +1,9 @@
+{
+	"name": "libh",
+	"scripts": {
+		"build": "rollup"
+	},
+	"devDependencies": {
+		"rollup": "^3.29.2"
+	}
+}
