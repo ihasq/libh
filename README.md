@@ -5,7 +5,7 @@
 proof of concept: this does not work
 
 ```javascript
-import { html } from "libh-html";
+import { html } from "libh";
 
 document.body.innerHTML = html`{
     <h1>Current date is ${Date}</h1>
