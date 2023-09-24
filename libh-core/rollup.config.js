@@ -2,9 +2,9 @@ import excludeDependenciesFromBundle from "rollup-plugin-exclude-dependencies-fr
 import terser from '@rollup/plugin-terser';
 
 export default {
-	input: "./src/libh.js",
+	input: "./src/libh-core.js",
 	output: {
-		file: "./build/libh.esm.js",
+		file: "./build/libh-core.esm.js",
 		compact: true,
 	},
 	plugins: [
