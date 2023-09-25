@@ -1,4 +1,4 @@
-import * as CORE from "./core";
+import * as CORE from "./core.js";
 
 /*
 	html instance constructor
@@ -13,10 +13,17 @@ const PARSE_BUFFER = {
 	HTMLParser: new DOMParser(),
 };
 
+/**
+ * 
+ * @param { Function } fnBody 
+ * @returns {}
+ * 
+ */
+
 function functionParser(fnBody) {
 
 	const TEMPLATE_STRING = "" + fnBody; // === toString()
-	const FUNC_TYPE = fnBody.hasOwnProperty("prototype")? "normal" : fnBody.name? "normal" : "arrow";
+	const FUNC_TYPE = ((!fnBody.hasOwnProperty("prototype"))&&(!fnBody.name))? "arrow" : "normal";
 	let FUNC_ARG = "";
 	let FUNC_NAME;
 	if(FUNC_TYPE === "normal") {
@@ -31,7 +38,8 @@ function functionParser(fnBody) {
 
 	}
 
-	console.log(FUNC_NAME);
+	console.log(FUNC_TYPE);
+
 	return {
 		TEMPLATE_STRING,
 		FUNC_TYPE
@@ -56,9 +64,9 @@ function createHTMLInstance(INSTANCE_ID, STRINGS, KEYS) {
 	for(let index = 0; index < STRINGS.length; index++) {
 		BUFFER.keyMap += STRINGS[index];
 		if(index + 1 !== STRINGS.length) {
-			BUFFER.keyMap += ` \${${INSTANCE_ID}:${index}} `;
 			switch(typeof KEYS[index]) {
 				case "function":
+					BUFFER.keyMap += ` \${${INSTANCE_ID}:${index}} `;
 					if(KEYS[index].constructor.name !== "Function") {
 						throw new Error("Can not use async function");
 					} else {
@@ -77,8 +85,11 @@ function createHTMLInstance(INSTANCE_ID, STRINGS, KEYS) {
 					*/
 					break;
 				case "object":
-					throw new Error("not yet");
+					BUFFER.keyMap += ` \${${INSTANCE_ID}:${index}} `;
+					break;
 				default:
+					BUFFER.keyMap += KEYS[index]
+
 			};
 		}
 	};
@@ -115,7 +126,7 @@ function html(STRINGS, ...KEYS) {
 			console.log("html appended");
 			const APPEND_TARGET = TARGET.parentElement;
 			TARGET.remove();
-			createHTMLInstance(CORE.getStaticUUID(), STRINGS, KEYS);
+			createHTMLInstance(window.crypto.randomUUID(), STRINGS, KEYS);
 		};
 	}, 0);
 	return HTML_INSTANCE;

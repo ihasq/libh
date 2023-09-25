@@ -1,4 +1,4 @@
-export { html } from "./html"
-export { css  } from "./css";
-export { scss } from "./scss";
-export { sass } from "./sass";
+export { html } from "./html.js"
+export { css  } from "./css.js";
+export { scss } from "./scss.js";
+export { sass } from "./sass.js";
