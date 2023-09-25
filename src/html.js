@@ -20,10 +20,6 @@ const PARSE_BUFFER = {
  * 
  */
 
-function getFirstArgument(FUNCTION_STRING) {
-	
-}
-
 function functionParser(fnBody) {
 
 	const TEMPLATE_STRING = "" + fnBody; // === toString()
@@ -33,7 +29,7 @@ function functionParser(fnBody) {
 	let FUNC_NAME;
 	switch(FUNC_TYPE) {
 		case "arrow":
-			FUNC_ARG = TEMPLATE_STRING.match(/([\s\S].*)=>/);
+			FUNC_ARG = TEMPLATE_STRING.slice(0, TEMPLATE_STRING.indexOf("=>")).replace(/ |\(|\)/g, "").split(",");
 			break;
 		default:
 			if(fnBody.name) {

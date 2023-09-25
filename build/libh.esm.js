@@ -16,7 +16,7 @@ function functionParser(fnBody) {
   let FUNC_NAME;
   switch (FUNC_TYPE) {
     case "arrow":
-      FUNC_ARG = TEMPLATE_STRING.match(/([\s\S].*)=>/);
+      FUNC_ARG = TEMPLATE_STRING.slice(0, TEMPLATE_STRING.indexOf("=>")).replace(/ |\(|\)/g, "").split(",");
       break;
     default:
       if (fnBody.name) {
