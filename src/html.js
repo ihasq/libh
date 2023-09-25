@@ -38,6 +38,14 @@ function functionParser(fnBody) {
 	}
 };
 
+/**
+ * 
+ * @param { String } INSTANCE_ID
+ * @param { String[] } STRINGS 
+ * @param { Function[] } KEYS 
+ * 
+ */
+
 function createHTMLInstance(INSTANCE_ID, STRINGS, KEYS) {
 
 	const BUFFER = {
