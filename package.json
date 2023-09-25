@@ -5,8 +5,5 @@
 	},
 	"devDependencies": {
 		"esbuild": "^0.19.3"
-	},
-	"dependencies": {
-		"minargs": "^2.0.3"
 	}
 }

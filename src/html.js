@@ -26,19 +26,24 @@ function functionParser(fnBody) {
 	const FUNC_TYPE = ((!fnBody.hasOwnProperty("prototype"))&&(!fnBody.name))? "arrow" : "normal";
 	let FUNC_ARG = "";
 	let FUNC_NAME;
-	if(FUNC_TYPE === "normal") {
-		if(fnBody.name) {
-			FUNC_ARG = TEMPLATE_STRING.slice(TEMPLATE_STRING.indexOf(`function ${fnBody.name}`));
-		} else {
-
-		}
-		FUNC_ARG = TEMPLATE_STRING.slice(TEMPLATE_STRING.indexOf("function"));
-		FUNC_NAME = fnBody.name;
-	} else {
-
+	switch(FUNC_TYPE) {
+		case "normal":
+			if(fnBody.name) {
+				FUNC_ARG = TEMPLATE_STRING.slice(TEMPLATE_STRING.indexOf(`function ${fnBody.name? fnBody.name: ""}(`, TEMPLATE_STRING.indexOf(`)`)));
+			} else {
+	
+			}
+			FUNC_ARG = TEMPLATE_STRING.slice(TEMPLATE_STRING.indexOf("function"));
+			FUNC_NAME = fnBody.name;
+			break;
+		default:
+			FUNC_ARG = TEMPLATE_STRING.match(/(.*)[\s\S].*=/)[1];
+			if(/\(.*\)/.test(FUNC_ARG)) {
+				console.log("multiple argument");
+			}
 	}
 
-	console.log(FUNC_TYPE);
+	console.log(FUNC_ARG);
 
 	return {
 		TEMPLATE_STRING,
