@@ -20,14 +20,22 @@ const PARSE_BUFFER = {
  * 
  */
 
+function getFirstArgument(FUNCTION_STRING) {
+	
+}
+
 function functionParser(fnBody) {
 
 	const TEMPLATE_STRING = "" + fnBody; // === toString()
+	const LINE_START = TEMPLATE_STRING.lastIndexOf("\n");
 	const FUNC_TYPE = ((!fnBody.hasOwnProperty("prototype"))&&(!fnBody.name))? "arrow" : "normal";
 	let FUNC_ARG = "";
 	let FUNC_NAME;
 	switch(FUNC_TYPE) {
-		case "normal":
+		case "arrow":
+			FUNC_ARG = TEMPLATE_STRING.match(/([\s\S].*)=>/);
+			break;
+		default:
 			if(fnBody.name) {
 				FUNC_ARG = TEMPLATE_STRING.slice(TEMPLATE_STRING.indexOf(`function ${fnBody.name? fnBody.name: ""}(`, TEMPLATE_STRING.indexOf(`)`)));
 			} else {
@@ -35,12 +43,6 @@ function functionParser(fnBody) {
 			}
 			FUNC_ARG = TEMPLATE_STRING.slice(TEMPLATE_STRING.indexOf("function"));
 			FUNC_NAME = fnBody.name;
-			break;
-		default:
-			FUNC_ARG = TEMPLATE_STRING.match(/(.*)[\s\S].*=/)[1];
-			if(/\(.*\)/.test(FUNC_ARG)) {
-				console.log("multiple argument");
-			}
 	}
 
 	console.log(FUNC_ARG);
