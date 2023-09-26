@@ -125,16 +125,16 @@ function createHTMLInstance(INSTANCE_ID, STRINGS, KEYS) {
 };
 
 function html(STRINGS, ...KEYS) {
-	const IDENTIFIER_UUID = window.crypto.randomUUID();
-	const HTML_INSTANCE = Object.assign(new String("<span id=" + IDENTIFIER_UUID + " hidden></span>"), {
-		LIBH_UUID: IDENTIFIER_UUID,
-
+	const INSTANCE_UUID = window.crypto.randomUUID();
+	const RENDER_TARGET_UUID = window.crypto.randomUUID();
+	const HTML_INSTANCE = Object.assign(new String("<span id=" + RENDER_TARGET_UUID + " hidden></span>"), {
+		LIBH_UUID: INSTANCE_UUID,
 	});
 	setTimeout(() => {
-		const TARGET = document.getElementById(IDENTIFIER_UUID);
+		const TARGET = document.getElementById(RENDER_TARGET_UUID);
 		if(!TARGET) {
 			// instance creation process
-			console.log(`instance created: ${IDENTIFIER_UUID}`);
+			console.log(`instance created: ${INSTANCE_UUID}`);
 		} else {
 			// appending process
 			console.log("html appended");
