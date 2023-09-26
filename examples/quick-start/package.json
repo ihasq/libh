@@ -3,7 +3,7 @@
 	"version": "0.0.11",
 	"license": "MIT",
 	"dependencies": {
-		"libh": "^0.0.11"
+		"libh": "^0.0.13"
 	},
 	"devDependencies": {
 		"vite": "^3.0.1"
