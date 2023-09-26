@@ -20,18 +20,18 @@ const PARSE_BUFFER = {
  * 
  */
 
-const MY_HANDLE = {
-	get: function(target, prop) {
-		if(!(prop in target)) {
-			target[prop] = new Proxy({}, this)
-		}
-	}
-};
+// const MY_HANDLE = {
+// 	get: function(target, prop) {
+// 		if(!(prop in target)) {
+// 			target[prop] = new Proxy({}, this)
+// 		}
+// 	}
+// };
 
-function functionParser(fnBody) {
+function functionParser(INSTANCE_ID, fnBody) {
 
 	const TEMPLATE_STRING = "" + fnBody; // === toString()
-	console.log(fnBody(new Proxy({}, MY_HANDLE)))
+	// console.log(fnBody(new Proxy({}, MY_HANDLE)))
 	const LINE_START = TEMPLATE_STRING.lastIndexOf("\n");
 	const FUNC_TYPE = ((!fnBody.hasOwnProperty("prototype"))&&(!fnBody.name))? "arrow" : "normal";
 	let FUNC_ARG = "";
@@ -84,7 +84,7 @@ function createHTMLInstance(INSTANCE_ID, STRINGS, KEYS) {
 					if(KEYS[index].constructor.name !== "Function") {
 						throw new Error("Can not use async function");
 					} else {
-						BUFFER.funcList.push(functionParser(KEYS[index]));
+						BUFFER.funcList.push(functionParser(INSTANCE_ID, KEYS[index]));
 						console.log(BUFFER.funcList[index].TEMPLATE_STRING);
 					}
 					/*
