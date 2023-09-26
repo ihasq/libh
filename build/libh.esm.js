@@ -26,6 +26,9 @@ function functionParser(fnBody) {
       FUNC_ARG = TEMPLATE_STRING.slice(TEMPLATE_STRING.indexOf("function"));
       FUNC_NAME = fnBody.name;
   }
+  ;
+  const REF_COLLECTION = TEMPLATE_STRING.match(new RegExp(FUNC_ARG[0].replace(/\$/g, "\\$") + `(\\.[a-zA-Z0-9_$].*|\\[("(.*)"|'(.*)')\\])+`, "g"));
+  console.log(REF_COLLECTION);
   console.log(FUNC_ARG);
   return {
     TEMPLATE_STRING,
@@ -38,7 +41,7 @@ function createHTMLInstance(INSTANCE_ID, STRINGS, KEYS) {
     funcList: []
   };
   for (let index = 0; index < STRINGS.length; index++) {
-    BUFFER.keyMap += STRINGS[index];
+    BUFFER.keyMap += encodeURI(STRINGS[index]);
     if (index + 1 !== STRINGS.length) {
       switch (typeof KEYS[index]) {
         case "function":
@@ -60,6 +63,7 @@ function createHTMLInstance(INSTANCE_ID, STRINGS, KEYS) {
     }
   }
   ;
+  BUFFER.keyMap = decodeURI(BUFFER.keyMap);
   console.log(BUFFER.keyMap);
   const SELECTOR = new RegExp(` \\$\\{${INSTANCE_ID}:[0-9]\\} `, "g");
   const TEMPLATE = PARSE_BUFFER.HTMLParser.parseFromString(
