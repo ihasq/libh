@@ -1,9 +1,18 @@
 {
-	"type": "module",
-	"scripts": {
-		"build": "node ./scripts/build"
-	},
-	"devDependencies": {
-		"esbuild": "^0.19.3"
-	}
+  "name": "libh",
+  "version": "0.0.11",
+  "description": "html in javascript",
+  "main": "index.js",
+  "directories": {
+    "example": "examples"
+  },
+  "type": "module",
+  "scripts": {
+	"build": "node ./scripts/build"
+  },
+  "devDependencies": {
+	"esbuild": "^0.19.3"
+  },
+  "author": "ihasq",
+  "license": "MIT"
 }
