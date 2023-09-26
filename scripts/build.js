@@ -61,6 +61,7 @@ const RELEASE_VERSION = "0.0.10";
 ].forEach(async CONFIG => {
 
 	await esbuild.build(Object.assign(CONFIG, {
+		treeShaking: true,
 		bundle: true,
 		entryPoints: [`./src/libh.js`],
 	}));

@@ -1,4 +1,5 @@
 import * as CORE from "./core.js";
+import { parse } from "../node_modules/acorn/"
 
 /*
 	html instance constructor
@@ -31,32 +32,32 @@ const PARSE_BUFFER = {
 function functionParser(INSTANCE_ID, fnBody) {
 
 	const TEMPLATE_STRING = "" + fnBody; // === toString()
-	// console.log(fnBody(new Proxy({}, MY_HANDLE)))
-	const LINE_START = TEMPLATE_STRING.lastIndexOf("\n");
-	const FUNC_TYPE = ((!fnBody.hasOwnProperty("prototype"))&&(!fnBody.name))? "arrow" : "normal";
-	let FUNC_ARG = "";
-	let FUNC_NAME;
-	switch(FUNC_TYPE) {
-		case "arrow":
-			FUNC_ARG = TEMPLATE_STRING.slice(0, TEMPLATE_STRING.indexOf("=>")).replace(/ |\(|\)/g, "").split(",");
-			break;
-		default:
-			if(fnBody.name) {
-				FUNC_ARG = TEMPLATE_STRING.slice(TEMPLATE_STRING.indexOf(`function ${fnBody.name? fnBody.name: ""}(`, TEMPLATE_STRING.indexOf(`)`)));
-			} else {
+	const FUNC_AST = parse(TEMPLATE_STRING)
+	console.dir(FUNC_AST)
+	// const FUNC_TYPE = ((!fnBody.hasOwnProperty("prototype"))&&(!fnBody.name))? "arrow" : "normal";
+	// let FUNC_ARG = "";
+	// let FUNC_NAME;
+	// switch(FUNC_TYPE) {
+	// 	case "arrow":
+	// 		FUNC_ARG = TEMPLATE_STRING.slice(0, TEMPLATE_STRING.indexOf("=>")).replace(/ |\(|\)/g, "").split(",");
+	// 		break;
+	// 	default:
+	// 		if(fnBody.name) {
+	// 			FUNC_ARG = TEMPLATE_STRING.slice(TEMPLATE_STRING.indexOf(`function ${fnBody.name? fnBody.name: ""}(`, TEMPLATE_STRING.indexOf(`)`)));
+	// 		} else {
 
-			}
-			FUNC_ARG = TEMPLATE_STRING.slice(TEMPLATE_STRING.indexOf("function"));
-			FUNC_NAME = fnBody.name;
-	};
-	const REF_COLLECTION = TEMPLATE_STRING.match(new RegExp(FUNC_ARG[0].replace(/\$/g, "\\$") + `(\\.[a-zA-Z0-9_$].*|\\[("(.*)"|'(.*)')\\])+`, "g"));
-	console.log(REF_COLLECTION);
+	// 		}
+	// 		FUNC_ARG = TEMPLATE_STRING.slice(TEMPLATE_STRING.indexOf("function"));
+	// 		FUNC_NAME = fnBody.name;
+	// };
+	// const REF_COLLECTION = TEMPLATE_STRING.match(new RegExp(FUNC_ARG[0].replace(/\$/g, "\\$") + `(\\.[a-zA-Z0-9_$].*|\\[("(.*)"|'(.*)'|\`(.*)\`)\\])+`, "g"));
+	// console.log(REF_COLLECTION);
 
-	console.log(FUNC_ARG);
+	// console.log(FUNC_ARG);
 
 	return {
 		TEMPLATE_STRING,
-		FUNC_TYPE
+		// FUNC_TYPE
 	}
 };
 

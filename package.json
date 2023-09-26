@@ -4,15 +4,18 @@
   "description": "html in javascript",
   "main": "./build/libh.esm.min.js",
   "directories": {
-	"cjs": "./build/libh.cjs"
+    "cjs": "./build/libh.cjs"
   },
   "type": "module",
   "scripts": {
-	"build": "node ./scripts/build"
+    "build": "node ./scripts/build"
   },
   "devDependencies": {
-	"esbuild": "^0.19.3"
+    "esbuild": "^0.19.3"
   },
   "author": "ihasq",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "acorn": "^8.10.0"
+  }
 }
