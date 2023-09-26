@@ -1,8 +1,8 @@
 {
   "name": "libh",
-  "version": "0.0.13",
+  "version": "0.0.14",
   "description": "html in javascript",
-  "main": "./src/libh.js",
+  "main": "./module/libh.esm.min.js",
   "directories": {
     "example": "examples"
   },
