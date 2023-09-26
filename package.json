@@ -1,10 +1,10 @@
 {
   "name": "libh",
-  "version": "0.0.14",
+  "version": "0.0.15",
   "description": "html in javascript",
-  "main": "./module/libh.esm.min.js",
+  "main": "./build/libh.esm.min.js",
   "directories": {
-    "example": "examples"
+	"cjs": "./build/libh.cjs"
   },
   "type": "module",
   "scripts": {
