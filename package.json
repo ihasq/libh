@@ -2,7 +2,7 @@
   "name": "libh",
   "version": "0.0.12",
   "description": "html in javascript",
-  "main": "index.js",
+  "main": "./src/libh.js",
   "directories": {
     "example": "examples"
   },
