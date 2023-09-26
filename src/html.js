@@ -1,5 +1,5 @@
 import * as CORE from "./core.js";
-import { parse } from "../node_modules/acorn/"
+import { parse } from "../node_modules/acorn/dist/acorn.mjs";
 
 /*
 	html instance constructor
@@ -33,7 +33,7 @@ function functionParser(INSTANCE_ID, fnBody) {
 
 	const TEMPLATE_STRING = "" + fnBody; // === toString()
 	const FUNC_AST = parse(TEMPLATE_STRING)
-	console.dir(FUNC_AST)
+	console.log(FUNC_AST)
 	// const FUNC_TYPE = ((!fnBody.hasOwnProperty("prototype"))&&(!fnBody.name))? "arrow" : "normal";
 	// let FUNC_ARG = "";
 	// let FUNC_NAME;

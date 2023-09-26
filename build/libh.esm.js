@@ -5341,7 +5341,7 @@ var PARSE_BUFFER = {
 function functionParser(INSTANCE_ID, fnBody) {
   const TEMPLATE_STRING = "" + fnBody;
   const FUNC_AST = parse3(TEMPLATE_STRING);
-  console.dir(FUNC_AST);
+  console.log(FUNC_AST);
   return {
     TEMPLATE_STRING
     // FUNC_TYPE
