@@ -1,9 +1,9 @@
 {
 	"name": "libh-example-quick-start",
-	"version": "0.0.15",
+	"version": "0.0.10",
 	"license": "MIT",
 	"dependencies": {
-		"libh": "^0.0.15"
+		"libh-html": "^0.0.10"
 	},
 	"devDependencies": {
 		"vite": "^3.0.1"

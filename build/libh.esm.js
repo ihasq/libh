@@ -1,15 +1,18 @@
-// src/core.js
-if (!window.libh) {
-  window.libh = {};
-}
-
 // src/html.js
 var PARSE_BUFFER = {
   registry: /* @__PURE__ */ Object.create(null),
   HTMLParser: new DOMParser()
 };
+var MY_HANDLE = {
+  get: function(target, prop) {
+    if (!(prop in target)) {
+      target[prop] = new Proxy({}, this);
+    }
+  }
+};
 function functionParser(fnBody) {
   const TEMPLATE_STRING = "" + fnBody;
+  console.log(fnBody(new Proxy({}, MY_HANDLE)));
   const LINE_START = TEMPLATE_STRING.lastIndexOf("\n");
   const FUNC_TYPE = !fnBody.hasOwnProperty("prototype") && !fnBody.name ? "arrow" : "normal";
   let FUNC_ARG = "";

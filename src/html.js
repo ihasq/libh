@@ -20,9 +20,18 @@ const PARSE_BUFFER = {
  * 
  */
 
+const MY_HANDLE = {
+	get: function(target, prop) {
+		if(!(prop in target)) {
+			target[prop] = new Proxy({}, this)
+		}
+	}
+};
+
 function functionParser(fnBody) {
 
 	const TEMPLATE_STRING = "" + fnBody; // === toString()
+	console.log(fnBody(new Proxy({}, MY_HANDLE)))
 	const LINE_START = TEMPLATE_STRING.lastIndexOf("\n");
 	const FUNC_TYPE = ((!fnBody.hasOwnProperty("prototype"))&&(!fnBody.name))? "arrow" : "normal";
 	let FUNC_ARG = "";
@@ -35,7 +44,7 @@ function functionParser(fnBody) {
 			if(fnBody.name) {
 				FUNC_ARG = TEMPLATE_STRING.slice(TEMPLATE_STRING.indexOf(`function ${fnBody.name? fnBody.name: ""}(`, TEMPLATE_STRING.indexOf(`)`)));
 			} else {
-	
+
 			}
 			FUNC_ARG = TEMPLATE_STRING.slice(TEMPLATE_STRING.indexOf("function"));
 			FUNC_NAME = fnBody.name;

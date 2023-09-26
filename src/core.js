@@ -1,4 +1,4 @@
-const frameloop = {
+const FRAMELOOP = {
 	isActive: false,
 	rafID: "",
 	ignite() {
@@ -30,26 +30,24 @@ const frameloop = {
 	},
 
 	run() {
-		if(frameloop.func.stack.length !== 0) {
-			for(let i = 0; i < frameloop.func.stack.length; i++) {
-				if(frameloop.func.stack[i].result !== frameloop.func.stack[i].funcBody()) {
+		if(FRAMELOOP.func.stack.length !== 0) {
+			for(let i = 0; i < FRAMELOOP.func.stack.length; i++) {
+				if(FRAMELOOP.func.stack[i].result !== FRAMELOOP.func.stack[i].funcBody()) {
 				}
 			}
 		}
-		if(frameloop.task.stack.length !== 0) {
-			for(let i = 0; i < frameloop.task.stack.length; i++) {
-				frameloop.task.stack[i]();
+		if(FRAMELOOP.task.stack.length !== 0) {
+			for(let i = 0; i < FRAMELOOP.task.stack.length; i++) {
+				FRAMELOOP.task.stack[i]();
 			}
 		};
-		frameloop.task.stack = [];
-		window.requestAnimationFrame(frameloop.run);
+		FRAMELOOP.task.stack = [];
+		window.requestAnimationFrame(FRAMELOOP.run);
 	},
 };
 
-if(!window.libh) {
-	window.libh = {
-		
-	}
+const VIEW_MODEL = {
+	markerList: []
 }
 
-export { frameloop }
+export { FRAMELOOP as frameloop }
