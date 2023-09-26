@@ -1,4 +1,4 @@
-import { html } from "libh-html";
+import { html } from "libh";
 
 const reactiveButton = html`{
 	<button onclick=${$ => $.count++}>
