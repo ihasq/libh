@@ -31,22 +31,20 @@ var PARSE_BUFFER = {
   registry: /* @__PURE__ */ Object.create(null),
   HTMLParser: new DOMParser()
 };
-var MY_HANDLE = {
-  get(target, prop) {
-    if (!(prop in target)) {
-      console.log("created");
-      return new Proxy({}, this);
-    } else {
-      console.log("already has");
-      return target[prop];
-    }
-  },
-  handlerRegistry: []
-};
+function getObjectTypeMap(objectData) {
+  const KEY_DATA = Object.keys(objectData);
+  const RETURN_BUFFER = /* @__PURE__ */ Object.create(null);
+  for (let objectKeyIndex = 0; objectKeyIndex < Object.keys(objectData).length; objectKeyIndex++) {
+    RETURN_BUFFER[KEY_DATA[objectKeyIndex]] = typeof objectData[KEY_DATA[objectKeyIndex]] === "object" ? getObjectTypeMap(objectData[KEY_DATA[objectKeyIndex]]) : typeof objectData[KEY_DATA[objectKeyIndex]];
+  }
+  ;
+  return RETURN_BUFFER;
+}
 function createHTMLInstance(INSTANCE_ID, STRINGS, KEYS) {
   const BUFFER = {
     keyMap: "",
-    funcList: []
+    funcList: [],
+    portConfig: /* @__PURE__ */ Object.create(null)
   };
   for (let keyIndex = 0; keyIndex < STRINGS.length; keyIndex++) {
     BUFFER.keyMap += encodeURI(STRINGS[keyIndex]);
@@ -57,13 +55,13 @@ function createHTMLInstance(INSTANCE_ID, STRINGS, KEYS) {
             BUFFER.keyMap += ` \${${INSTANCE_ID}:${keyIndex}} `;
             throw new Error("Can not use async function");
           } else {
-            const buffer = KEYS[keyIndex](new Proxy({}, MY_HANDLE));
-            console.dir(buffer.hook);
-            console.dir(buffer.hook.avatarURL);
+            const buffer = KEYS[keyIndex];
+            console.dir(buffer.prop);
           }
           break;
         case "object":
           BUFFER.keyMap += ` \${${INSTANCE_ID}:${keyIndex}} `;
+          BUFFER.portConfig = KEYS[keyIndex];
           break;
         default:
           BUFFER.keyMap += KEYS[keyIndex];
@@ -72,18 +70,8 @@ function createHTMLInstance(INSTANCE_ID, STRINGS, KEYS) {
     }
   }
   ;
-  BUFFER.keyMap = decodeURI(BUFFER.keyMap);
-  console.log(BUFFER.keyMap);
-  const SELECTOR = new RegExp(` \\$\\{${INSTANCE_ID}:[0-9]\\} `, "g");
-  const TEMPLATE = PARSE_BUFFER.HTMLParser.parseFromString(
-    BUFFER.keyMap.slice(BUFFER.keyMap.indexOf("{") + 1, BUFFER.keyMap.lastIndexOf("}")),
-    "text/html"
-  ).body;
-  console.dir(TEMPLATE.children);
-  PARSE_BUFFER.registry[INSTANCE_ID] = Object.assign(BUFFER, {
-    instanceId: INSTANCE_ID,
-    keys: {}
-  });
+  const CONFIG_KEY_DATA = getObjectTypeMap(BUFFER.portConfig);
+  console.log(CONFIG_KEY_DATA);
 }
 function html(STRINGS, ...KEYS) {
   const INSTANCE_UUID = window.crypto.randomUUID();

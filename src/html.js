@@ -20,23 +20,39 @@ const PARSE_BUFFER = {
  * 
  */
 
-const portRegistry = {
-
-}
+let portRegistry = null;
 
 const MY_HANDLE = {
 	get(target, prop) {
 		if(!(prop in target)) {
-			console.log("created")
-			return new Proxy({}, this)
+			console.log("created");
+			console.dir(target);
+			target[prop] = Object.create(null);
+			return new Proxy(target[prop], this);
 		} else {
-			console.log("already has")
+			console.log("already has");
 			return target[prop]
 		}
 	},
-	handlerRegistry: []
+	set(target, prop, value) {
+		target[prop] = value
+	}
 };
 
+/**
+ * 
+ * @param { object } objectData 
+ * @returns { object }
+ */
+
+function getObjectTypeMap(objectData) {
+	const KEY_DATA = Object.keys(objectData);
+	const RETURN_BUFFER = Object.create(null);
+	for(let objectKeyIndex = 0; objectKeyIndex < Object.keys(objectData).length; objectKeyIndex++) {
+		RETURN_BUFFER[KEY_DATA[objectKeyIndex]] = (typeof objectData[KEY_DATA[objectKeyIndex]] === "object")? getObjectTypeMap(objectData[KEY_DATA[objectKeyIndex]]) : typeof objectData[KEY_DATA[objectKeyIndex]]
+	};
+	return RETURN_BUFFER;
+};
 
 /**
  * 
@@ -51,6 +67,7 @@ function createHTMLInstance(INSTANCE_ID, STRINGS, KEYS) {
 	const BUFFER = {
 		keyMap: "",
 		funcList: [],
+		portConfig: Object.create(null)
 	};
 
 	for(let keyIndex = 0; keyIndex < STRINGS.length; keyIndex++) {
@@ -62,9 +79,11 @@ function createHTMLInstance(INSTANCE_ID, STRINGS, KEYS) {
 						BUFFER.keyMap += ` \${${INSTANCE_ID}:${keyIndex}} `;
 						throw new Error("Can not use async function");
 					} else {
-						const buffer = KEYS[keyIndex](new Proxy({}, MY_HANDLE));
-						console.dir(buffer.hook)
-						console.dir(buffer.hook.avatarURL)
+						const buffer = KEYS[keyIndex];
+						console.dir(buffer.prop)
+						// console.log(buffer.style["*"])
+						// console.dir(buffer.hook.avatarURL)
+						// console.dir(buffer.hook.avatarURL)
 						// BUFFER.funcList.push(functionParser(INSTANCE_ID, KEYS[keyIndex]));
 						// console.log(BUFFER.funcList[keyIndex].TEMPLATE_STRING);
 					}
@@ -88,6 +107,7 @@ function createHTMLInstance(INSTANCE_ID, STRINGS, KEYS) {
 					// 	}
 					// };
 					BUFFER.keyMap += ` \${${INSTANCE_ID}:${keyIndex}} `;
+					BUFFER.portConfig = KEYS[keyIndex];
 					break;
 
 				default:
@@ -96,21 +116,26 @@ function createHTMLInstance(INSTANCE_ID, STRINGS, KEYS) {
 			};
 		}
 	};
-	BUFFER.keyMap = decodeURI(BUFFER.keyMap)
-	console.log(BUFFER.keyMap);
-	const SELECTOR = new RegExp(` \\$\\{${INSTANCE_ID}:[0-9]\\} `, "g");
-	const TEMPLATE = PARSE_BUFFER.HTMLParser.parseFromString(
-		BUFFER.keyMap.slice(BUFFER.keyMap.indexOf("{") + 1, BUFFER.keyMap.lastIndexOf("}")),
-		"text/html"
-	).body;
-	console.dir(TEMPLATE.children);
-	// for(let index = 0; index < TEMPLATE.childNodes)
-	PARSE_BUFFER.registry[INSTANCE_ID] = Object.assign(BUFFER, {
-		instanceId: INSTANCE_ID,
-		keys: {
 
-		}
-	});
+	const CONFIG_KEY_DATA = getObjectTypeMap(BUFFER.portConfig);
+
+	console.log(CONFIG_KEY_DATA);
+
+	// BUFFER.keyMap = decodeURI(BUFFER.keyMap)
+	// console.log(BUFFER.keyMap);
+	// const SELECTOR = new RegExp(` \\$\\{${INSTANCE_ID}:[0-9]\\} `, "g");
+	// const TEMPLATE = PARSE_BUFFER.HTMLParser.parseFromString(
+	// 	BUFFER.keyMap.slice(BUFFER.keyMap.indexOf("{") + 1, BUFFER.keyMap.lastIndexOf("}")),
+	// 	"text/html"
+	// ).body;
+	// console.dir(TEMPLATE.children);
+	// // for(let index = 0; index < TEMPLATE.childNodes)
+	// PARSE_BUFFER.registry[INSTANCE_ID] = Object.assign(BUFFER, {
+	// 	instanceId: INSTANCE_ID,
+	// 	keys: {
+
+	// 	}
+	// });
 };
 
 function html(STRINGS, ...KEYS) {
