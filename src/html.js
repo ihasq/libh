@@ -24,9 +24,9 @@ let portRegistry = null;
 
 const MY_HANDLE = {
 	get(target, prop) {
+		console.log(prop)
 		if(!(prop in target)) {
-			console.log("created");
-			console.dir(target);
+
 			target[prop] = Object.create(null);
 			return new Proxy(target[prop], this);
 		} else {
@@ -49,7 +49,9 @@ function getObjectTypeMap(objectData) {
 	const KEY_DATA = Object.keys(objectData);
 	const RETURN_BUFFER = Object.create(null);
 	for(let objectKeyIndex = 0; objectKeyIndex < Object.keys(objectData).length; objectKeyIndex++) {
-		RETURN_BUFFER[KEY_DATA[objectKeyIndex]] = (typeof objectData[KEY_DATA[objectKeyIndex]] === "object")? getObjectTypeMap(objectData[KEY_DATA[objectKeyIndex]]) : typeof objectData[KEY_DATA[objectKeyIndex]]
+		RETURN_BUFFER[KEY_DATA[objectKeyIndex]] = (
+			(typeof objectData[KEY_DATA[objectKeyIndex]] === "object")? getObjectTypeMap(objectData[KEY_DATA[objectKeyIndex]]) : typeof objectData[KEY_DATA[objectKeyIndex]]
+		)
 	};
 	return RETURN_BUFFER;
 };
@@ -62,12 +64,34 @@ function getObjectTypeMap(objectData) {
  * 
  */
 
+
 function createHTMLInstance(INSTANCE_ID, STRINGS, KEYS) {
 
 	const BUFFER = {
 		keyMap: "",
 		funcList: [],
-		portConfig: Object.create(null)
+		portConfig: Object.create(null),
+		proxyRegistry: Object.create(null),
+		proxyHandleTemplate: {
+			get(target, prop) {
+				if(prop in target) {
+					console.log("already has");
+					return target[prop]
+				} else {
+					console.log("created");
+					console.dir(prop);
+					// BUFFER.proxyRegistry[prop] = {
+					// 	child: Object.create(null),
+					// 	from: target.name
+					// }
+					Object.assign(target, target[prop]);
+					return new Proxy(target[prop], this);
+				}
+			},
+			set(target, prop, value) {
+				target[prop] = value
+			}
+		}
 	};
 
 	for(let keyIndex = 0; keyIndex < STRINGS.length; keyIndex++) {
@@ -79,8 +103,8 @@ function createHTMLInstance(INSTANCE_ID, STRINGS, KEYS) {
 						BUFFER.keyMap += ` \${${INSTANCE_ID}:${keyIndex}} `;
 						throw new Error("Can not use async function");
 					} else {
-						const buffer = KEYS[keyIndex];
-						console.dir(buffer.prop)
+						KEYS[keyIndex](new Proxy({}, BUFFER.proxyHandleTemplate))
+						console.log(BUFFER.proxyRegistry)
 						// console.log(buffer.style["*"])
 						// console.dir(buffer.hook.avatarURL)
 						// console.dir(buffer.hook.avatarURL)
@@ -117,9 +141,19 @@ function createHTMLInstance(INSTANCE_ID, STRINGS, KEYS) {
 		}
 	};
 
-	const CONFIG_KEY_DATA = getObjectTypeMap(BUFFER.portConfig);
+	// configuring element
 
-	console.log(CONFIG_KEY_DATA);
+	// const CONFIG_KEY_DATA = getObjectTypeMap(BUFFER.portConfig);
+	// const STD_TEMPLATE = {
+	// 	useProp: () => {
+	// 		const RETURN_BUFFER = Object.create(null);
+	// 		return RETURN_BUFFER
+	// 	}
+	// };
+
+	// Object.assign(BUFFER.portConfig, STD_TEMPLATE);
+
+	// console.log(CONFIG_KEY_DATA);
 
 	// BUFFER.keyMap = decodeURI(BUFFER.keyMap)
 	// console.log(BUFFER.keyMap);

@@ -3,20 +3,32 @@ var PARSE_BUFFER = {
   registry: /* @__PURE__ */ Object.create(null),
   HTMLParser: new DOMParser()
 };
-function getObjectTypeMap(objectData) {
-  const KEY_DATA = Object.keys(objectData);
-  const RETURN_BUFFER = /* @__PURE__ */ Object.create(null);
-  for (let objectKeyIndex = 0; objectKeyIndex < Object.keys(objectData).length; objectKeyIndex++) {
-    RETURN_BUFFER[KEY_DATA[objectKeyIndex]] = typeof objectData[KEY_DATA[objectKeyIndex]] === "object" ? getObjectTypeMap(objectData[KEY_DATA[objectKeyIndex]]) : typeof objectData[KEY_DATA[objectKeyIndex]];
-  }
-  ;
-  return RETURN_BUFFER;
-}
 function createHTMLInstance(INSTANCE_ID, STRINGS, KEYS) {
   const BUFFER = {
     keyMap: "",
     funcList: [],
-    portConfig: /* @__PURE__ */ Object.create(null)
+    portConfig: /* @__PURE__ */ Object.create(null),
+    proxyRegistry: /* @__PURE__ */ Object.create(null),
+    proxyHandleTemplate: {
+      get(target, prop) {
+        if (prop in target) {
+          console.log("already has");
+          return target[prop];
+        } else {
+          console.log("created");
+          console.dir(target);
+          BUFFER.proxyRegistry[prop] = {
+            child: /* @__PURE__ */ Object.create(null),
+            from: target.name
+          };
+          target[prop] = /* @__PURE__ */ Object.create(null);
+          return new Proxy(BUFFER.proxyRegistry[prop].child, this);
+        }
+      },
+      set(target, prop, value) {
+        target[prop] = value;
+      }
+    }
   };
   for (let keyIndex = 0; keyIndex < STRINGS.length; keyIndex++) {
     BUFFER.keyMap += encodeURI(STRINGS[keyIndex]);
@@ -27,8 +39,8 @@ function createHTMLInstance(INSTANCE_ID, STRINGS, KEYS) {
             BUFFER.keyMap += ` \${${INSTANCE_ID}:${keyIndex}} `;
             throw new Error("Can not use async function");
           } else {
-            const buffer = KEYS[keyIndex];
-            console.dir(buffer.prop);
+            KEYS[keyIndex](new Proxy({}, BUFFER.proxyHandleTemplate));
+            console.log(BUFFER.proxyRegistry);
           }
           break;
         case "object":
@@ -42,8 +54,6 @@ function createHTMLInstance(INSTANCE_ID, STRINGS, KEYS) {
     }
   }
   ;
-  const CONFIG_KEY_DATA = getObjectTypeMap(BUFFER.portConfig);
-  console.log(CONFIG_KEY_DATA);
 }
 function html(STRINGS, ...KEYS) {
   const INSTANCE_UUID = window.crypto.randomUUID();

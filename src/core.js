@@ -48,6 +48,11 @@ const FRAMELOOP = {
 
 const VIEW_MODEL = {
 	markerList: []
-}
+};
 
-export { FRAMELOOP as frameloop }
+const PLUGIN_REGISTRY = Object.create(null);
+
+export {
+	FRAMELOOP as frameloop,
+	PLUGIN_REGISTRY
+}
