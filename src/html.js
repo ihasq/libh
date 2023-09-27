@@ -1,5 +1,4 @@
 import * as CORE from "./core.js";
-import { parse } from "../node_modules/acorn/dist/acorn.mjs";
 
 /*
 	html instance constructor
@@ -21,13 +20,22 @@ const PARSE_BUFFER = {
  * 
  */
 
-// const MY_HANDLE = {
-// 	get: function(target, prop) {
-// 		if(!(prop in target)) {
-// 			target[prop] = new Proxy({}, this)
-// 		}
-// 	}
-// };
+const portRegistry = {
+
+}
+
+const MY_HANDLE = {
+	get(target, prop) {
+		if(!(prop in target)) {
+			console.log("created")
+			return new Proxy({}, this)
+		} else {
+			console.log("already has")
+			return target[prop]
+		}
+	},
+	handlerRegistry: []
+};
 
 
 /**
@@ -45,37 +53,45 @@ function createHTMLInstance(INSTANCE_ID, STRINGS, KEYS) {
 		funcList: [],
 	};
 
-	for(let index = 0; index < STRINGS.length; index++) {
-		BUFFER.keyMap += encodeURI(STRINGS[index]);
-		if(index + 1 !== STRINGS.length) {
-			switch(typeof KEYS[index]) {
-				case "function": case "object":
-					BUFFER.keyMap += ` \${${INSTANCE_ID}:${index}} `;
-
+	for(let keyIndex = 0; keyIndex < STRINGS.length; keyIndex++) {
+		BUFFER.keyMap += encodeURI(STRINGS[keyIndex]);
+		if(keyIndex + 1 !== STRINGS.length) {
+			switch(typeof KEYS[keyIndex]) {
 				case "function":
-					if(KEYS[index].constructor.name !== "Function") {
+					if(KEYS[keyIndex].constructor.name !== "Function") {
+						BUFFER.keyMap += ` \${${INSTANCE_ID}:${keyIndex}} `;
 						throw new Error("Can not use async function");
 					} else {
-						BUFFER.funcList.push(functionParser(INSTANCE_ID, KEYS[index]));
-						console.log(BUFFER.funcList[index].TEMPLATE_STRING);
+						const buffer = KEYS[keyIndex](new Proxy({}, MY_HANDLE));
+						console.dir(buffer.hook)
+						console.dir(buffer.hook.avatarURL)
+						// BUFFER.funcList.push(functionParser(INSTANCE_ID, KEYS[keyIndex]));
+						// console.log(BUFFER.funcList[keyIndex].TEMPLATE_STRING);
 					}
 					/*
-						registry = {
-							tempFnString: "$ => ({...})" | "function($) { return ... }"
-							tempFnType: "arrow" | "standard",
-							tempFnArg: "$" or what else
-							tempHandleMap: {
-								count: 0
-							}
+					registry = {
+						tempFnString: "$ => ({...})" | "function($) { return ... }"
+						tempFnType: "arrow" | "standard",
+						tempFnArg: "$" or what else
+						tempHandleMap: {
+							count: 0
 						}
+					}
 					*/
 					break;
-
+						
 				case "object":
-
+					// function checkObjectKey(objRef) {
+					// 	const OBJ_STACK = Object.create(null);
+					// 	for(let objIndex = 0; objIndex < Object.keys(OBJ_STACK).length; objIndex++) {
+					// 		if(OBJ_STACK)
+					// 	}
+					// };
+					BUFFER.keyMap += ` \${${INSTANCE_ID}:${keyIndex}} `;
 					break;
+
 				default:
-					BUFFER.keyMap += KEYS[index]
+					BUFFER.keyMap += KEYS[keyIndex]
 
 			};
 		}
