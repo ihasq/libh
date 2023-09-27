@@ -5367,9 +5367,14 @@ var PARSE_BUFFER = {
   HTMLParser: new DOMParser()
 };
 function functionParser(INSTANCE_ID, fnBody) {
+  let errorBuffer = {};
   const TEMPLATE_STRING = "" + fnBody;
   const FUNC_AST = parse3(TEMPLATE_STRING);
-  console.log(FUNC_AST);
+  const FUNC_PROPERTY = {
+    argument: FUNC_AST.body[0].expression.params[0].name,
+    connectedAccess: FUNC_AST.body[0].expression.body
+  };
+  console.log(FUNC_AST.body[0].expression);
   return {
     TEMPLATE_STRING
     // FUNC_TYPE

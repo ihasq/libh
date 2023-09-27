@@ -29,37 +29,6 @@ const PARSE_BUFFER = {
 // 	}
 // };
 
-function functionParser(INSTANCE_ID, fnBody) {
-
-	const TEMPLATE_STRING = "" + fnBody; // === toString()
-	const FUNC_AST = parse(TEMPLATE_STRING)
-	console.log(FUNC_AST)
-	// const FUNC_TYPE = ((!fnBody.hasOwnProperty("prototype"))&&(!fnBody.name))? "arrow" : "normal";
-	// let FUNC_ARG = "";
-	// let FUNC_NAME;
-	// switch(FUNC_TYPE) {
-	// 	case "arrow":
-	// 		FUNC_ARG = TEMPLATE_STRING.slice(0, TEMPLATE_STRING.indexOf("=>")).replace(/ |\(|\)/g, "").split(",");
-	// 		break;
-	// 	default:
-	// 		if(fnBody.name) {
-	// 			FUNC_ARG = TEMPLATE_STRING.slice(TEMPLATE_STRING.indexOf(`function ${fnBody.name? fnBody.name: ""}(`, TEMPLATE_STRING.indexOf(`)`)));
-	// 		} else {
-
-	// 		}
-	// 		FUNC_ARG = TEMPLATE_STRING.slice(TEMPLATE_STRING.indexOf("function"));
-	// 		FUNC_NAME = fnBody.name;
-	// };
-	// const REF_COLLECTION = TEMPLATE_STRING.match(new RegExp(FUNC_ARG[0].replace(/\$/g, "\\$") + `(\\.[a-zA-Z0-9_$].*|\\[("(.*)"|'(.*)'|\`(.*)\`)\\])+`, "g"));
-	// console.log(REF_COLLECTION);
-
-	// console.log(FUNC_ARG);
-
-	return {
-		TEMPLATE_STRING,
-		// FUNC_TYPE
-	}
-};
 
 /**
  * 
@@ -80,8 +49,10 @@ function createHTMLInstance(INSTANCE_ID, STRINGS, KEYS) {
 		BUFFER.keyMap += encodeURI(STRINGS[index]);
 		if(index + 1 !== STRINGS.length) {
 			switch(typeof KEYS[index]) {
-				case "function":
+				case "function": case "object":
 					BUFFER.keyMap += ` \${${INSTANCE_ID}:${index}} `;
+
+				case "function":
 					if(KEYS[index].constructor.name !== "Function") {
 						throw new Error("Can not use async function");
 					} else {
@@ -99,8 +70,9 @@ function createHTMLInstance(INSTANCE_ID, STRINGS, KEYS) {
 						}
 					*/
 					break;
+
 				case "object":
-					BUFFER.keyMap += ` \${${INSTANCE_ID}:${index}} `;
+
 					break;
 				default:
 					BUFFER.keyMap += KEYS[index]
