@@ -28,7 +28,19 @@ class LibhReferenceObject {
  */
 
 
+Number.prototype.valueOf = function() {
+	console.log("get value")
+	return this
+}
 
+
+class LibhNumber extends Number {
+	constructor(number) {
+		super();
+	};
+	valueOf() {
+	}
+}
 /**
  * 
  * @param { String } INSTANCE_ID
@@ -36,6 +48,7 @@ class LibhReferenceObject {
  * @param { Function[] } KEYS 
  * 
  */
+
 
 
 function createHTMLInstance(INSTANCE_ID, STRINGS, KEYS) {
