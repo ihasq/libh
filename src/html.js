@@ -22,23 +22,6 @@ const PARSE_BUFFER = {
 
 let portRegistry = null;
 
-const MY_HANDLE = {
-	get(target, prop) {
-		console.log(prop)
-		if(!(prop in target)) {
-
-			target[prop] = Object.create(null);
-			return new Proxy(target[prop], this);
-		} else {
-			console.log("already has");
-			return target[prop]
-		}
-	},
-	set(target, prop, value) {
-		target[prop] = value
-	}
-};
-
 /**
  * 
  * @param { object } objectData 
@@ -74,22 +57,23 @@ function createHTMLInstance(INSTANCE_ID, STRINGS, KEYS) {
 		proxyRegistry: Object.create(null),
 		proxyHandleTemplate: {
 			get(target, prop) {
+				console.dir(target)
 				if(prop in target) {
 					console.log("already has");
 					return target[prop]
 				} else {
-					console.log("created");
-					console.dir(prop);
-					// BUFFER.proxyRegistry[prop] = {
-					// 	child: Object.create(null),
-					// 	from: target.name
-					// }
-					Object.assign(target, target[prop]);
+					const proxyRef = window.crypto.randomUUID();
+					BUFFER.proxyRegistry[proxyRef] = 
+					console.log("proxy created");
+					target[prop] = Object.create(null)
 					return new Proxy(target[prop], this);
 				}
 			},
 			set(target, prop, value) {
 				target[prop] = value
+			},
+			defineProperty() {
+				console.log("defined")
 			}
 		}
 	};
@@ -103,8 +87,9 @@ function createHTMLInstance(INSTANCE_ID, STRINGS, KEYS) {
 						BUFFER.keyMap += ` \${${INSTANCE_ID}:${keyIndex}} `;
 						throw new Error("Can not use async function");
 					} else {
-						KEYS[keyIndex](new Proxy({}, BUFFER.proxyHandleTemplate))
-						console.log(BUFFER.proxyRegistry)
+						const proxyTest = KEYS[keyIndex](new Proxy({}, BUFFER.proxyHandleTemplate))
+						const typeMap = getObjectTypeMap(proxyTest);
+						console.log(typeMap)
 						// console.log(buffer.style["*"])
 						// console.dir(buffer.hook.avatarURL)
 						// console.dir(buffer.hook.avatarURL)
