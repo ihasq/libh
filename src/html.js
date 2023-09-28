@@ -93,8 +93,7 @@ function createHTMLInstance(INSTANCE_ID, STRINGS, KEYS) {
 						BUFFER.keyMap += ` \${${INSTANCE_ID}:${keyIndex}} `;
 						throw new Error("Can not use async function");
 					} else {
-						const proxyTest = KEYS[keyIndex](new Proxy({}, BUFFER.proxyHandleTemplate))
-						const typeMap = CORE.getDeepCopy(proxyTest);
+						const typeMap = CORE.getDeepCopy(KEYS[keyIndex](new Proxy({}, BUFFER.proxyHandleTemplate)));
 						const resultBuffer = KEYS[keyIndex](typeMap);
 						resultBuffer.onclick();
 						console.log(typeMap);
