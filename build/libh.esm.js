@@ -1,17 +1,19 @@
+// src/core.js
+function getDeepCopy(objectData) {
+  const KEY_DATA = Object.keys(objectData);
+  const RETURN_BUFFER = /* @__PURE__ */ Object.create(null);
+  for (let objectKeyIndex = 0; objectKeyIndex < Object.keys(objectData).length; objectKeyIndex++) {
+    RETURN_BUFFER[KEY_DATA[objectKeyIndex]] = typeof objectData[KEY_DATA[objectKeyIndex]] === "object" ? getDeepCopy(objectData[KEY_DATA[objectKeyIndex]]) : objectData[KEY_DATA[objectKeyIndex]];
+  }
+  ;
+  return RETURN_BUFFER;
+}
+
 // src/html.js
 var PARSE_BUFFER = {
   registry: /* @__PURE__ */ Object.create(null),
   HTMLParser: new DOMParser()
 };
-function getObjectTypeMap(objectData) {
-  const KEY_DATA = Object.keys(objectData);
-  const RETURN_BUFFER = /* @__PURE__ */ Object.create(null);
-  for (let objectKeyIndex = 0; objectKeyIndex < Object.keys(objectData).length; objectKeyIndex++) {
-    RETURN_BUFFER[KEY_DATA[objectKeyIndex]] = typeof objectData[KEY_DATA[objectKeyIndex]] === "object" ? getObjectTypeMap(objectData[KEY_DATA[objectKeyIndex]]) : typeof objectData[KEY_DATA[objectKeyIndex]];
-  }
-  ;
-  return RETURN_BUFFER;
-}
 function createHTMLInstance(INSTANCE_ID, STRINGS, KEYS) {
   const BUFFER = {
     keyMap: "",
@@ -36,8 +38,10 @@ function createHTMLInstance(INSTANCE_ID, STRINGS, KEYS) {
       }
     },
     elementProperty: {
-      globalVariable: /* @__PURE__ */ Object.create(null)
-    }
+      globalVariable: /* @__PURE__ */ Object.create(null),
+      propReference: null
+    },
+    portProperty: {}
   };
   for (let keyIndex = 0; keyIndex < STRINGS.length; keyIndex++) {
     BUFFER.keyMap += encodeURI(STRINGS[keyIndex]);
@@ -49,16 +53,24 @@ function createHTMLInstance(INSTANCE_ID, STRINGS, KEYS) {
             throw new Error("Can not use async function");
           } else {
             const proxyTest = KEYS[keyIndex](new Proxy({}, BUFFER.proxyHandleTemplate));
-            const typeMap = getObjectTypeMap(proxyTest);
+            const typeMap = getDeepCopy(proxyTest);
+            const resultBuffer = KEYS[keyIndex](typeMap);
+            resultBuffer.onclick();
             console.log(typeMap);
           }
           break;
         case "object":
           BUFFER.keyMap += ` \${${INSTANCE_ID}:${keyIndex}} `;
           BUFFER.portConfig = KEYS[keyIndex];
-          if (global in BUFFER.portConfig) {
-            BUFFER.elementProperty.globalVariable = global;
+          if ("global" in BUFFER.portConfig) {
+            BUFFER.elementProperty.globalVariable = getDeepCopy(BUFFER.portConfig.global);
           }
+          ;
+          if ("prop" in BUFFER.portConfig) {
+            throw new Error("Element initialization error: Cannot add 'prop' properties into initializer, token is reserved");
+          }
+          ;
+          console.log(BUFFER.elementProperty.globalVariable);
           break;
         default:
           BUFFER.keyMap += KEYS[keyIndex];

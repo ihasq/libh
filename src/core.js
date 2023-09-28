@@ -52,7 +52,19 @@ const VIEW_MODEL = {
 
 const PLUGIN_REGISTRY = Object.create(null);
 
+function getDeepCopy(objectData) {
+	const KEY_DATA = Object.keys(objectData);
+	const RETURN_BUFFER = Object.create(null);
+	for(let objectKeyIndex = 0; objectKeyIndex < Object.keys(objectData).length; objectKeyIndex++) {
+		RETURN_BUFFER[KEY_DATA[objectKeyIndex]] = (
+			(typeof objectData[KEY_DATA[objectKeyIndex]] === "object")? getDeepCopy(objectData[KEY_DATA[objectKeyIndex]]) : objectData[KEY_DATA[objectKeyIndex]]
+		)
+	};
+	return RETURN_BUFFER;
+};
+
 export {
 	FRAMELOOP as frameloop,
-	PLUGIN_REGISTRY
+	PLUGIN_REGISTRY,
+	getDeepCopy
 }
