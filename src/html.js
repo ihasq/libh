@@ -28,11 +28,6 @@ class LibhReferenceObject {
  */
 
 
-Number.prototype.valueOf = function() {
-	console.log("get value")
-	return this
-}
-
 
 // class LibhNumber {
 // 	constructor() {
@@ -103,7 +98,7 @@ function createHTMLInstance(INSTANCE_ID, STRINGS, KEYS) {
 						const resultBuffer = KEYS[keyIndex](typeMap);
 						resultBuffer.onclick();
 						console.log(typeMap);
-					}
+					};
 					break;
 						
 				case "object":
