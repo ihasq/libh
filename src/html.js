@@ -63,7 +63,6 @@ function createHTMLInstance(INSTANCE_ID, STRINGS, KEYS) {
 					return target[prop]
 				} else {
 					const proxyRef = window.crypto.randomUUID();
-					BUFFER.proxyRegistry[proxyRef] = 
 					console.log("proxy created");
 					target[prop] = Object.create(null)
 					return new Proxy(target[prop], this);
@@ -72,9 +71,9 @@ function createHTMLInstance(INSTANCE_ID, STRINGS, KEYS) {
 			set(target, prop, value) {
 				target[prop] = value
 			},
-			defineProperty() {
-				console.log("defined")
-			}
+		},
+		elementProperty: {
+			globalVariable: Object.create(null)
 		}
 	};
 
@@ -117,6 +116,9 @@ function createHTMLInstance(INSTANCE_ID, STRINGS, KEYS) {
 					// };
 					BUFFER.keyMap += ` \${${INSTANCE_ID}:${keyIndex}} `;
 					BUFFER.portConfig = KEYS[keyIndex];
+					if(global in BUFFER.portConfig) {
+						BUFFER.elementProperty.globalVariable = global
+					}
 					break;
 
 				default:
