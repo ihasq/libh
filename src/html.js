@@ -34,13 +34,18 @@ Number.prototype.valueOf = function() {
 }
 
 
-class LibhNumber extends Number {
-	constructor(number) {
-		super();
-	};
-	valueOf() {
-	}
-}
+// class LibhNumber {
+// 	constructor() {
+// 	};
+// 	valueOf() {
+// 		return 0
+// 	}
+// }
+
+// let test = new LibhNumber();
+// test++
+// console.log(test)
+
 /**
  * 
  * @param { String } INSTANCE_ID
