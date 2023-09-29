@@ -1,7 +1,7 @@
 import esbuild from "esbuild";
 import fs from "node:fs";
 
-const RELEASE_VERSION = "0.0.15";
+const RELEASE_VERSION = "0.0.16";
 
 [
 	{
@@ -76,7 +76,7 @@ const RELEASE_VERSION = "0.0.15";
 		    "version": "${RELEASE_VERSION}",
 		    "license": "MIT",
 		    "dependencies": {
-		        "libh-html": "^${RELEASE_VERSION}"
+		        "libh": "^${RELEASE_VERSION}"
 		    },
 		    "devDependencies": {
 		        "vite": "^3.0.1"
