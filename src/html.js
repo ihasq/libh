@@ -93,10 +93,10 @@ function createHTMLInstance(INSTANCE_ID, STRINGS, KEYS) {
 						BUFFER.keyMap += ` \${${INSTANCE_ID}:${keyIndex}} `;
 						throw new Error("Can not use async function");
 					} else {
-						const typeMap = CORE.getDeepCopy(KEYS[keyIndex](new Proxy({}, BUFFER.proxyHandleTemplate)));
-						const resultBuffer = KEYS[keyIndex](typeMap);
-						resultBuffer.onclick();
-						console.log(typeMap);
+						// const typeMap = CORE.getDeepCopy(KEYS[keyIndex](new Proxy({}, BUFFER.proxyHandleTemplate)));
+						// const resultBuffer = KEYS[keyIndex](typeMap);
+						// resultBuffer.onclick();
+						// console.log(typeMap);
 					};
 					break;
 						
@@ -110,13 +110,13 @@ function createHTMLInstance(INSTANCE_ID, STRINGS, KEYS) {
 					BUFFER.keyMap += ` \${${INSTANCE_ID}:${keyIndex}} `;
 					BUFFER.portConfig = KEYS[keyIndex];
 					if("global" in BUFFER.portConfig) {
-						BUFFER.elementProperty.globalVariable = CORE.getDeepCopy(BUFFER.portConfig.global);
+						BUFFER.portConfig.global = CORE.getDeepCopy(BUFFER.portConfig.global);
 					};
 					if(("prop" in BUFFER.portConfig)) {
 						throw new Error("Element initialization error: Cannot add 'prop' properties into initializer, token is reserved")
 					};
-
-					console.log(BUFFER.elementProperty.globalVariable)
+					BUFFER.portConfig.onclick(BUFFER.portConfig)
+					console.log(BUFFER.portConfig)
 					break;
 
 				default:
