@@ -52,25 +52,22 @@ function createHTMLInstance(INSTANCE_ID, STRINGS, KEYS) {
             BUFFER.keyMap += ` \${${INSTANCE_ID}:${keyIndex}} `;
             throw new Error("Can not use async function");
           } else {
-            const proxyTest = KEYS[keyIndex](new Proxy({}, BUFFER.proxyHandleTemplate));
-            const typeMap = getDeepCopy(proxyTest);
-            const resultBuffer = KEYS[keyIndex](typeMap);
-            resultBuffer.onclick();
-            console.log(typeMap);
           }
+          ;
           break;
         case "object":
           BUFFER.keyMap += ` \${${INSTANCE_ID}:${keyIndex}} `;
           BUFFER.portConfig = KEYS[keyIndex];
           if ("global" in BUFFER.portConfig) {
-            BUFFER.elementProperty.globalVariable = getDeepCopy(BUFFER.portConfig.global);
+            BUFFER.portConfig.global = getDeepCopy(BUFFER.portConfig.global);
           }
           ;
           if ("prop" in BUFFER.portConfig) {
             throw new Error("Element initialization error: Cannot add 'prop' properties into initializer, token is reserved");
           }
           ;
-          console.log(BUFFER.elementProperty.globalVariable);
+          BUFFER.portConfig.onclick(BUFFER.portConfig);
+          console.log(BUFFER.portConfig);
           break;
         default:
           BUFFER.keyMap += KEYS[keyIndex];
