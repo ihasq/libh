@@ -123,7 +123,7 @@ function createHTMLInstance(INSTANCE_ID, STRINGS, KEYS) {
 					BUFFER.keyMap += KEYS[keyIndex]
 
 			};
-		}
+		};
 	};
 };
 
