@@ -74,6 +74,7 @@ function createHTMLInstance(INSTANCE_ID, STRINGS, KEYS) {
       }
       ;
     }
+    ;
   }
   ;
 }
