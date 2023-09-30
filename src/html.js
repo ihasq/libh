@@ -46,8 +46,6 @@ let portRegistry = null;
  * 
  */
 
-
-
 function createHTMLInstance({ STRINGS, KEYS }) {
 
 	const INSTANCE_UUID = window.crypto.randomUUID();
@@ -126,7 +124,9 @@ function createHTMLInstance({ STRINGS, KEYS }) {
 		};
 	};
 
-	setTimeout(() => {
+	console.log(decodeURI(BUFFER.keyMap))
+
+	setTimeout(function() {
 		const TARGET = document.getElementById(RENDER_TARGET_UUID);
 		if(!TARGET) {
 			// instance creation process
@@ -138,17 +138,17 @@ function createHTMLInstance({ STRINGS, KEYS }) {
 		};
 	}, 0);
 
-	console.log(decodeURI(BUFFER.keyMap))
-
-	return Object.assign(new String("<span id=" + RENDER_TARGET_UUID + " hidden></span>"), {
-		LIBH_FLAG: true,
-		getAsNode() {
-			const RETURN_NODE = document.createElement("span");
-			RETURN_NODE.innerText = Date.now();
-			RETURN_NODE.id = RENDER_TARGET_UUID;
-			return RETURN_NODE;
+	return Object.assign(
+		new String("<span id=" + RENDER_TARGET_UUID + " hidden></span>"), {
+			LIBH_FLAG: true,
+			getAsNode() {
+				const RETURN_NODE = document.createElement("span");
+				RETURN_NODE.innerText = Date.now();
+				RETURN_NODE.id = RENDER_TARGET_UUID;
+				return RETURN_NODE;
+			}
 		}
-	});
+	);
 };
 
 function html(STRINGS, ...KEYS) {
