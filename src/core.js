@@ -1,4 +1,4 @@
-const FRAMELOOP = {
+const Frameloop = {
 	isActive: false,
 	rafID: "",
 	ignite() {
@@ -30,19 +30,19 @@ const FRAMELOOP = {
 	},
 
 	run() {
-		if(FRAMELOOP.func.stack.length !== 0) {
-			for(let i = 0; i < FRAMELOOP.func.stack.length; i++) {
-				if(FRAMELOOP.func.stack[i].result !== FRAMELOOP.func.stack[i].funcBody()) {
+		if(Frameloop.func.stack.length !== 0) {
+			for(let i = 0; i < Frameloop.func.stack.length; i++) {
+				if(Frameloop.func.stack[i].result !== Frameloop.func.stack[i].funcBody()) {
 				}
 			}
 		}
-		if(FRAMELOOP.task.stack.length !== 0) {
-			for(let i = 0; i < FRAMELOOP.task.stack.length; i++) {
-				FRAMELOOP.task.stack[i]();
+		if(Frameloop.task.stack.length !== 0) {
+			for(let i = 0; i < Frameloop.task.stack.length; i++) {
+				Frameloop.task.stack[i]();
 			}
 		};
-		FRAMELOOP.task.stack = [];
-		window.requestAnimationFrame(FRAMELOOP.run);
+		Frameloop.task.stack = [];
+		window.requestAnimationFrame(Frameloop.run);
 	},
 };
 
@@ -79,7 +79,7 @@ class LibhIdentifier extends String {
 };
 
 export {
-	FRAMELOOP as frameloop,
+	Frameloop,
 	PLUGIN_REGISTRY,
 	getDeepCopy,
 	LibhIdentifier
