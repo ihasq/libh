@@ -15,8 +15,6 @@ function getDeepCopy(objectData) {
   ;
   return RETURN_BUFFER;
 }
-
-// src/html.js
 var LibhIdentifier = class extends String {
   constructor({ uuid }) {
     super(`<span id=${uuid} hidden></span>`);
@@ -31,6 +29,8 @@ var LibhIdentifier = class extends String {
     });
   }
 };
+
+// src/html.js
 function hook(BASE_CLASS, TARGET, ADDITION) {
   if (BASE_CLASS.prototype[TARGET])
     BASE_CLASS = BASE_CLASS.prototype;
@@ -86,7 +86,7 @@ function createHTMLInstance({ STRINGS, KEYS }) {
     portProperty: {}
   };
   for (let keyIndex = 0; keyIndex < STRINGS.length; keyIndex++) {
-    BUFFER2.keyMap += encodeURI(STRINGS[keyIndex]);
+    BUFFER2.keyMap += STRINGS[keyIndex];
     if (keyIndex + 1 !== STRINGS.length) {
       switch (typeof KEYS[keyIndex]) {
         case "function":
@@ -104,12 +104,12 @@ function createHTMLInstance({ STRINGS, KEYS }) {
         case "object":
           BUFFER2.keyMap += ` \${${BUFFER2.INSTANCE_UUID}:${keyIndex}} `;
           BUFFER2.portConfig = KEYS[keyIndex];
-          if ("global" in BUFFER2.portConfig) {
-            BUFFER2.portConfig.global = getDeepCopy(BUFFER2.portConfig.global);
-          }
-          ;
           if ("prop" in BUFFER2.portConfig) {
             throw new Error("Element initialization error: Cannot add 'prop' properties into initializer, token is reserved");
+          }
+          ;
+          if ("global" in BUFFER2.portConfig) {
+            BUFFER2.portConfig.global = getDeepCopy(BUFFER2.portConfig.global);
           }
           ;
           BUFFER2.portConfig.onclick(BUFFER2.portConfig);
@@ -123,7 +123,7 @@ function createHTMLInstance({ STRINGS, KEYS }) {
     ;
   }
   ;
-  console.log(decodeURI(BUFFER2.keyMap));
+  console.log(BUFFER2.keyMap);
   BUFFER2.returnObject = new LibhIdentifier({ uuid: BUFFER2.RENDER_TARGET_UUID });
   setTimeout(function() {
     const TARGET = document.getElementById(BUFFER2.RENDER_TARGET_UUID);

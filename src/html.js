@@ -1,20 +1,5 @@
 import * as CORE from "./core.js";
 
-class LibhIdentifier extends String {
-	constructor({ uuid }) {
-		super(`<span id=${uuid} hidden></span>`);
-	};
-	LIBH_STATIC = {
-		FLAG: true,
-		getAsNode() {
-			const RETURN_NODE = document.createElement("span");
-			RETURN_NODE.innerText = Date.now();
-			RETURN_NODE.id = BUFFER.RENDER_TARGET_UUID;
-			return RETURN_NODE;
-		},
-	};
-};
-
 /*
  * 	krmbn0576 さんに感謝します: Qiita記事「JavaScriptのフックパターンの楽な書き方」
  * 	https://qiita.com/krmbn0576/items/473e18e182972b41dd1b
@@ -93,7 +78,7 @@ function createHTMLInstance({ STRINGS, KEYS }) {
 	};
 
 	for(let keyIndex = 0; keyIndex < STRINGS.length; keyIndex++) {
-		BUFFER.keyMap += encodeURI(STRINGS[keyIndex]);
+		BUFFER.keyMap += STRINGS[keyIndex];
 		if(keyIndex + 1 !== STRINGS.length) {
 			switch(typeof KEYS[keyIndex]) {
 				case "function":
@@ -111,26 +96,24 @@ function createHTMLInstance({ STRINGS, KEYS }) {
 				case "object":
 					BUFFER.keyMap += ` \${${BUFFER.INSTANCE_UUID}:${keyIndex}} `;
 					BUFFER.portConfig = KEYS[keyIndex];
+					if("prop" in BUFFER.portConfig) {
+						throw new Error("Element initialization error: Cannot add 'prop' properties into initializer, token is reserved")
+					};
 					if("global" in BUFFER.portConfig) {
 						BUFFER.portConfig.global = CORE.getDeepCopy(BUFFER.portConfig.global);
-					};
-					if(("prop" in BUFFER.portConfig)) {
-						throw new Error("Element initialization error: Cannot add 'prop' properties into initializer, token is reserved")
 					};
 					BUFFER.portConfig.onclick(BUFFER.portConfig)
 					console.log((BUFFER.portConfig))
 					break;
 
-				default:
-					BUFFER.keyMap += KEYS[keyIndex]
-
+				default: BUFFER.keyMap += KEYS[keyIndex]
 			};
 		};
 	};
 
-	console.log(decodeURI(BUFFER.keyMap));
+	console.log(BUFFER.keyMap);
 
-	BUFFER.returnObject = new LibhIdentifier({ uuid: BUFFER.RENDER_TARGET_UUID })
+	BUFFER.returnObject = new CORE.LibhIdentifier({ uuid: BUFFER.RENDER_TARGET_UUID })
 
 	setTimeout(function() {
 		const TARGET = document.getElementById(BUFFER.RENDER_TARGET_UUID);
