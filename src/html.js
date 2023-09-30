@@ -134,7 +134,8 @@ function html(STRINGS, ...KEYS) {
 		LIBH_FLAG: true,
 		getAsNode() {
 			const RETURN_NODE = document.createElement("span");
-			RETURN_NODE.innerText = Date.now()
+			RETURN_NODE.innerText = Date.now();
+			RETURN_NODE.id = RENDER_TARGET_UUID;
 			return RETURN_NODE;
 		}
 	});
@@ -147,7 +148,7 @@ function html(STRINGS, ...KEYS) {
 		} else {
 			// appending process
 			console.log("html appended");
-			TARGET.replaceWith(Date.now());
+			TARGET.removeAttribute("id")
 		};
 	}, 0);
 	return HTML_INSTANCE;
@@ -182,7 +183,7 @@ function hook(BASE_CLASS, TARGET, ADDITION) {
 	};
 };
 
-hook(Element, "appendChild", function() {
+hook(Node, "appendChild", function() {
 	arguments[arguments.length - 1].apply(
 		this,
 		(arguments[0].LIBH_FLAG)? [arguments[0].getAsNode()] : arguments
