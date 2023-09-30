@@ -125,8 +125,8 @@ function createHTMLInstance({ STRINGS, KEYS }) {
 		} else {
 			// appending process
 			console.log("html appended");
-			TARGET.removeAttribute("hidden")
-			TARGET.removeAttribute("id")
+			TARGET.removeAttribute("id");
+			TARGET.removeAttribute("hidden");
 		};
 	}, 0);
 

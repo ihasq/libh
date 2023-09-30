@@ -108,8 +108,8 @@ function createHTMLInstance({ STRINGS, KEYS }) {
       console.log(`instance created: ${BUFFER.INSTANCE_UUID}`);
     } else {
       console.log("html appended");
-      TARGET.removeAttribute("hidden");
       TARGET.removeAttribute("id");
+      TARGET.removeAttribute("hidden");
     }
     ;
   }, 0);
