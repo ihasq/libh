@@ -93,10 +93,10 @@ function createHTMLInstance(INSTANCE_ID, STRINGS, KEYS) {
 						BUFFER.keyMap += ` \${${INSTANCE_ID}:${keyIndex}} `;
 						throw new Error("Can not use async function");
 					} else {
-						// const typeMap = CORE.getDeepCopy(KEYS[keyIndex](new Proxy({}, BUFFER.proxyHandleTemplate)));
-						// const resultBuffer = KEYS[keyIndex](typeMap);
-						// resultBuffer.onclick();
-						// console.log(typeMap);
+						const typeMap = CORE.getDeepCopy(KEYS[keyIndex](new Proxy({}, BUFFER.proxyHandleTemplate)));
+						const resultBuffer = KEYS[keyIndex](typeMap);
+						resultBuffer.onclick();
+						console.log(typeMap);
 					};
 					break;
 						
@@ -131,8 +131,10 @@ function html(STRINGS, ...KEYS) {
 	const INSTANCE_UUID = window.crypto.randomUUID();
 	const RENDER_TARGET_UUID = window.crypto.randomUUID();
 	const HTML_INSTANCE = Object.assign(new String("<span id=" + RENDER_TARGET_UUID + " hidden></span>"), {
+		id: RENDER_TARGET_UUID,
 		LIBH_UUID: INSTANCE_UUID,
 	});
+	createHTMLInstance(window.crypto.randomUUID(), STRINGS, KEYS);
 	setTimeout(() => {
 		const TARGET = document.getElementById(RENDER_TARGET_UUID);
 		if(!TARGET) {
@@ -141,9 +143,7 @@ function html(STRINGS, ...KEYS) {
 		} else {
 			// appending process
 			console.log("html appended");
-			const APPEND_TARGET = TARGET.parentElement;
-			TARGET.remove();
-			createHTMLInstance(window.crypto.randomUUID(), STRINGS, KEYS);
+			TARGET.replaceWith(Date.now());
 		};
 	}, 0);
 	return HTML_INSTANCE;
