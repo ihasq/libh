@@ -15,32 +15,6 @@ const PARSE_BUFFER = {
 
 let portRegistry = null;
 
-class LibhReferenceObject {
-	constructor() {
-
-	}
-};
-
-/**
- * 
- * @param { object } objectData 
- * @returns { object }
- */
-
-
-
-// class LibhNumber {
-// 	constructor() {
-// 	};
-// 	valueOf() {
-// 		return 0
-// 	}
-// }
-
-// let test = new LibhNumber();
-// test++
-// console.log(test)
-
 /**
  * 
  * @param { String } INSTANCE_ID
@@ -89,8 +63,8 @@ function createHTMLInstance(INSTANCE_ID, STRINGS, KEYS) {
 		if(keyIndex + 1 !== STRINGS.length) {
 			switch(typeof KEYS[keyIndex]) {
 				case "function":
+					BUFFER.keyMap += ` \${${INSTANCE_ID}:${keyIndex}} `;
 					if(KEYS[keyIndex].constructor.name !== "Function") {
-						BUFFER.keyMap += ` \${${INSTANCE_ID}:${keyIndex}} `;
 						throw new Error("Can not use async function");
 					} else {
 						const typeMap = CORE.getDeepCopy(KEYS[keyIndex](new Proxy({}, BUFFER.proxyHandleTemplate)));
@@ -116,7 +90,7 @@ function createHTMLInstance(INSTANCE_ID, STRINGS, KEYS) {
 						throw new Error("Element initialization error: Cannot add 'prop' properties into initializer, token is reserved")
 					};
 					BUFFER.portConfig.onclick(BUFFER.portConfig)
-					console.log(BUFFER.portConfig)
+					console.log((BUFFER.portConfig))
 					break;
 
 				default:
@@ -125,6 +99,7 @@ function createHTMLInstance(INSTANCE_ID, STRINGS, KEYS) {
 			};
 		};
 	};
+	console.log(decodeURI(BUFFER.keyMap))
 };
 
 function html(STRINGS, ...KEYS) {

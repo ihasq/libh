@@ -48,8 +48,8 @@ function createHTMLInstance(INSTANCE_ID, STRINGS, KEYS) {
     if (keyIndex + 1 !== STRINGS.length) {
       switch (typeof KEYS[keyIndex]) {
         case "function":
+          BUFFER.keyMap += ` \${${INSTANCE_ID}:${keyIndex}} `;
           if (KEYS[keyIndex].constructor.name !== "Function") {
-            BUFFER.keyMap += ` \${${INSTANCE_ID}:${keyIndex}} `;
             throw new Error("Can not use async function");
           } else {
             const typeMap = getDeepCopy(KEYS[keyIndex](new Proxy({}, BUFFER.proxyHandleTemplate)));
@@ -81,6 +81,7 @@ function createHTMLInstance(INSTANCE_ID, STRINGS, KEYS) {
     ;
   }
   ;
+  console.log(decodeURI(BUFFER.keyMap));
 }
 function html(STRINGS, ...KEYS) {
   const INSTANCE_UUID = window.crypto.randomUUID();
