@@ -90,12 +90,6 @@ function createHTMLInstance({ STRINGS, KEYS }) {
 					break;
 						
 				case "object":
-					// function checkObjectKey(objRef) {
-					// 	const OBJ_STACK = Object.create(null);
-					// 	for(let objIndex = 0; objIndex < Object.keys(OBJ_STACK).length; objIndex++) {
-					// 		if(OBJ_STACK)
-					// 	}
-					// };
 					BUFFER.keyMap += ` \${${BUFFER.INSTANCE_UUID}:${keyIndex}} `;
 					BUFFER.portConfig = KEYS[keyIndex];
 					if("global" in BUFFER.portConfig) {
