@@ -36,6 +36,20 @@ function getDeepCopy(objectData) {
 }
 
 // src/html.js
+var LibhIdentifier = class extends String {
+  constructor({ uuid }) {
+    super(`<span id=${uuid} hidden></span>`);
+  }
+  LIBH_STATIC = {
+    FLAG: true,
+    getAsNode() {
+      const RETURN_NODE = document.createElement("span");
+      RETURN_NODE.innerText = Date.now();
+      RETURN_NODE.id = BUFFER.RENDER_TARGET_UUID;
+      return RETURN_NODE;
+    }
+  };
+};
 function hook(BASE_CLASS, TARGET, ADDITION) {
   if (BASE_CLASS.prototype[TARGET])
     BASE_CLASS = BASE_CLASS.prototype;
@@ -57,20 +71,6 @@ hook(Node, "appendChild", function() {
 var PARSE_BUFFER = {
   registry: /* @__PURE__ */ Object.create(null),
   HTMLParser: new DOMParser()
-};
-var LibhIdentifier = class extends String {
-  constructor({ uuid }) {
-    super(`<span id=${uuid} hidden></span>`);
-  }
-  LIBH_STATIC = {
-    FLAG: true,
-    getAsNode() {
-      const RETURN_NODE = document.createElement("span");
-      RETURN_NODE.innerText = Date.now();
-      RETURN_NODE.id = BUFFER.RENDER_TARGET_UUID;
-      return RETURN_NODE;
-    }
-  };
 };
 function createHTMLInstance({ STRINGS, KEYS }) {
   const BUFFER2 = {

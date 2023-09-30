@@ -1,5 +1,20 @@
 import * as CORE from "./core.js";
 
+class LibhIdentifier extends String {
+	constructor({ uuid }) {
+		super(`<span id=${uuid} hidden></span>`);
+	};
+	LIBH_STATIC = {
+		FLAG: true,
+		getAsNode() {
+			const RETURN_NODE = document.createElement("span");
+			RETURN_NODE.innerText = Date.now();
+			RETURN_NODE.id = BUFFER.RENDER_TARGET_UUID;
+			return RETURN_NODE;
+		},
+	};
+};
+
 /*
  * 	krmbn0576 さんに感謝します: Qiita記事「JavaScriptのフックパターンの楽な書き方」
  * 	https://qiita.com/krmbn0576/items/473e18e182972b41dd1b
@@ -29,20 +44,6 @@ const PARSE_BUFFER = {
 
 let portRegistry = null;
 
-class LibhIdentifier extends String {
-	constructor({ uuid }) {
-		super(`<span id=${uuid} hidden></span>`);
-	};
-	LIBH_STATIC = {
-		FLAG: true,
-		getAsNode() {
-			const RETURN_NODE = document.createElement("span");
-			RETURN_NODE.innerText = Date.now();
-			RETURN_NODE.id = BUFFER.RENDER_TARGET_UUID;
-			return RETURN_NODE;
-		},
-	};
-};
 
 /**
  * 
