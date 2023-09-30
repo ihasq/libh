@@ -18,8 +18,7 @@ function hook(BASE_CLASS, TARGET, ADDITION) {
 
 hook(Node, "appendChild", function() {
 	arguments[arguments.length - 1].apply(
-		this,
-		(arguments[0].LIBH_FLAG)? [arguments[0].getAsNode()] : arguments
+		this, (arguments[0].LIBH_STATIC.FLAG)? [arguments[0].LIBH_STATIC.getAsNode()] : arguments
 	);
 });
 
@@ -116,7 +115,7 @@ function createHTMLInstance({ STRINGS, KEYS }) {
 		};
 	};
 
-	console.log(decodeURI(BUFFER.keyMap))
+	console.log(decodeURI(BUFFER.keyMap));
 
 	setTimeout(function() {
 		const TARGET = document.getElementById(BUFFER.RENDER_TARGET_UUID);
@@ -126,19 +125,22 @@ function createHTMLInstance({ STRINGS, KEYS }) {
 		} else {
 			// appending process
 			console.log("html appended");
+			TARGET.removeAttribute("hidden")
 			TARGET.removeAttribute("id")
 		};
 	}, 0);
 
 	return Object.assign(
-		new String("<span id=" + BUFFER.RENDER_TARGET_UUID + " hidden></span>"), {
-			LIBH_FLAG: true,
-			getAsNode() {
-				const RETURN_NODE = document.createElement("span");
-				RETURN_NODE.innerText = Date.now();
-				RETURN_NODE.id = BUFFER.RENDER_TARGET_UUID;
-				return RETURN_NODE;
-			}
+		new String(`<span id=${BUFFER.RENDER_TARGET_UUID} hidden>${Date.now()}</span>`), {
+			LIBH_STATIC: {
+				FLAG: true,
+				getAsNode() {
+					const RETURN_NODE = document.createElement("span");
+					RETURN_NODE.innerText = Date.now();
+					RETURN_NODE.id = BUFFER.RENDER_TARGET_UUID;
+					return RETURN_NODE;
+				},
+			},
 		}
 	);
 };
