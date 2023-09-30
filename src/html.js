@@ -131,8 +131,12 @@ function html(STRINGS, ...KEYS) {
 	const INSTANCE_UUID = window.crypto.randomUUID();
 	const RENDER_TARGET_UUID = window.crypto.randomUUID();
 	const HTML_INSTANCE = Object.assign(new String("<span id=" + RENDER_TARGET_UUID + " hidden></span>"), {
-		id: RENDER_TARGET_UUID,
-		LIBH_UUID: INSTANCE_UUID,
+		LIBH_FLAG: true,
+		getAsNode() {
+			const RETURN_NODE = document.createElement("span");
+			RETURN_NODE.innerText = Date.now()
+			return RETURN_NODE;
+		}
 	});
 	createHTMLInstance(window.crypto.randomUUID(), STRINGS, KEYS);
 	setTimeout(() => {
@@ -161,5 +165,28 @@ html.getReservedKey = [
 	"onclick",
 	"onchange"
 ];
+
+/*
+ * 	krmbn0576 氏に感謝します: Qiita記事「JavaScriptのフックパターンの楽な書き方」
+ * 	https://qiita.com/krmbn0576/items/473e18e182972b41dd1b
+ */
+
+function hook(BASE_CLASS, TARGET, ADDITION) {
+	if (BASE_CLASS.prototype[TARGET]) BASE_CLASS = BASE_CLASS.prototype;
+	else if (!BASE_CLASS[TARGET]) throw new Error('Cannot find hook');
+	const ORIGIN = BASE_CLASS[TARGET];
+	BASE_CLASS[TARGET] = function() {
+		arguments[arguments.length] = ORIGIN;
+		arguments.length++;
+		return ADDITION.apply(this, arguments);
+	};
+};
+
+hook(Element, "appendChild", function() {
+	arguments[arguments.length - 1].apply(
+		this,
+		(arguments[0].LIBH_FLAG)? [arguments[0].getAsNode()] : arguments
+	);
+});
 
 export { html };

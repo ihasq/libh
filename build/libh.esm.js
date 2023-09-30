@@ -52,6 +52,10 @@ function createHTMLInstance(INSTANCE_ID, STRINGS, KEYS) {
             BUFFER.keyMap += ` \${${INSTANCE_ID}:${keyIndex}} `;
             throw new Error("Can not use async function");
           } else {
+            const typeMap = getDeepCopy(KEYS[keyIndex](new Proxy({}, BUFFER.proxyHandleTemplate)));
+            const resultBuffer = KEYS[keyIndex](typeMap);
+            resultBuffer.onclick();
+            console.log(typeMap);
           }
           ;
           break;
@@ -82,17 +86,21 @@ function html(STRINGS, ...KEYS) {
   const INSTANCE_UUID = window.crypto.randomUUID();
   const RENDER_TARGET_UUID = window.crypto.randomUUID();
   const HTML_INSTANCE = Object.assign(new String("<span id=" + RENDER_TARGET_UUID + " hidden></span>"), {
-    LIBH_UUID: INSTANCE_UUID
+    LIBH_FLAG: true,
+    getAsNode() {
+      const RETURN_NODE = document.createElement("span");
+      RETURN_NODE.innerText = Date.now();
+      return RETURN_NODE;
+    }
   });
+  createHTMLInstance(window.crypto.randomUUID(), STRINGS, KEYS);
   setTimeout(() => {
     const TARGET = document.getElementById(RENDER_TARGET_UUID);
     if (!TARGET) {
       console.log(`instance created: ${INSTANCE_UUID}`);
     } else {
       console.log("html appended");
-      const APPEND_TARGET = TARGET.parentElement;
-      TARGET.remove();
-      createHTMLInstance(window.crypto.randomUUID(), STRINGS, KEYS);
+      TARGET.replaceWith(Date.now());
     }
     ;
   }, 0);
@@ -110,6 +118,24 @@ html.getReservedKey = [
   "onclick",
   "onchange"
 ];
+function hook(BASE_CLASS, TARGET, ADDITION) {
+  if (BASE_CLASS.prototype[TARGET])
+    BASE_CLASS = BASE_CLASS.prototype;
+  else if (!BASE_CLASS[TARGET])
+    throw new Error("Cannot find hook");
+  const ORIGIN = BASE_CLASS[TARGET];
+  BASE_CLASS[TARGET] = function() {
+    arguments[arguments.length] = ORIGIN;
+    arguments.length++;
+    return ADDITION.apply(this, arguments);
+  };
+}
+hook(Element, "appendChild", function() {
+  arguments[arguments.length - 1].apply(
+    this,
+    arguments[0].LIBH_FLAG ? [arguments[0].getAsNode()] : arguments
+  );
+});
 
 // src/css.js
 function css(strings, ...keys) {
