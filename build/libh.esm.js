@@ -33,9 +33,9 @@ var PARSE_BUFFER = {
   HTMLParser: new DOMParser()
 };
 function createHTMLInstance({ STRINGS, KEYS }) {
-  const INSTANCE_UUID = window.crypto.randomUUID();
-  const RENDER_TARGET_UUID = window.crypto.randomUUID();
   const BUFFER = {
+    INSTANCE_UUID: window.crypto.randomUUID(),
+    RENDER_TARGET_UUID: window.crypto.randomUUID(),
     keyMap: "",
     funcList: [],
     portConfig: /* @__PURE__ */ Object.create(null),
@@ -68,7 +68,7 @@ function createHTMLInstance({ STRINGS, KEYS }) {
     if (keyIndex + 1 !== STRINGS.length) {
       switch (typeof KEYS[keyIndex]) {
         case "function":
-          BUFFER.keyMap += ` \${${INSTANCE_UUID}:${keyIndex}} `;
+          BUFFER.keyMap += ` \${${BUFFER.INSTANCE_UUID}:${keyIndex}} `;
           if (KEYS[keyIndex].constructor.name !== "Function") {
             throw new Error("Can not use async function");
           } else {
@@ -80,7 +80,7 @@ function createHTMLInstance({ STRINGS, KEYS }) {
           ;
           break;
         case "object":
-          BUFFER.keyMap += ` \${${INSTANCE_UUID}:${keyIndex}} `;
+          BUFFER.keyMap += ` \${${BUFFER.INSTANCE_UUID}:${keyIndex}} `;
           BUFFER.portConfig = KEYS[keyIndex];
           if ("global" in BUFFER.portConfig) {
             BUFFER.portConfig.global = getDeepCopy(BUFFER.portConfig.global);
@@ -101,26 +101,29 @@ function createHTMLInstance({ STRINGS, KEYS }) {
     ;
   }
   ;
-  setTimeout(() => {
-    const TARGET = document.getElementById(RENDER_TARGET_UUID);
+  console.log(decodeURI(BUFFER.keyMap));
+  setTimeout(function() {
+    const TARGET = document.getElementById(BUFFER.RENDER_TARGET_UUID);
     if (!TARGET) {
-      console.log(`instance created: ${INSTANCE_UUID}`);
+      console.log(`instance created: ${BUFFER.INSTANCE_UUID}`);
     } else {
       console.log("html appended");
       TARGET.removeAttribute("id");
     }
     ;
   }, 0);
-  console.log(decodeURI(BUFFER.keyMap));
-  return Object.assign(new String("<span id=" + RENDER_TARGET_UUID + " hidden></span>"), {
-    LIBH_FLAG: true,
-    getAsNode() {
-      const RETURN_NODE = document.createElement("span");
-      RETURN_NODE.innerText = Date.now();
-      RETURN_NODE.id = RENDER_TARGET_UUID;
-      return RETURN_NODE;
+  return Object.assign(
+    new String("<span id=" + BUFFER.RENDER_TARGET_UUID + " hidden></span>"),
+    {
+      LIBH_FLAG: true,
+      getAsNode() {
+        const RETURN_NODE = document.createElement("span");
+        RETURN_NODE.innerText = Date.now();
+        RETURN_NODE.id = BUFFER.RENDER_TARGET_UUID;
+        return RETURN_NODE;
+      }
     }
-  });
+  );
 }
 function html(STRINGS, ...KEYS) {
   return createHTMLInstance({ STRINGS, KEYS });
