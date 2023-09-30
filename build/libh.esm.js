@@ -90,6 +90,7 @@ function html(STRINGS, ...KEYS) {
     getAsNode() {
       const RETURN_NODE = document.createElement("span");
       RETURN_NODE.innerText = Date.now();
+      RETURN_NODE.id = RENDER_TARGET_UUID;
       return RETURN_NODE;
     }
   });
@@ -100,7 +101,7 @@ function html(STRINGS, ...KEYS) {
       console.log(`instance created: ${INSTANCE_UUID}`);
     } else {
       console.log("html appended");
-      TARGET.replaceWith(Date.now());
+      TARGET.removeAttribute("id");
     }
     ;
   }, 0);
@@ -130,7 +131,7 @@ function hook(BASE_CLASS, TARGET, ADDITION) {
     return ADDITION.apply(this, arguments);
   };
 }
-hook(Element, "appendChild", function() {
+hook(Node, "appendChild", function() {
   arguments[arguments.length - 1].apply(
     this,
     arguments[0].LIBH_FLAG ? [arguments[0].getAsNode()] : arguments
