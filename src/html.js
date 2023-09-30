@@ -23,14 +23,6 @@ hook(Node, "appendChild", function() {
 	);
 });
 
-/*
-	html instance constructor
-
-	workflow:
-	1. parse joined template literal string. search where the key relates to (attribute or textNode)
-	2. parse function
-*/
-
 const PARSE_BUFFER = {
 	registry: Object.create(null),
 	HTMLParser: new DOMParser(),
@@ -40,7 +32,6 @@ let portRegistry = null;
 
 /**
  * 
- * @param { String } INSTANCE_ID
  * @param { String[] } STRINGS 
  * @param { Function[] } KEYS 
  * 
@@ -48,10 +39,11 @@ let portRegistry = null;
 
 function createHTMLInstance({ STRINGS, KEYS }) {
 
-	const INSTANCE_UUID = window.crypto.randomUUID();
-	const RENDER_TARGET_UUID = window.crypto.randomUUID();
-
 	const BUFFER = {
+
+		INSTANCE_UUID: window.crypto.randomUUID(),
+		RENDER_TARGET_UUID: window.crypto.randomUUID(),
+
 		keyMap: "",
 		funcList: [],
 		portConfig: Object.create(null),
@@ -87,7 +79,7 @@ function createHTMLInstance({ STRINGS, KEYS }) {
 		if(keyIndex + 1 !== STRINGS.length) {
 			switch(typeof KEYS[keyIndex]) {
 				case "function":
-					BUFFER.keyMap += ` \${${INSTANCE_UUID}:${keyIndex}} `;
+					BUFFER.keyMap += ` \${${BUFFER.INSTANCE_UUID}:${keyIndex}} `;
 					if(KEYS[keyIndex].constructor.name !== "Function") {
 						throw new Error("Can not use async function");
 					} else {
@@ -105,7 +97,7 @@ function createHTMLInstance({ STRINGS, KEYS }) {
 					// 		if(OBJ_STACK)
 					// 	}
 					// };
-					BUFFER.keyMap += ` \${${INSTANCE_UUID}:${keyIndex}} `;
+					BUFFER.keyMap += ` \${${BUFFER.INSTANCE_UUID}:${keyIndex}} `;
 					BUFFER.portConfig = KEYS[keyIndex];
 					if("global" in BUFFER.portConfig) {
 						BUFFER.portConfig.global = CORE.getDeepCopy(BUFFER.portConfig.global);
@@ -127,10 +119,10 @@ function createHTMLInstance({ STRINGS, KEYS }) {
 	console.log(decodeURI(BUFFER.keyMap))
 
 	setTimeout(function() {
-		const TARGET = document.getElementById(RENDER_TARGET_UUID);
+		const TARGET = document.getElementById(BUFFER.RENDER_TARGET_UUID);
 		if(!TARGET) {
 			// instance creation process
-			console.log(`instance created: ${INSTANCE_UUID}`);
+			console.log(`instance created: ${BUFFER.INSTANCE_UUID}`);
 		} else {
 			// appending process
 			console.log("html appended");
@@ -139,12 +131,12 @@ function createHTMLInstance({ STRINGS, KEYS }) {
 	}, 0);
 
 	return Object.assign(
-		new String("<span id=" + RENDER_TARGET_UUID + " hidden></span>"), {
+		new String("<span id=" + BUFFER.RENDER_TARGET_UUID + " hidden></span>"), {
 			LIBH_FLAG: true,
 			getAsNode() {
 				const RETURN_NODE = document.createElement("span");
 				RETURN_NODE.innerText = Date.now();
-				RETURN_NODE.id = RENDER_TARGET_UUID;
+				RETURN_NODE.id = BUFFER.RENDER_TARGET_UUID;
 				return RETURN_NODE;
 			}
 		}
