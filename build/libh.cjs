@@ -36,11 +36,31 @@ function getDeepCopy(objectData) {
 }
 
 // src/html.js
+function hook(BASE_CLASS, TARGET, ADDITION) {
+  if (BASE_CLASS.prototype[TARGET])
+    BASE_CLASS = BASE_CLASS.prototype;
+  else if (!BASE_CLASS[TARGET])
+    throw new Error("Cannot find hook");
+  const ORIGIN = BASE_CLASS[TARGET];
+  BASE_CLASS[TARGET] = function() {
+    arguments[arguments.length] = ORIGIN;
+    arguments.length++;
+    return ADDITION.apply(this, arguments);
+  };
+}
+hook(Node, "appendChild", function() {
+  arguments[arguments.length - 1].apply(
+    this,
+    arguments[0].LIBH_FLAG ? [arguments[0].getAsNode()] : arguments
+  );
+});
 var PARSE_BUFFER = {
   registry: /* @__PURE__ */ Object.create(null),
   HTMLParser: new DOMParser()
 };
-function createHTMLInstance(INSTANCE_ID, STRINGS, KEYS) {
+function createHTMLInstance({ STRINGS, KEYS }) {
+  const INSTANCE_UUID = window.crypto.randomUUID();
+  const RENDER_TARGET_UUID = window.crypto.randomUUID();
   const BUFFER = {
     keyMap: "",
     funcList: [],
@@ -74,7 +94,7 @@ function createHTMLInstance(INSTANCE_ID, STRINGS, KEYS) {
     if (keyIndex + 1 !== STRINGS.length) {
       switch (typeof KEYS[keyIndex]) {
         case "function":
-          BUFFER.keyMap += ` \${${INSTANCE_ID}:${keyIndex}} `;
+          BUFFER.keyMap += ` \${${INSTANCE_UUID}:${keyIndex}} `;
           if (KEYS[keyIndex].constructor.name !== "Function") {
             throw new Error("Can not use async function");
           } else {
@@ -86,7 +106,7 @@ function createHTMLInstance(INSTANCE_ID, STRINGS, KEYS) {
           ;
           break;
         case "object":
-          BUFFER.keyMap += ` \${${INSTANCE_ID}:${keyIndex}} `;
+          BUFFER.keyMap += ` \${${INSTANCE_UUID}:${keyIndex}} `;
           BUFFER.portConfig = KEYS[keyIndex];
           if ("global" in BUFFER.portConfig) {
             BUFFER.portConfig.global = getDeepCopy(BUFFER.portConfig.global);
@@ -107,21 +127,6 @@ function createHTMLInstance(INSTANCE_ID, STRINGS, KEYS) {
     ;
   }
   ;
-  console.log(decodeURI(BUFFER.keyMap));
-}
-function html(STRINGS, ...KEYS) {
-  const INSTANCE_UUID = window.crypto.randomUUID();
-  const RENDER_TARGET_UUID = window.crypto.randomUUID();
-  const HTML_INSTANCE = Object.assign(new String("<span id=" + RENDER_TARGET_UUID + " hidden></span>"), {
-    LIBH_FLAG: true,
-    getAsNode() {
-      const RETURN_NODE = document.createElement("span");
-      RETURN_NODE.innerText = Date.now();
-      RETURN_NODE.id = RENDER_TARGET_UUID;
-      return RETURN_NODE;
-    }
-  });
-  createHTMLInstance(window.crypto.randomUUID(), STRINGS, KEYS);
   setTimeout(() => {
     const TARGET = document.getElementById(RENDER_TARGET_UUID);
     if (!TARGET) {
@@ -132,7 +137,19 @@ function html(STRINGS, ...KEYS) {
     }
     ;
   }, 0);
-  return HTML_INSTANCE;
+  console.log(decodeURI(BUFFER.keyMap));
+  return Object.assign(new String("<span id=" + RENDER_TARGET_UUID + " hidden></span>"), {
+    LIBH_FLAG: true,
+    getAsNode() {
+      const RETURN_NODE = document.createElement("span");
+      RETURN_NODE.innerText = Date.now();
+      RETURN_NODE.id = RENDER_TARGET_UUID;
+      return RETURN_NODE;
+    }
+  });
+}
+function html(STRINGS, ...KEYS) {
+  return createHTMLInstance({ STRINGS, KEYS });
 }
 html.getReservedKey = [
   "global",
@@ -146,24 +163,6 @@ html.getReservedKey = [
   "onclick",
   "onchange"
 ];
-function hook(BASE_CLASS, TARGET, ADDITION) {
-  if (BASE_CLASS.prototype[TARGET])
-    BASE_CLASS = BASE_CLASS.prototype;
-  else if (!BASE_CLASS[TARGET])
-    throw new Error("Cannot find hook");
-  const ORIGIN = BASE_CLASS[TARGET];
-  BASE_CLASS[TARGET] = function() {
-    arguments[arguments.length] = ORIGIN;
-    arguments.length++;
-    return ADDITION.apply(this, arguments);
-  };
-}
-hook(Node, "appendChild", function() {
-  arguments[arguments.length - 1].apply(
-    this,
-    arguments[0].LIBH_FLAG ? [arguments[0].getAsNode()] : arguments
-  );
-});
 
 // src/css.js
 function css(strings, ...keys) {
