@@ -167,7 +167,7 @@ html.getReservedKey = [
 ];
 
 /*
- * 	krmbn0576 氏に感謝します: Qiita記事「JavaScriptのフックパターンの楽な書き方」
+ * 	krmbn0576 さんに感謝します: Qiita記事「JavaScriptのフックパターンの楽な書き方」
  * 	https://qiita.com/krmbn0576/items/473e18e182972b41dd1b
  */
 
