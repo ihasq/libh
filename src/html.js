@@ -29,6 +29,21 @@ const PARSE_BUFFER = {
 
 let portRegistry = null;
 
+class LibhIdentifier extends String {
+	constructor({ uuid }) {
+		super(`<span id=${uuid} hidden></span>`);
+	};
+	LIBH_STATIC = {
+		FLAG: true,
+		getAsNode() {
+			const RETURN_NODE = document.createElement("span");
+			RETURN_NODE.innerText = Date.now();
+			RETURN_NODE.id = BUFFER.RENDER_TARGET_UUID;
+			return RETURN_NODE;
+		},
+	};
+};
+
 /**
  * 
  * @param { String[] } STRINGS 
@@ -36,12 +51,15 @@ let portRegistry = null;
  * 
  */
 
-function createHTMLInstance({ STRINGS, KEYS }) {
 
+function createHTMLInstance({ STRINGS, KEYS }) {
+	
 	const BUFFER = {
 
 		INSTANCE_UUID: window.crypto.randomUUID(),
 		RENDER_TARGET_UUID: window.crypto.randomUUID(),
+
+		returnObject: Object.create(null),
 
 		keyMap: "",
 		funcList: [],
@@ -111,11 +129,14 @@ function createHTMLInstance({ STRINGS, KEYS }) {
 
 	console.log(decodeURI(BUFFER.keyMap));
 
+	BUFFER.returnObject = new LibhIdentifier({ uuid: BUFFER.RENDER_TARGET_UUID })
+
 	setTimeout(function() {
 		const TARGET = document.getElementById(BUFFER.RENDER_TARGET_UUID);
 		if(!TARGET) {
 			// instance creation process
 			console.log(`instance created: ${BUFFER.INSTANCE_UUID}`);
+			BUFFER.returnObject.LIBH_STATIC.flag = undefined;
 		} else {
 			// appending process
 			console.log("html appended");
@@ -124,19 +145,7 @@ function createHTMLInstance({ STRINGS, KEYS }) {
 		};
 	}, 0);
 
-	return Object.assign(
-		new String(`<span id=${BUFFER.RENDER_TARGET_UUID} hidden>${Date.now()}</span>`), {
-			LIBH_STATIC: {
-				FLAG: true,
-				getAsNode() {
-					const RETURN_NODE = document.createElement("span");
-					RETURN_NODE.innerText = Date.now();
-					RETURN_NODE.id = BUFFER.RENDER_TARGET_UUID;
-					return RETURN_NODE;
-				},
-			},
-		}
-	);
+	return BUFFER.returnObject;
 };
 
 function html(STRINGS, ...KEYS) {

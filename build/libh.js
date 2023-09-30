@@ -58,10 +58,25 @@ var PARSE_BUFFER = {
   registry: /* @__PURE__ */ Object.create(null),
   HTMLParser: new DOMParser()
 };
+var LibhIdentifier = class extends String {
+  constructor({ uuid }) {
+    super(`<span id=${uuid} hidden></span>`);
+  }
+  LIBH_STATIC = {
+    FLAG: true,
+    getAsNode() {
+      const RETURN_NODE = document.createElement("span");
+      RETURN_NODE.innerText = Date.now();
+      RETURN_NODE.id = BUFFER.RENDER_TARGET_UUID;
+      return RETURN_NODE;
+    }
+  };
+};
 function createHTMLInstance({ STRINGS, KEYS }) {
-  const BUFFER = {
+  const BUFFER2 = {
     INSTANCE_UUID: window.crypto.randomUUID(),
     RENDER_TARGET_UUID: window.crypto.randomUUID(),
+    returnObject: /* @__PURE__ */ Object.create(null),
     keyMap: "",
     funcList: [],
     portConfig: /* @__PURE__ */ Object.create(null),
@@ -90,15 +105,15 @@ function createHTMLInstance({ STRINGS, KEYS }) {
     portProperty: {}
   };
   for (let keyIndex = 0; keyIndex < STRINGS.length; keyIndex++) {
-    BUFFER.keyMap += encodeURI(STRINGS[keyIndex]);
+    BUFFER2.keyMap += encodeURI(STRINGS[keyIndex]);
     if (keyIndex + 1 !== STRINGS.length) {
       switch (typeof KEYS[keyIndex]) {
         case "function":
-          BUFFER.keyMap += ` \${${BUFFER.INSTANCE_UUID}:${keyIndex}} `;
+          BUFFER2.keyMap += ` \${${BUFFER2.INSTANCE_UUID}:${keyIndex}} `;
           if (KEYS[keyIndex].constructor.name !== "Function") {
             throw new Error("Can not use async function");
           } else {
-            const typeMap = getDeepCopy(KEYS[keyIndex](new Proxy({}, BUFFER.proxyHandleTemplate)));
+            const typeMap = getDeepCopy(KEYS[keyIndex](new Proxy({}, BUFFER2.proxyHandleTemplate)));
             const resultBuffer = KEYS[keyIndex](typeMap);
             resultBuffer.onclick();
             console.log(typeMap);
@@ -106,32 +121,34 @@ function createHTMLInstance({ STRINGS, KEYS }) {
           ;
           break;
         case "object":
-          BUFFER.keyMap += ` \${${BUFFER.INSTANCE_UUID}:${keyIndex}} `;
-          BUFFER.portConfig = KEYS[keyIndex];
-          if ("global" in BUFFER.portConfig) {
-            BUFFER.portConfig.global = getDeepCopy(BUFFER.portConfig.global);
+          BUFFER2.keyMap += ` \${${BUFFER2.INSTANCE_UUID}:${keyIndex}} `;
+          BUFFER2.portConfig = KEYS[keyIndex];
+          if ("global" in BUFFER2.portConfig) {
+            BUFFER2.portConfig.global = getDeepCopy(BUFFER2.portConfig.global);
           }
           ;
-          if ("prop" in BUFFER.portConfig) {
+          if ("prop" in BUFFER2.portConfig) {
             throw new Error("Element initialization error: Cannot add 'prop' properties into initializer, token is reserved");
           }
           ;
-          BUFFER.portConfig.onclick(BUFFER.portConfig);
-          console.log(BUFFER.portConfig);
+          BUFFER2.portConfig.onclick(BUFFER2.portConfig);
+          console.log(BUFFER2.portConfig);
           break;
         default:
-          BUFFER.keyMap += KEYS[keyIndex];
+          BUFFER2.keyMap += KEYS[keyIndex];
       }
       ;
     }
     ;
   }
   ;
-  console.log(decodeURI(BUFFER.keyMap));
+  console.log(decodeURI(BUFFER2.keyMap));
+  BUFFER2.returnObject = new LibhIdentifier({ uuid: BUFFER2.RENDER_TARGET_UUID });
   setTimeout(function() {
-    const TARGET = document.getElementById(BUFFER.RENDER_TARGET_UUID);
+    const TARGET = document.getElementById(BUFFER2.RENDER_TARGET_UUID);
     if (!TARGET) {
-      console.log(`instance created: ${BUFFER.INSTANCE_UUID}`);
+      console.log(`instance created: ${BUFFER2.INSTANCE_UUID}`);
+      BUFFER2.returnObject.LIBH_STATIC.flag = void 0;
     } else {
       console.log("html appended");
       TARGET.removeAttribute("id");
@@ -139,20 +156,7 @@ function createHTMLInstance({ STRINGS, KEYS }) {
     }
     ;
   }, 0);
-  return Object.assign(
-    new String(`<span id=${BUFFER.RENDER_TARGET_UUID} hidden>${Date.now()}</span>`),
-    {
-      LIBH_STATIC: {
-        FLAG: true,
-        getAsNode() {
-          const RETURN_NODE = document.createElement("span");
-          RETURN_NODE.innerText = Date.now();
-          RETURN_NODE.id = BUFFER.RENDER_TARGET_UUID;
-          return RETURN_NODE;
-        }
-      }
-    }
-  );
+  return BUFFER2.returnObject;
 }
 function html(STRINGS, ...KEYS) {
   return createHTMLInstance({ STRINGS, KEYS });
