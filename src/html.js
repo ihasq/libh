@@ -23,14 +23,6 @@ const PARSE_BUFFER = {
 
 let portRegistry = null;
 
-
-/**
- * 
- * @param { String[] } STRINGS 
- * @param { Function[] } KEYS 
- * 
- */
-
 class LibhNode extends String {
 
 	#BUFFER;
