@@ -34,6 +34,18 @@ function getDeepCopy(objectData) {
   ;
   return RETURN_BUFFER;
 }
+function hook(BASE_CLASS, TARGET, ADDITION) {
+  if (BASE_CLASS.prototype[TARGET])
+    BASE_CLASS = BASE_CLASS.prototype;
+  else if (!BASE_CLASS[TARGET])
+    throw new Error("Cannot find hook");
+  const ORIGIN = BASE_CLASS[TARGET];
+  BASE_CLASS[TARGET] = function() {
+    arguments[arguments.length] = ORIGIN;
+    arguments.length++;
+    return ADDITION.apply(this, arguments);
+  };
+}
 var LibhIdentifier = class extends String {
   constructor({ uuid }) {
     super(`<span id=${uuid} hidden></span>`);
@@ -48,18 +60,6 @@ var LibhIdentifier = class extends String {
 };
 
 // src/html.js
-function hook(BASE_CLASS, TARGET, ADDITION) {
-  if (BASE_CLASS.prototype[TARGET])
-    BASE_CLASS = BASE_CLASS.prototype;
-  else if (!BASE_CLASS[TARGET])
-    throw new Error("Cannot find hook");
-  const ORIGIN = BASE_CLASS[TARGET];
-  BASE_CLASS[TARGET] = function() {
-    arguments[arguments.length] = ORIGIN;
-    arguments.length++;
-    return ADDITION.apply(this, arguments);
-  };
-}
 hook(Node, "appendChild", function() {
   const HAS_LIBH_FLAG = arguments[0].FLAG === "LIBH_INSTANCE";
   const LIBH_ELEMENT_NODE = arguments[0].getAsNode();
@@ -167,27 +167,32 @@ function createHTMLInstance({ STRINGS, KEYS }) {
 function html(STRINGS, ...KEYS) {
   return createHTMLInstance({ STRINGS, KEYS });
 }
-Object.assign(html, {
-  getReservedKey: [
-    "global",
-    "shared",
-    "prop",
-    "this",
-    "static",
-    "method",
-    "meta",
-    "event",
-    "onclick",
-    "onchange"
-  ],
-  flag() {
-    for (const FLAG_INDEX of arguments) {
-      if (FLAG_INDEX in HTML_FLAG && !HTML_FLAG[FLAG_INDEX]) {
-        HTML_FLAG[FLAG_INDEX] = true;
-      }
-      ;
+html.getReservedKey = [
+  "global",
+  "shared",
+  "prop",
+  "this",
+  "static",
+  "method",
+  "meta",
+  "event",
+  "onclick",
+  "onchange"
+];
+html.flag = function() {
+  for (const FLAG_INDEX of arguments) {
+    if (FLAG_INDEX in HTML_FLAG && !HTML_FLAG[FLAG_INDEX]) {
+      HTML_FLAG[FLAG_INDEX] = true;
     }
     ;
+  }
+  ;
+};
+Object.defineProperties(html.flag, {
+  state: {
+    get: function() {
+      return JSON.parse(JSON.stringify(HTML_FLAG));
+    }
   }
 });
 

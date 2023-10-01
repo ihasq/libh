@@ -63,6 +63,17 @@ function getDeepCopy(objectData) {
 	return RETURN_BUFFER;
 };
 
+function hook(BASE_CLASS, TARGET, ADDITION) {
+	if (BASE_CLASS.prototype[TARGET]) BASE_CLASS = BASE_CLASS.prototype;
+	else if (!BASE_CLASS[TARGET]) throw new Error('Cannot find hook');
+	const ORIGIN = BASE_CLASS[TARGET];
+	BASE_CLASS[TARGET] = function() {
+		arguments[arguments.length] = ORIGIN;
+		arguments.length++;
+		return ADDITION.apply(this, arguments);
+	};
+};
+
 class LibhIdentifier extends String {
 	constructor({ uuid }) {
 		super(`<span id=${uuid} hidden></span>`);
@@ -78,7 +89,6 @@ class LibhIdentifier extends String {
 
 export {
 	Frameloop,
-	PLUGIN_REGISTRY,
-	getDeepCopy,
+	getDeepCopy, hook,
 	LibhIdentifier
 }

@@ -5,18 +5,8 @@ import * as CORE from "./core.js";
  * 	https://qiita.com/krmbn0576/items/473e18e182972b41dd1b
  */
 
-function hook(BASE_CLASS, TARGET, ADDITION) {
-	if (BASE_CLASS.prototype[TARGET]) BASE_CLASS = BASE_CLASS.prototype;
-	else if (!BASE_CLASS[TARGET]) throw new Error('Cannot find hook');
-	const ORIGIN = BASE_CLASS[TARGET];
-	BASE_CLASS[TARGET] = function() {
-		arguments[arguments.length] = ORIGIN;
-		arguments.length++;
-		return ADDITION.apply(this, arguments);
-	};
-};
 
-hook(Node, "appendChild", function() {
+CORE.hook(Node, "appendChild", function() {
 	const HAS_LIBH_FLAG = (arguments[0].FLAG === "LIBH_INSTANCE");
 	const LIBH_ELEMENT_NODE = arguments[0].getAsNode()
 	arguments[arguments.length - 1].apply(
@@ -145,27 +135,33 @@ function html(STRINGS, ...KEYS) {
 	return createHTMLInstance({ STRINGS, KEYS });
 };
 
-Object.assign(html, {
-	getReservedKey: [
-		"global",
-		"shared",
-		"prop",
-		"this",
-		"static",
-		"method",
-		"meta",
-		"event",
-		"onclick",
-		"onchange"
-	],
-	flag() {
-		for(const FLAG_INDEX of arguments) {
-			if(FLAG_INDEX in HTML_FLAG && !(HTML_FLAG[FLAG_INDEX])) {
-				HTML_FLAG[FLAG_INDEX] = true;
-			};
-		};
-	}
+html.getReservedKey = [
+	"global",
+	"shared",
+	"prop",
+	"this",
+	"static",
+	"method",
+	"meta",
+	"event",
+	"onclick",
+	"onchange"
+];
 
+html.flag = function() {
+	for(const FLAG_INDEX of arguments) {
+		if(FLAG_INDEX in HTML_FLAG && !(HTML_FLAG[FLAG_INDEX])) {
+			HTML_FLAG[FLAG_INDEX] = true;
+		};
+	};
+};
+
+Object.defineProperties(html.flag, {
+	state: {
+		get: function() {
+			return JSON.parse(JSON.stringify(HTML_FLAG))
+		}
+	}
 });
 
 export { html };
