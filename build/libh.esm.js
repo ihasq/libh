@@ -11,6 +11,11 @@ var __privateAdd = (obj, member, value) => {
     throw TypeError("Cannot add the same private member more than once");
   member instanceof WeakSet ? member.add(obj) : member.set(obj, value);
 };
+var __privateSet = (obj, member, value, setter) => {
+  __accessCheck(obj, member, "write to private field");
+  setter ? setter.call(obj, value) : member.set(obj, value);
+  return value;
+};
 
 // src/core.js
 function getDeepCopy(objectData) {
@@ -60,8 +65,10 @@ var _BUFFER;
 var LibhNode = class extends String {
   constructor({ RENDER_TARGET_UUID, STRINGS, KEYS }) {
     super(`<span id=${RENDER_TARGET_UUID} hidden></span>`);
-    __privateAdd(this, _BUFFER, {
+    __privateAdd(this, _BUFFER, void 0);
+    __privateSet(this, _BUFFER, {
       INSTANCE_UUID: crypto.randomUUID(),
+      RENDER_TARGET_UUID,
       keyMap: "",
       funcList: [],
       portConfig: /* @__PURE__ */ Object.create(null),
@@ -86,10 +93,8 @@ var LibhNode = class extends String {
       elementProperty: {
         globalVariable: /* @__PURE__ */ Object.create(null),
         propReference: null
-      },
-      portProperty: {}
+      }
     });
-    __privateGet(this, _BUFFER).RENDER_TARGET_UUID = RENDER_TARGET_UUID;
     for (let keyIndex = 0; keyIndex < STRINGS.length; keyIndex++) {
       __privateGet(this, _BUFFER).keyMap += STRINGS[keyIndex];
       if (keyIndex + 1 !== STRINGS.length) {
