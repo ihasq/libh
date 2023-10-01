@@ -63,9 +63,25 @@ function getDeepCopy(objectData) {
 	return RETURN_BUFFER;
 };
 
-function hook(BASE_CLASS, TARGET, ADDITION) {
-	if (BASE_CLASS.prototype[TARGET]) BASE_CLASS = BASE_CLASS.prototype;
-	else if (!BASE_CLASS[TARGET]) throw new Error('Cannot find hook');
+/*
+ * 	krmbn0576 さんに感謝します: Qiita記事「JavaScriptのフックパターンの楽な書き方」
+ * 	https://qiita.com/krmbn0576/items/473e18e182972b41dd1b
+ */
+
+/**
+ * 
+ * @param { function } BASE_CLASS
+ * @param { string } TARGET
+ * @param { function } ADDITION
+ * 
+ */
+
+function appendHook(BASE_CLASS, TARGET, ADDITION) {
+	if (BASE_CLASS.prototype[TARGET]) {
+		BASE_CLASS = BASE_CLASS.prototype
+	} else if (!BASE_CLASS[TARGET]) {
+		throw new Error('Cannot find hook')
+	};
 	const ORIGIN = BASE_CLASS[TARGET];
 	BASE_CLASS[TARGET] = function() {
 		arguments[arguments.length] = ORIGIN;
@@ -74,21 +90,7 @@ function hook(BASE_CLASS, TARGET, ADDITION) {
 	};
 };
 
-class LibhIdentifier extends String {
-	constructor({ uuid }) {
-		super(`<span id=${uuid} hidden></span>`);
-		this.FLAG = "LIBH_INSTANCE";
-		this.getAsNode = () => {
-			const RETURN_NODE = document.createElement("span");
-			RETURN_NODE.innerText = Date.now();
-			RETURN_NODE.id = uuid;
-			return RETURN_NODE;
-		}
-	};
-};
-
 export {
 	Frameloop,
-	getDeepCopy, hook,
-	LibhIdentifier
+	getDeepCopy, appendHook,
 }
