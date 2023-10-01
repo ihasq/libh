@@ -66,15 +66,13 @@ function getDeepCopy(objectData) {
 class LibhIdentifier extends String {
 	constructor({ uuid }) {
 		super(`<span id=${uuid} hidden></span>`);
-	};
-	LIBH_STATIC = {
-		FLAG: true,
-		getAsNode() {
+		this.FLAG = "LIBH_INSTANCE";
+		this.getAsNode = () => {
 			const RETURN_NODE = document.createElement("span");
 			RETURN_NODE.innerText = Date.now();
-			RETURN_NODE.id = BUFFER.RENDER_TARGET_UUID;
+			RETURN_NODE.id = uuid;
 			return RETURN_NODE;
-		},
+		}
 	};
 };
 

@@ -18,7 +18,7 @@ function hook(BASE_CLASS, TARGET, ADDITION) {
 
 hook(Node, "appendChild", function() {
 	arguments[arguments.length - 1].apply(
-		this, (arguments[0].LIBH_STATIC.FLAG)? [arguments[0].LIBH_STATIC.getAsNode()] : arguments
+		this, (arguments[0].FLAG === "LIBH_INSTANCE")? [arguments[0].getAsNode()] : arguments
 	);
 });
 
