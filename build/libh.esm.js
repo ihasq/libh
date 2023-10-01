@@ -1,10 +1,3 @@
-var __defProp = Object.defineProperty;
-var __defNormalProp = (obj, key, value) => key in obj ? __defProp(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
-var __publicField = (obj, key, value) => {
-  __defNormalProp(obj, typeof key !== "symbol" ? key + "" : key, value);
-  return value;
-};
-
 // src/core.js
 function getDeepCopy(objectData) {
   const KEY_DATA = Object.keys(objectData);
@@ -18,15 +11,13 @@ function getDeepCopy(objectData) {
 var LibhIdentifier = class extends String {
   constructor({ uuid }) {
     super(`<span id=${uuid} hidden></span>`);
-    __publicField(this, "LIBH_STATIC", {
-      FLAG: true,
-      getAsNode() {
-        const RETURN_NODE = document.createElement("span");
-        RETURN_NODE.innerText = Date.now();
-        RETURN_NODE.id = BUFFER.RENDER_TARGET_UUID;
-        return RETURN_NODE;
-      }
-    });
+    this.FLAG = "LIBH_INSTANCE";
+    this.getAsNode = () => {
+      const RETURN_NODE = document.createElement("span");
+      RETURN_NODE.innerText = Date.now();
+      RETURN_NODE.id = uuid;
+      return RETURN_NODE;
+    };
   }
 };
 
@@ -44,17 +35,26 @@ function hook(BASE_CLASS, TARGET, ADDITION) {
   };
 }
 hook(Node, "appendChild", function() {
+  const HAS_LIBH_FLAG = arguments[0].FLAG === "LIBH_INSTANCE";
   arguments[arguments.length - 1].apply(
     this,
-    arguments[0].LIBH_STATIC.FLAG ? [arguments[0].LIBH_STATIC.getAsNode()] : arguments
+    HAS_LIBH_FLAG ? [arguments[0].getAsNode()] : arguments
   );
+  if (HAS_LIBH_FLAG && HTML_FLAG["enable-node-return"].state) {
+    return;
+  }
 });
+var HTML_FLAG = {
+  "enable-node-return": {
+    state: false
+  }
+};
 var PARSE_BUFFER = {
   registry: /* @__PURE__ */ Object.create(null),
   HTMLParser: new DOMParser()
 };
 function createHTMLInstance({ STRINGS, KEYS }) {
-  const BUFFER2 = {
+  const BUFFER = {
     INSTANCE_UUID: window.crypto.randomUUID(),
     RENDER_TARGET_UUID: window.crypto.randomUUID(),
     returnObject: /* @__PURE__ */ Object.create(null),
@@ -86,15 +86,15 @@ function createHTMLInstance({ STRINGS, KEYS }) {
     portProperty: {}
   };
   for (let keyIndex = 0; keyIndex < STRINGS.length; keyIndex++) {
-    BUFFER2.keyMap += STRINGS[keyIndex];
+    BUFFER.keyMap += STRINGS[keyIndex];
     if (keyIndex + 1 !== STRINGS.length) {
       switch (typeof KEYS[keyIndex]) {
         case "function":
-          BUFFER2.keyMap += ` \${${BUFFER2.INSTANCE_UUID}:${keyIndex}} `;
+          BUFFER.keyMap += ` \${${BUFFER.INSTANCE_UUID}:${keyIndex}} `;
           if (KEYS[keyIndex].constructor.name !== "Function") {
             throw new Error("Can not use async function");
           } else {
-            const typeMap = getDeepCopy(KEYS[keyIndex](new Proxy({}, BUFFER2.proxyHandleTemplate)));
+            const typeMap = getDeepCopy(KEYS[keyIndex](new Proxy({}, BUFFER.proxyHandleTemplate)));
             const resultBuffer = KEYS[keyIndex](typeMap);
             resultBuffer.onclick();
             console.log(typeMap);
@@ -102,34 +102,34 @@ function createHTMLInstance({ STRINGS, KEYS }) {
           ;
           break;
         case "object":
-          BUFFER2.keyMap += ` \${${BUFFER2.INSTANCE_UUID}:${keyIndex}} `;
-          BUFFER2.portConfig = KEYS[keyIndex];
-          if ("prop" in BUFFER2.portConfig) {
+          BUFFER.keyMap += ` \${${BUFFER.INSTANCE_UUID}:${keyIndex}} `;
+          BUFFER.portConfig = KEYS[keyIndex];
+          if ("prop" in BUFFER.portConfig) {
             throw new Error("Element initialization error: Cannot add 'prop' properties into initializer, token is reserved");
           }
           ;
-          if ("global" in BUFFER2.portConfig) {
-            BUFFER2.portConfig.global = getDeepCopy(BUFFER2.portConfig.global);
+          if ("global" in BUFFER.portConfig) {
+            BUFFER.portConfig.global = getDeepCopy(BUFFER.portConfig.global);
           }
           ;
-          BUFFER2.portConfig.onclick(BUFFER2.portConfig);
-          console.log(BUFFER2.portConfig);
+          BUFFER.portConfig.onclick(BUFFER.portConfig);
+          console.log(BUFFER.portConfig);
           break;
         default:
-          BUFFER2.keyMap += KEYS[keyIndex];
+          BUFFER.keyMap += KEYS[keyIndex];
       }
       ;
     }
     ;
   }
   ;
-  console.log(BUFFER2.keyMap);
-  BUFFER2.returnObject = new LibhIdentifier({ uuid: BUFFER2.RENDER_TARGET_UUID });
+  console.log(BUFFER.keyMap);
+  BUFFER.returnObject = new LibhIdentifier({ uuid: BUFFER.RENDER_TARGET_UUID });
   setTimeout(function() {
-    const TARGET = document.getElementById(BUFFER2.RENDER_TARGET_UUID);
+    const TARGET = document.getElementById(BUFFER.RENDER_TARGET_UUID);
     if (!TARGET) {
-      console.log(`instance created: ${BUFFER2.INSTANCE_UUID}`);
-      BUFFER2.returnObject.LIBH_STATIC.flag = void 0;
+      console.log(`instance created: ${BUFFER.INSTANCE_UUID}`);
+      BUFFER.returnObject.flag = void 0;
     } else {
       console.log("html appended");
       TARGET.removeAttribute("id");
@@ -137,7 +137,7 @@ function createHTMLInstance({ STRINGS, KEYS }) {
     }
     ;
   }, 0);
-  return BUFFER2.returnObject;
+  return BUFFER.returnObject;
 }
 function html(STRINGS, ...KEYS) {
   return createHTMLInstance({ STRINGS, KEYS });
@@ -154,6 +154,15 @@ html.getReservedKey = [
   "onclick",
   "onchange"
 ];
+html.config = function() {
+  for (const FLAG_INDEX of arguments) {
+    if (FLAG_INDEX in HTML_FLAG && !HTML_FLAG[FLAG_INDEX].state) {
+      HTML_FLAG[FLAG_INDEX].state = true;
+    }
+    ;
+  }
+  ;
+};
 
 // src/css.js
 function css(strings, ...keys) {

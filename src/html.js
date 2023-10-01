@@ -17,10 +17,22 @@ function hook(BASE_CLASS, TARGET, ADDITION) {
 };
 
 hook(Node, "appendChild", function() {
-	arguments[arguments.length - 1].apply(
-		this, (arguments[0].FLAG === "LIBH_INSTANCE")? [arguments[0].getAsNode()] : arguments
+	const HAS_LIBH_FLAG = (
+		arguments[0].FLAG === "LIBH_INSTANCE"
 	);
+	arguments[arguments.length - 1].apply(
+		this, HAS_LIBH_FLAG? [arguments[0].getAsNode()] : arguments
+	);
+	if(HAS_LIBH_FLAG && HTML_FLAG["enable-node-return"].state) {
+		return;
+	}
 });
+
+const HTML_FLAG = {
+	"enable-node-return": {
+		state: false,
+	}
+}
 
 const PARSE_BUFFER = {
 	registry: Object.create(null),
@@ -120,7 +132,7 @@ function createHTMLInstance({ STRINGS, KEYS }) {
 		if(!TARGET) {
 			// instance creation process
 			console.log(`instance created: ${BUFFER.INSTANCE_UUID}`);
-			BUFFER.returnObject.LIBH_STATIC.flag = undefined;
+			BUFFER.returnObject.flag = undefined;
 		} else {
 			// appending process
 			console.log("html appended");
@@ -148,5 +160,13 @@ html.getReservedKey = [
 	"onclick",
 	"onchange"
 ];
+
+html.config = function() {
+	for(const FLAG_INDEX of arguments) {
+		if(FLAG_INDEX in HTML_FLAG && !(HTML_FLAG[FLAG_INDEX].state)) {
+			HTML_FLAG[FLAG_INDEX].state = true
+		};
+	};
+};
 
 export { html };
