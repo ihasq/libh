@@ -17,21 +17,18 @@ function hook(BASE_CLASS, TARGET, ADDITION) {
 };
 
 hook(Node, "appendChild", function() {
-	const HAS_LIBH_FLAG = (
-		arguments[0].FLAG === "LIBH_INSTANCE"
-	);
+	const HAS_LIBH_FLAG = (arguments[0].FLAG === "LIBH_INSTANCE");
+	const LIBH_ELEMENT_NODE = arguments[0].getAsNode()
 	arguments[arguments.length - 1].apply(
-		this, HAS_LIBH_FLAG? [arguments[0].getAsNode()] : arguments
+		this, HAS_LIBH_FLAG? [LIBH_ELEMENT_NODE] : arguments
 	);
-	if(HAS_LIBH_FLAG && HTML_FLAG["enable-node-return"].state) {
-		return;
+	if(HAS_LIBH_FLAG && HTML_FLAG["enable-node-return"]) {
+		return LIBH_ELEMENT_NODE;
 	}
 });
 
 const HTML_FLAG = {
-	"enable-node-return": {
-		state: false,
-	}
+	"enable-node-return": false
 }
 
 const PARSE_BUFFER = {
@@ -148,25 +145,27 @@ function html(STRINGS, ...KEYS) {
 	return createHTMLInstance({ STRINGS, KEYS });
 };
 
-html.getReservedKey = [
-	"global",
-	"shared",
-	"prop",
-	"this",
-	"static",
-	"method",
-	"meta",
-	"event",
-	"onclick",
-	"onchange"
-];
-
-html.config = function() {
-	for(const FLAG_INDEX of arguments) {
-		if(FLAG_INDEX in HTML_FLAG && !(HTML_FLAG[FLAG_INDEX].state)) {
-			HTML_FLAG[FLAG_INDEX].state = true
+Object.assign(html, {
+	getReservedKey: [
+		"global",
+		"shared",
+		"prop",
+		"this",
+		"static",
+		"method",
+		"meta",
+		"event",
+		"onclick",
+		"onchange"
+	],
+	flag() {
+		for(const FLAG_INDEX of arguments) {
+			if(FLAG_INDEX in HTML_FLAG && !(HTML_FLAG[FLAG_INDEX])) {
+				HTML_FLAG[FLAG_INDEX] = true;
+			};
 		};
-	};
-};
+	}
+
+});
 
 export { html };
