@@ -142,18 +142,22 @@ function html(STRINGS, ...KEYS) {
 	});
 };
 
-html.getReservedKey = [
-	"global",
-	"shared",
-	"prop",
-	"this",
-	"static",
-	"method",
-	"meta",
-	"event",
-	"onclick",
-	"onchange"
-];
+Object.assign(html, {
+	get reservedKey() {
+		return [
+			"global",
+			"shared",
+			"prop",
+			"this",
+			"static",
+			"method",
+			"meta",
+			"event",
+			"onclick",
+			"onchange"
+		];
+	}
+});
 
 html.flag = function() {
 	for(const FLAG_INDEX of arguments) {
@@ -163,11 +167,9 @@ html.flag = function() {
 	};
 };
 
-Object.defineProperties(html.flag, {
-	state: {
-		get: function() {
-			return JSON.parse(JSON.stringify(HTML_FLAG))
-		}
+Object.assign(html.flag, {
+	get state() {
+		return JSON.parse(JSON.stringify(HTML_FLAG))
 	}
 });
 
