@@ -25,13 +25,13 @@ let portRegistry = null;
 
 class LibhNode extends String {
 
-	#BUFFER;
+	#buffer;
 
 	constructor({ RENDER_TARGET_NONCE, STRINGS, KEYS }) {
 
 		super(`<span id=${RENDER_TARGET_NONCE} hidden></span>`);
 
-		this.#BUFFER = {
+		this.#buffer = {
 			INSTANCE_UUID: crypto.randomUUID(),
 			RENDER_TARGET_NONCE,
 			keyMap: "",
@@ -62,15 +62,17 @@ class LibhNode extends String {
 		}
 
 		for(let keyIndex = 0; keyIndex < STRINGS.length; keyIndex++) {
-			this.#BUFFER.keyMap += STRINGS[keyIndex];
+			this.#buffer.keyMap += STRINGS[keyIndex];
 			if(keyIndex + 1 !== STRINGS.length) {
+
 				switch(typeof KEYS[keyIndex]) {
+
 					case "function":
-						this.#BUFFER.keyMap += ` \${${this.#BUFFER.INSTANCE_UUID}:${keyIndex}} `;
+						this.#buffer.keyMap += ` \${${this.#buffer.INSTANCE_UUID}:${keyIndex}} `;
 						if(KEYS[keyIndex].constructor.name !== "Function") {
 							throw new Error("Can not use async function");
 						} else {
-							const typeMap = CORE.getDeepCopy(KEYS[keyIndex](new Proxy({}, this.#BUFFER.proxyHandleTemplate)));
+							const typeMap = CORE.getDeepCopy(KEYS[keyIndex](new Proxy({}, this.#buffer.proxyHandleTemplate)));
 							const resultBuffer = KEYS[keyIndex](typeMap);
 							resultBuffer.onclick();
 							console.log(typeMap);
@@ -78,31 +80,31 @@ class LibhNode extends String {
 						break;
 							
 					case "object":
-						this.#BUFFER.keyMap += ` \${${this.#BUFFER.INSTANCE_UUID}:${keyIndex}} `;
-						this.#BUFFER.portConfig = KEYS[keyIndex];
-						if("prop" in this.#BUFFER.portConfig) {
+						this.#buffer.keyMap += ` \${${this.#buffer.INSTANCE_UUID}:${keyIndex}} `;
+						this.#buffer.portConfig = KEYS[keyIndex];
+						if("prop" in this.#buffer.portConfig) {
 							throw new Error("Element initialization error: Cannot add 'prop' properties into initializer, token is reserved")
 						};
-						if("global" in this.#BUFFER.portConfig) {
-							this.#BUFFER.portConfig.global = CORE.getDeepCopy(this.#BUFFER.portConfig.global);
+						if("global" in this.#buffer.portConfig) {
+							this.#buffer.portConfig.global = CORE.getDeepCopy(this.#buffer.portConfig.global);
 						};
-						this.#BUFFER.portConfig.onclick(this.#BUFFER.portConfig)
-						console.log((this.#BUFFER.portConfig))
+						this.#buffer.portConfig.onclick(this.#buffer.portConfig)
+						console.log((this.#buffer.portConfig))
 						break;
 	
-					default: this.#BUFFER.keyMap += KEYS[keyIndex]
+					default: this.#buffer.keyMap += KEYS[keyIndex]
 				};
 			};
 		};
 	
-		console.log(this.#BUFFER.keyMap);
+		console.log(this.#buffer.keyMap);
 	
 		setTimeout(function() {
-			const TARGET = document.getElementById(RENDER_TARGET_NONCE);
+			const TARGET = document.getElementById(this.#buffer.RENDER_TARGET_NONCE);
 			if(!TARGET) {
 				// instance creation process
-				console.log(`instance created: ${this.#BUFFER.INSTANCE_UUID}`);
-				this.#BUFFER.returnObject.flag = undefined;
+				console.log(`instance created: ${this.#buffer.INSTANCE_UUID}`);
+				this.#buffer.returnObject.flag = undefined;
 			} else {
 				// appending process
 				console.log("html appended");
@@ -120,7 +122,7 @@ class LibhNode extends String {
 	get getAsNode() {
 		const RETURN_NODE = document.createElement("span");
 		RETURN_NODE.innerText = Date.now();
-		RETURN_NODE.id = this.#BUFFER.RENDER_TARGET_NONCE;
+		RETURN_NODE.id = this.#buffer.RENDER_TARGET_NONCE;
 		return RETURN_NODE;
 	};
 };

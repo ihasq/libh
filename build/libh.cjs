@@ -86,12 +86,12 @@ var PARSE_BUFFER = {
   registry: /* @__PURE__ */ Object.create(null),
   HTMLParser: new DOMParser()
 };
-var _BUFFER;
+var _buffer;
 var LibhNode = class extends String {
   constructor({ RENDER_TARGET_NONCE, STRINGS, KEYS }) {
     super(`<span id=${RENDER_TARGET_NONCE} hidden></span>`);
-    __privateAdd(this, _BUFFER, void 0);
-    __privateSet(this, _BUFFER, {
+    __privateAdd(this, _buffer, void 0);
+    __privateSet(this, _buffer, {
       INSTANCE_UUID: crypto.randomUUID(),
       RENDER_TARGET_NONCE,
       keyMap: "",
@@ -121,15 +121,15 @@ var LibhNode = class extends String {
       }
     });
     for (let keyIndex = 0; keyIndex < STRINGS.length; keyIndex++) {
-      __privateGet(this, _BUFFER).keyMap += STRINGS[keyIndex];
+      __privateGet(this, _buffer).keyMap += STRINGS[keyIndex];
       if (keyIndex + 1 !== STRINGS.length) {
         switch (typeof KEYS[keyIndex]) {
           case "function":
-            __privateGet(this, _BUFFER).keyMap += ` \${${__privateGet(this, _BUFFER).INSTANCE_UUID}:${keyIndex}} `;
+            __privateGet(this, _buffer).keyMap += ` \${${__privateGet(this, _buffer).INSTANCE_UUID}:${keyIndex}} `;
             if (KEYS[keyIndex].constructor.name !== "Function") {
               throw new Error("Can not use async function");
             } else {
-              const typeMap = getDeepCopy(KEYS[keyIndex](new Proxy({}, __privateGet(this, _BUFFER).proxyHandleTemplate)));
+              const typeMap = getDeepCopy(KEYS[keyIndex](new Proxy({}, __privateGet(this, _buffer).proxyHandleTemplate)));
               const resultBuffer = KEYS[keyIndex](typeMap);
               resultBuffer.onclick();
               console.log(typeMap);
@@ -137,33 +137,33 @@ var LibhNode = class extends String {
             ;
             break;
           case "object":
-            __privateGet(this, _BUFFER).keyMap += ` \${${__privateGet(this, _BUFFER).INSTANCE_UUID}:${keyIndex}} `;
-            __privateGet(this, _BUFFER).portConfig = KEYS[keyIndex];
-            if ("prop" in __privateGet(this, _BUFFER).portConfig) {
+            __privateGet(this, _buffer).keyMap += ` \${${__privateGet(this, _buffer).INSTANCE_UUID}:${keyIndex}} `;
+            __privateGet(this, _buffer).portConfig = KEYS[keyIndex];
+            if ("prop" in __privateGet(this, _buffer).portConfig) {
               throw new Error("Element initialization error: Cannot add 'prop' properties into initializer, token is reserved");
             }
             ;
-            if ("global" in __privateGet(this, _BUFFER).portConfig) {
-              __privateGet(this, _BUFFER).portConfig.global = getDeepCopy(__privateGet(this, _BUFFER).portConfig.global);
+            if ("global" in __privateGet(this, _buffer).portConfig) {
+              __privateGet(this, _buffer).portConfig.global = getDeepCopy(__privateGet(this, _buffer).portConfig.global);
             }
             ;
-            __privateGet(this, _BUFFER).portConfig.onclick(__privateGet(this, _BUFFER).portConfig);
-            console.log(__privateGet(this, _BUFFER).portConfig);
+            __privateGet(this, _buffer).portConfig.onclick(__privateGet(this, _buffer).portConfig);
+            console.log(__privateGet(this, _buffer).portConfig);
             break;
           default:
-            __privateGet(this, _BUFFER).keyMap += KEYS[keyIndex];
+            __privateGet(this, _buffer).keyMap += KEYS[keyIndex];
         }
         ;
       }
       ;
     }
     ;
-    console.log(__privateGet(this, _BUFFER).keyMap);
+    console.log(__privateGet(this, _buffer).keyMap);
     setTimeout(function() {
-      const TARGET = document.getElementById(RENDER_TARGET_NONCE);
+      const TARGET = document.getElementById(__privateGet(this, _buffer).RENDER_TARGET_NONCE);
       if (!TARGET) {
-        console.log(`instance created: ${__privateGet(this, _BUFFER).INSTANCE_UUID}`);
-        __privateGet(this, _BUFFER).returnObject.flag = void 0;
+        console.log(`instance created: ${__privateGet(this, _buffer).INSTANCE_UUID}`);
+        __privateGet(this, _buffer).returnObject.flag = void 0;
       } else {
         console.log("html appended");
         TARGET.removeAttribute("id");
@@ -178,11 +178,11 @@ var LibhNode = class extends String {
   get getAsNode() {
     const RETURN_NODE = document.createElement("span");
     RETURN_NODE.innerText = Date.now();
-    RETURN_NODE.id = __privateGet(this, _BUFFER).RENDER_TARGET_NONCE;
+    RETURN_NODE.id = __privateGet(this, _buffer).RENDER_TARGET_NONCE;
     return RETURN_NODE;
   }
 };
-_BUFFER = new WeakMap();
+_buffer = new WeakMap();
 function html(STRINGS, ...KEYS) {
   return new LibhNode({
     RENDER_TARGET_NONCE: crypto.randomUUID(),
