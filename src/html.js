@@ -1,4 +1,4 @@
-import * as CORE from "./core.js";
+import "./core.js";
 
 libh.appendHook(Node, "appendChild", function() {
 	const HAS_LIBH_FLAG = (arguments[0].FLAG === "LIBH_INSTANCE");

@@ -93,7 +93,10 @@ globalThis.libh = Object.freeze(new class {
 		};
 		return RETURN_BUFFER;
 	};
-})
 
-Object.defineProperty(globalThis, 'libh', { configurable: false });
+	appendFrameTaskPath(structuredLibhInstance) {
 
+	}
+});
+
+Object.defineProperty(globalThis, 'libh', { writable: false, configurable: false });

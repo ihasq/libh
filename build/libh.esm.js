@@ -110,8 +110,10 @@ globalThis.libh = Object.freeze(new (_a = class {
     ;
     return RETURN_BUFFER;
   }
+  appendFrameTaskPath(structuredLibhInstance) {
+  }
 }, _buffer = new WeakMap(), _a)());
-Object.defineProperty(globalThis, "libh", { configurable: false });
+Object.defineProperty(globalThis, "libh", { writable: false, configurable: false });
 
 // src/html.js
 libh.appendHook(Node, "appendChild", function() {
