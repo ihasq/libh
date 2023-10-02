@@ -46,7 +46,58 @@ module.exports = __toCommonJS(libh_exports);
 var _buffer, _a;
 globalThis.libh = Object.freeze(new (_a = class {
   constructor() {
-    __privateAdd(this, _buffer, void 0);
+    __privateAdd(this, _buffer, {
+      frameLoop: {
+        isActive: false,
+        rafID: "",
+        ignite() {
+          if (!this.isActive) {
+            this.rafID = window.requestAnimationFrame(this.run);
+            this.isActive = true;
+          }
+          ;
+        },
+        cancel() {
+          window.cancelAnimationFrame(this.rafID);
+          this.rafID = "";
+          this.isActive = false;
+        },
+        func: {
+          stack: [],
+          pendedDiff: /* @__PURE__ */ Object.create(null)
+        },
+        task: {
+          stack: []
+        },
+        registerNewFunction(keyFn) {
+          this.func.stack.push({
+            funcBody: keyFn,
+            result: null
+          });
+        },
+        pushNewTask(taskFn) {
+          this.task.stack.push(taskFn);
+        },
+        run() {
+          if (Frameloop.func.stack.length !== 0) {
+            for (let i = 0; i < Frameloop.func.stack.length; i++) {
+              if (Frameloop.func.stack[i].result !== Frameloop.func.stack[i].funcBody()) {
+              }
+            }
+          }
+          if (Frameloop.task.stack.length !== 0) {
+            for (let i = 0; i < Frameloop.task.stack.length; i++) {
+              Frameloop.task.stack[i]();
+            }
+          }
+          ;
+          Frameloop.task.stack = [];
+          window.requestAnimationFrame(Frameloop.run);
+        }
+      },
+      pluginRegistry: /* @__PURE__ */ Object.create(null),
+      viewModel: /* @__PURE__ */ Object.create(null)
+    });
   }
   get version() {
     return "0.0.16";
