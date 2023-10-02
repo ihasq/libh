@@ -90,6 +90,14 @@ function appendHook(BASE_CLASS, TARGET, ADDITION) {
 	};
 };
 
+
+
+globalThis.libh = Object.freeze({
+	get version() {
+		return "0.0.16"
+	},
+})
+
 export {
 	Frameloop,
 	getDeepCopy, appendHook,

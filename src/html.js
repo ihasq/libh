@@ -21,7 +21,14 @@ const PARSE_BUFFER = {
 	HTMLParser: new DOMParser(),
 };
 
-let portRegistry = null;
+const BANNED_PROPERTY = [
+	"prop",
+	"__proto__",
+	"__defineGetter__",
+	"__defineSetter__",
+	"__lookupGetter__",
+	"__lookupSetter__",
+]
 
 class LibhNode extends String {
 
@@ -82,17 +89,17 @@ class LibhNode extends String {
 					case "object":
 						this.#buffer.keyMap += ` \${${this.#buffer.INSTANCE_UUID}:${keyIndex}} `;
 						this.#buffer.portConfig = KEYS[keyIndex];
-						if("prop" in this.#buffer.portConfig) {
-							throw new Error("Element initialization error: Cannot add 'prop' properties into initializer, token is reserved")
+						// sanitizing process
+						for(let banIndex = 0; banIndex < BANNED_PROPERTY.length; banIndex++) {
+							this.#buffer.portConfig[BANNED_PROPERTY[banIndex]] = undefined;
 						};
-						if("global" in this.#buffer.portConfig) {
-							this.#buffer.portConfig.global = CORE.getDeepCopy(this.#buffer.portConfig.global);
-						};
+
 						this.#buffer.portConfig.onclick(this.#buffer.portConfig)
 						console.log((this.#buffer.portConfig))
 						break;
 	
 					default: this.#buffer.keyMap += KEYS[keyIndex]
+
 				};
 			};
 		};
@@ -100,7 +107,7 @@ class LibhNode extends String {
 		console.log(this.#buffer.keyMap);
 	
 		setTimeout(function() {
-			const TARGET = document.getElementById(this.#buffer.RENDER_TARGET_NONCE);
+			const TARGET = document.getElementById(RENDER_TARGET_NONCE);
 			if(!TARGET) {
 				// instance creation process
 				console.log(`instance created: ${this.#buffer.INSTANCE_UUID}`);
@@ -161,8 +168,12 @@ Object.assign(html, {
 	}
 });
 
-html.flag = function() {
-	for(const FLAG_INDEX of arguments) {
+/**
+ * @param  {...string} flag 
+ */
+
+html.flag = function(...flag) {
+	for(const FLAG_INDEX of flag) {
 		if(FLAG_INDEX in HTML_FLAG && !(HTML_FLAG[FLAG_INDEX])) {
 			HTML_FLAG[FLAG_INDEX] = true;
 		};
@@ -170,6 +181,9 @@ html.flag = function() {
 };
 
 Object.assign(html.flag, {
+	get list() {
+		return Object.keys(HTML_FLAG)
+	},
 	get state() {
 		return JSON.parse(JSON.stringify(HTML_FLAG))
 	}

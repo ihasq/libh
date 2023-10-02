@@ -41,6 +41,11 @@ function appendHook(BASE_CLASS, TARGET, ADDITION) {
     return ADDITION.apply(this, arguments);
   };
 }
+globalThis.libh = Object.freeze({
+  get version() {
+    return "0.0.16";
+  }
+});
 
 // src/html.js
 var HTML_FLAG = {
@@ -61,6 +66,14 @@ var PARSE_BUFFER = {
   registry: /* @__PURE__ */ Object.create(null),
   HTMLParser: new DOMParser()
 };
+var BANNED_PROPERTY = [
+  "prop",
+  "__proto__",
+  "__defineGetter__",
+  "__defineSetter__",
+  "__lookupGetter__",
+  "__lookupSetter__"
+];
 var _buffer;
 var LibhNode = class extends String {
   constructor({ RENDER_TARGET_NONCE, STRINGS, KEYS }) {
@@ -114,12 +127,8 @@ var LibhNode = class extends String {
           case "object":
             __privateGet(this, _buffer).keyMap += ` \${${__privateGet(this, _buffer).INSTANCE_UUID}:${keyIndex}} `;
             __privateGet(this, _buffer).portConfig = KEYS[keyIndex];
-            if ("prop" in __privateGet(this, _buffer).portConfig) {
-              throw new Error("Element initialization error: Cannot add 'prop' properties into initializer, token is reserved");
-            }
-            ;
-            if ("global" in __privateGet(this, _buffer).portConfig) {
-              __privateGet(this, _buffer).portConfig.global = getDeepCopy(__privateGet(this, _buffer).portConfig.global);
+            for (let banIndex = 0; banIndex < BANNED_PROPERTY.length; banIndex++) {
+              __privateGet(this, _buffer).portConfig[BANNED_PROPERTY[banIndex]] = void 0;
             }
             ;
             __privateGet(this, _buffer).portConfig.onclick(__privateGet(this, _buffer).portConfig);
@@ -135,7 +144,7 @@ var LibhNode = class extends String {
     ;
     console.log(__privateGet(this, _buffer).keyMap);
     setTimeout(function() {
-      const TARGET = document.getElementById(__privateGet(this, _buffer).RENDER_TARGET_NONCE);
+      const TARGET = document.getElementById(RENDER_TARGET_NONCE);
       if (!TARGET) {
         console.log(`instance created: ${__privateGet(this, _buffer).INSTANCE_UUID}`);
         __privateGet(this, _buffer).returnObject.flag = void 0;
@@ -190,8 +199,8 @@ Object.assign(html, {
     };
   }
 });
-html.flag = function() {
-  for (const FLAG_INDEX of arguments) {
+html.flag = function(...flag) {
+  for (const FLAG_INDEX of flag) {
     if (FLAG_INDEX in HTML_FLAG && !HTML_FLAG[FLAG_INDEX]) {
       HTML_FLAG[FLAG_INDEX] = true;
     }
@@ -200,6 +209,9 @@ html.flag = function() {
   ;
 };
 Object.assign(html.flag, {
+  get list() {
+    return Object.keys(HTML_FLAG);
+  },
   get state() {
     return JSON.parse(JSON.stringify(HTML_FLAG));
   }
