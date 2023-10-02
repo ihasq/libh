@@ -1,7 +1,7 @@
 import esbuild from "esbuild";
 import fs from "node:fs";
 
-const RELEASE_VERSION = "0.0.17";
+const RELEASE_VERSION = "0.0.18";
 
 [
 	{
@@ -86,3 +86,25 @@ const RELEASE_VERSION = "0.0.17";
 		}`.replace(/\t/g, "").replace(/    /g, "\t")
 	)
 });
+
+fs.writeFileSync(
+	`./package.json`,
+	`{
+	    "name": "libh",
+	    "version": "${RELEASE_VERSION}",
+	    "description": "html in javascript",
+	    "main": "./build/libh.esm.min.js",
+	    "directories": {
+	        "cjs": "./build/libh.cjs"
+	    },
+	    "type": "module",
+	    "scripts": {
+	        "build": "node ./scripts/build"
+	    },
+	    "devDependencies": {
+	        "esbuild": "^0.19.3"
+	    },
+	    "author": "ihasq",
+	    "license": "MIT"
+	}`.replace(/\t/g, "").replace(/    /g, "\t")
+)

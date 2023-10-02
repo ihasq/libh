@@ -1,18 +1,18 @@
 {
-  "name": "libh",
-  "version": "0.0.17",
-  "description": "html in javascript",
-  "main": "./build/libh.esm.min.js",
-  "directories": {
-    "cjs": "./build/libh.cjs"
-  },
-  "type": "module",
-  "scripts": {
-    "build": "node ./scripts/build"
-  },
-  "devDependencies": {
-    "esbuild": "^0.19.3"
-  },
-  "author": "ihasq",
-  "license": "MIT"
+	"name": "libh",
+	"version": "0.0.18",
+	"description": "html in javascript",
+	"main": "./build/libh.esm.min.js",
+	"directories": {
+		"cjs": "./build/libh.cjs"
+	},
+	"type": "module",
+	"scripts": {
+		"build": "node ./scripts/build"
+	},
+	"devDependencies": {
+		"esbuild": "^0.19.3"
+	},
+	"author": "ihasq",
+	"license": "MIT"
 }
