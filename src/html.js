@@ -27,13 +27,13 @@ class LibhNode extends String {
 
 	#BUFFER;
 
-	constructor({ RENDER_TARGET_UUID, STRINGS, KEYS }) {
+	constructor({ RENDER_TARGET_NONCE, STRINGS, KEYS }) {
 
-		super(`<span id=${RENDER_TARGET_UUID} hidden></span>`);
+		super(`<span id=${RENDER_TARGET_NONCE} hidden></span>`);
 
 		this.#BUFFER = {
 			INSTANCE_UUID: crypto.randomUUID(),
-			RENDER_TARGET_UUID,
+			RENDER_TARGET_UUID: RENDER_TARGET_NONCE,
 			keyMap: "",
 			funcList: [],
 			portConfig: Object.create(null),
@@ -98,7 +98,7 @@ class LibhNode extends String {
 		console.log(this.#BUFFER.keyMap);
 	
 		setTimeout(function() {
-			const TARGET = document.getElementById(RENDER_TARGET_UUID);
+			const TARGET = document.getElementById(RENDER_TARGET_NONCE);
 			if(!TARGET) {
 				// instance creation process
 				console.log(`instance created: ${this.#BUFFER.INSTANCE_UUID}`);
@@ -126,7 +126,7 @@ class LibhNode extends String {
 
 function html(STRINGS, ...KEYS) {
 	return new LibhNode({
-		RENDER_TARGET_UUID: crypto.randomUUID(),
+		RENDER_TARGET_NONCE: crypto.randomUUID(),
 		STRINGS,
 		KEYS
 	});
