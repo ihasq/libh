@@ -63,12 +63,12 @@ var PARSE_BUFFER = {
 };
 var _BUFFER;
 var LibhNode = class extends String {
-  constructor({ RENDER_TARGET_UUID, STRINGS, KEYS }) {
-    super(`<span id=${RENDER_TARGET_UUID} hidden></span>`);
+  constructor({ RENDER_TARGET_NONCE, STRINGS, KEYS }) {
+    super(`<span id=${RENDER_TARGET_NONCE} hidden></span>`);
     __privateAdd(this, _BUFFER, void 0);
     __privateSet(this, _BUFFER, {
       INSTANCE_UUID: crypto.randomUUID(),
-      RENDER_TARGET_UUID,
+      RENDER_TARGET_NONCE,
       keyMap: "",
       funcList: [],
       portConfig: /* @__PURE__ */ Object.create(null),
@@ -135,7 +135,7 @@ var LibhNode = class extends String {
     ;
     console.log(__privateGet(this, _BUFFER).keyMap);
     setTimeout(function() {
-      const TARGET = document.getElementById(RENDER_TARGET_UUID);
+      const TARGET = document.getElementById(RENDER_TARGET_NONCE);
       if (!TARGET) {
         console.log(`instance created: ${__privateGet(this, _BUFFER).INSTANCE_UUID}`);
         __privateGet(this, _BUFFER).returnObject.flag = void 0;
@@ -153,14 +153,14 @@ var LibhNode = class extends String {
   get getAsNode() {
     const RETURN_NODE = document.createElement("span");
     RETURN_NODE.innerText = Date.now();
-    RETURN_NODE.id = __privateGet(this, _BUFFER).RENDER_TARGET_UUID;
+    RETURN_NODE.id = __privateGet(this, _BUFFER).RENDER_TARGET_NONCE;
     return RETURN_NODE;
   }
 };
 _BUFFER = new WeakMap();
 function html(STRINGS, ...KEYS) {
   return new LibhNode({
-    RENDER_TARGET_UUID: crypto.randomUUID(),
+    RENDER_TARGET_NONCE: crypto.randomUUID(),
     STRINGS,
     KEYS
   });

@@ -122,7 +122,7 @@ class LibhNode extends String {
 		RETURN_NODE.innerText = Date.now();
 		RETURN_NODE.id = this.#BUFFER.RENDER_TARGET_NONCE;
 		return RETURN_NODE;
-	}
+	};
 };
 
 function html(STRINGS, ...KEYS) {
