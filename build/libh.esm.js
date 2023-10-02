@@ -66,105 +66,105 @@ const BANNED_PROPERTY = [
 const HTML_FLAG = {
   "enable-node-return": false
 };
-var _buffer;
-class LibhNode extends String {
-  constructor({ RENDER_TARGET_NONCE, STRINGS, KEYS }) {
-    super(`<span id=${RENDER_TARGET_NONCE} hidden></span>`);
-    __privateAdd(this, _buffer, void 0);
-    __privateSet(this, _buffer, {
-      INSTANCE_UUID: crypto.randomUUID(),
-      RENDER_TARGET_NONCE,
-      keyMap: "",
-      funcList: [],
-      portConfig: /* @__PURE__ */ Object.create(null),
-      proxyRegistry: /* @__PURE__ */ Object.create(null),
-      proxyHandleTemplate: {
-        get(target, prop) {
-          console.dir(target);
-          if (prop in target) {
-            console.log("already has");
-            return target[prop];
-          } else {
-            const proxyRef = crypto.randomUUID();
-            console.log("proxy created");
-            target[prop] = /* @__PURE__ */ Object.create(null);
-            return new Proxy(target[prop], this);
+function html(STRINGS, ...KEYS) {
+  var _buffer, _a;
+  return new (_a = class extends String {
+    constructor({ RENDER_TARGET_NONCE, STRINGS: STRINGS2, KEYS: KEYS2 }) {
+      super(`<span id=${RENDER_TARGET_NONCE} hidden></span>`);
+      __privateAdd(this, _buffer, void 0);
+      __privateSet(this, _buffer, {
+        INSTANCE_UUID: crypto.randomUUID(),
+        RENDER_TARGET_NONCE,
+        keyMap: "",
+        funcList: [],
+        portConfig: /* @__PURE__ */ Object.create(null),
+        proxyRegistry: /* @__PURE__ */ Object.create(null),
+        proxyHandleTemplate: {
+          get(target, prop) {
+            console.dir(target);
+            if (prop in target) {
+              console.log("already has");
+              return target[prop];
+            } else {
+              const proxyRef = crypto.randomUUID();
+              console.log("proxy created");
+              target[prop] = /* @__PURE__ */ Object.create(null);
+              return new Proxy(target[prop], this);
+            }
+          },
+          set(target, prop, value) {
+            target[prop] = value;
           }
         },
-        set(target, prop, value) {
-          target[prop] = value;
+        elementProperty: {
+          globalVariable: /* @__PURE__ */ Object.create(null),
+          propReference: null
         }
-      },
-      elementProperty: {
-        globalVariable: /* @__PURE__ */ Object.create(null),
-        propReference: null
-      }
-    });
-    for (let keyIndex = 0; keyIndex < STRINGS.length; keyIndex++) {
-      __privateGet(this, _buffer).keyMap += STRINGS[keyIndex];
-      if (keyIndex + 1 !== STRINGS.length) {
-        switch (typeof KEYS[keyIndex]) {
-          case "function":
-            __privateGet(this, _buffer).keyMap += ` \${${__privateGet(this, _buffer).INSTANCE_UUID}:${keyIndex}} `;
-            if (KEYS[keyIndex].constructor.name !== "Function") {
-              throw new Error("Can not use async function");
-            } else {
-              const typeMap = getDeepCopy(KEYS[keyIndex](new Proxy({}, __privateGet(this, _buffer).proxyHandleTemplate)));
-              const resultBuffer = KEYS[keyIndex](typeMap);
-              resultBuffer.onclick();
-              console.log(typeMap);
-            }
-            ;
-            break;
-          case "object":
-            __privateGet(this, _buffer).keyMap += ` \${${__privateGet(this, _buffer).INSTANCE_UUID}:${keyIndex}} `;
-            __privateGet(this, _buffer).portConfig = KEYS[keyIndex];
-            for (let banIndex = 0; banIndex < BANNED_PROPERTY.length; banIndex++) {
-              delete __privateGet(this, _buffer).portConfig[BANNED_PROPERTY[banIndex]];
-            }
-            ;
-            __privateGet(this, _buffer).portConfig.onclick(__privateGet(this, _buffer).portConfig);
-            console.log(__privateGet(this, _buffer).portConfig);
-            break;
-          default:
-            __privateGet(this, _buffer).keyMap += KEYS[keyIndex];
+      });
+      for (let keyIndex = 0; keyIndex < STRINGS2.length; keyIndex++) {
+        __privateGet(this, _buffer).keyMap += STRINGS2[keyIndex];
+        if (keyIndex + 1 !== STRINGS2.length) {
+          switch (typeof KEYS2[keyIndex]) {
+            case "function":
+              __privateGet(this, _buffer).keyMap += ` \${${__privateGet(this, _buffer).INSTANCE_UUID}:${keyIndex}} `;
+              if (KEYS2[keyIndex].constructor.name !== "Function") {
+                throw new Error("Can not use async function");
+              } else {
+                const typeMap = getDeepCopy(KEYS2[keyIndex](new Proxy({}, __privateGet(this, _buffer).proxyHandleTemplate)));
+                const resultBuffer = KEYS2[keyIndex](typeMap);
+                resultBuffer.onclick();
+                console.log(typeMap);
+              }
+              ;
+              break;
+            case "object":
+              __privateGet(this, _buffer).keyMap += ` \${${__privateGet(this, _buffer).INSTANCE_UUID}:${keyIndex}} `;
+              __privateGet(this, _buffer).portConfig = KEYS2[keyIndex];
+              for (let banIndex = 0; banIndex < BANNED_PROPERTY.length; banIndex++) {
+                delete __privateGet(this, _buffer).portConfig[BANNED_PROPERTY[banIndex]];
+              }
+              ;
+              __privateGet(this, _buffer).portConfig.onclick(__privateGet(this, _buffer).portConfig);
+              console.log(__privateGet(this, _buffer).portConfig);
+              break;
+            default:
+              __privateGet(this, _buffer).keyMap += KEYS2[keyIndex];
+          }
+          ;
         }
         ;
       }
       ;
+      console.log(__privateGet(this, _buffer).keyMap);
+      setTimeout(function() {
+        const TARGET = document.getElementById(RENDER_TARGET_NONCE);
+        if (!TARGET) {
+          console.log(`instance created: ${__privateGet(this, _buffer).INSTANCE_UUID}`);
+          __privateGet(this, _buffer).returnObject.flag = void 0;
+        } else {
+          console.log("html appended");
+          TARGET.removeAttribute("id");
+          TARGET.removeAttribute("hidden");
+        }
+        ;
+      }, 0);
     }
-    ;
-    console.log(__privateGet(this, _buffer).keyMap);
-    setTimeout(function() {
-      const TARGET = document.getElementById(RENDER_TARGET_NONCE);
-      if (!TARGET) {
-        console.log(`instance created: ${__privateGet(this, _buffer).INSTANCE_UUID}`);
-        __privateGet(this, _buffer).returnObject.flag = void 0;
-      } else {
-        console.log("html appended");
-        TARGET.removeAttribute("id");
-        TARGET.removeAttribute("hidden");
-      }
-      ;
-    }, 0);
-  }
-  get FLAG() {
-    return "LIBH_INSTANCE";
-  }
-  get getAsNode() {
-    const RETURN_NODE = document.createElement("span");
-    RETURN_NODE.innerText = Date.now();
-    RETURN_NODE.id = __privateGet(this, _buffer).RENDER_TARGET_NONCE;
-    return RETURN_NODE;
-  }
-}
-_buffer = new WeakMap();
-function html(STRINGS, ...KEYS) {
-  return new LibhNode({
-    RENDER_TARGET_NONCE: crypto.randomUUID(),
-    STRINGS,
-    KEYS
-  });
+    get FLAG() {
+      return "LIBH_INSTANCE";
+    }
+    get getAsNode() {
+      const RETURN_NODE = document.createElement("span");
+      RETURN_NODE.innerText = Date.now();
+      RETURN_NODE.id = __privateGet(this, _buffer).RENDER_TARGET_NONCE;
+      return RETURN_NODE;
+    }
+  }, _buffer = new WeakMap(), _a)(
+    {
+      RENDER_TARGET_NONCE: crypto.randomUUID(),
+      STRINGS,
+      KEYS
+    }
+  );
 }
 Object.assign(html, {
   get reservedKey() {
