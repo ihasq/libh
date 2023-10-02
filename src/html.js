@@ -23,6 +23,39 @@ const PARSE_BUFFER = {
 
 let portRegistry = null;
 
+class LibhBuffer {
+	constructor({ RENDER_TARGET_NONCE }) {
+		this.RENDER_TARGET_NONCE = RENDER_TARGET_NONCE
+	}
+	INSTANCE_UUID = crypto.randomUUID();
+	RENDER_TARGET_NONCE;
+	keyMap = "";
+	funcList = [];
+	portConfig = Object.create(null);
+	proxyRegistry = Object.create(null);
+	proxyHandleTemplate = {
+		get(target, prop) {
+			console.dir(target)
+			if(prop in target) {
+				console.log("already has");
+				return target[prop]
+			} else {
+				const proxyRef = crypto.randomUUID();
+				console.log("proxy created");
+				target[prop] = Object.create(null)
+				return new Proxy(target[prop], this);
+			}
+		},
+		set(target, prop, value) {
+			target[prop] = value
+		},
+	};
+	elementProperty = {
+		globalVariable: Object.create(null),
+		propReference: null,
+	};
+}
+
 class LibhNode extends String {
 
 	#BUFFER;
@@ -31,35 +64,7 @@ class LibhNode extends String {
 
 		super(`<span id=${RENDER_TARGET_NONCE} hidden></span>`);
 
-		this.#BUFFER = {
-			INSTANCE_UUID: crypto.randomUUID(),
-			RENDER_TARGET_NONCE,
-			keyMap: "",
-			funcList: [],
-			portConfig: Object.create(null),
-			proxyRegistry: Object.create(null),
-			proxyHandleTemplate: {
-				get(target, prop) {
-					console.dir(target)
-					if(prop in target) {
-						console.log("already has");
-						return target[prop]
-					} else {
-						const proxyRef = crypto.randomUUID();
-						console.log("proxy created");
-						target[prop] = Object.create(null)
-						return new Proxy(target[prop], this);
-					}
-				},
-				set(target, prop, value) {
-					target[prop] = value
-				},
-			},
-			elementProperty: {
-				globalVariable: Object.create(null),
-				propReference: null,
-			},
-		};
+		this.#BUFFER = new LibhBuffer({ RENDER_TARGET_NONCE })
 
 		for(let keyIndex = 0; keyIndex < STRINGS.length; keyIndex++) {
 			this.#BUFFER.keyMap += STRINGS[keyIndex];
