@@ -33,7 +33,7 @@ const UTIL = {
 		const RETURN_BUFFER = Object.create(null);
 		for(let objectKeyIndex = 0; objectKeyIndex < Object.keys(objectData).length; objectKeyIndex++) {
 			RETURN_BUFFER[KEY_DATA[objectKeyIndex]] = (
-				(typeof objectData[KEY_DATA[objectKeyIndex]] === "object")? getDeepCopy(objectData[KEY_DATA[objectKeyIndex]]) : objectData[KEY_DATA[objectKeyIndex]]
+				(typeof objectData[KEY_DATA[objectKeyIndex]] === "object")? this.getDeepCopy(objectData[KEY_DATA[objectKeyIndex]]) : objectData[KEY_DATA[objectKeyIndex]]
 			)
 		};
 		return RETURN_BUFFER;
