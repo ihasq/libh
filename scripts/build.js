@@ -1,7 +1,7 @@
 import esbuild from "esbuild";
 import fs from "node:fs";
 
-const RELEASE_VERSION = "0.0.16";
+const RELEASE_VERSION = "0.0.17";
 
 [
 	{
