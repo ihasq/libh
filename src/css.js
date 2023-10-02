@@ -1,4 +1,4 @@
-import * as core from "./core.js";
+import "./core.js";
 
 function css(strings, ...keys) {};
 
