@@ -76,29 +76,30 @@ function getDeepCopy(objectData) {
  * 
  */
 
-function appendHook(BASE_CLASS, TARGET, ADDITION) {
-	if (BASE_CLASS.prototype[TARGET]) {
-		BASE_CLASS = BASE_CLASS.prototype
-	} else if (!BASE_CLASS[TARGET]) {
-		throw new Error('Cannot find hook')
-	};
-	const ORIGIN = BASE_CLASS[TARGET];
-	BASE_CLASS[TARGET] = function() {
-		arguments[arguments.length] = ORIGIN;
-		arguments.length++;
-		return ADDITION.apply(this, arguments);
-	};
-};
+
 
 globalThis.libh = {
 	get version() {
 		return "0.0.16"
-	}
+	},
+	appendHook(BASE_CLASS, TARGET, ADDITION) {
+		if (BASE_CLASS.prototype[TARGET]) {
+			BASE_CLASS = BASE_CLASS.prototype
+		} else if (!BASE_CLASS[TARGET]) {
+			throw new Error('Cannot find hook')
+		};
+		const ORIGIN = BASE_CLASS[TARGET];
+		BASE_CLASS[TARGET] = function() {
+			arguments[arguments.length] = ORIGIN;
+			arguments.length++;
+			return ADDITION.apply(this, arguments);
+		};
+	},
 }
 
 Object.defineProperty(globalThis, 'libh', { configurable: false });
 
 export {
 	Frameloop,
-	getDeepCopy, appendHook,
+	getDeepCopy,
 }

@@ -52,29 +52,29 @@ function getDeepCopy(objectData) {
   ;
   return RETURN_BUFFER;
 }
-function appendHook(BASE_CLASS, TARGET, ADDITION) {
-  if (BASE_CLASS.prototype[TARGET]) {
-    BASE_CLASS = BASE_CLASS.prototype;
-  } else if (!BASE_CLASS[TARGET]) {
-    throw new Error("Cannot find hook");
-  }
-  ;
-  const ORIGIN = BASE_CLASS[TARGET];
-  BASE_CLASS[TARGET] = function() {
-    arguments[arguments.length] = ORIGIN;
-    arguments.length++;
-    return ADDITION.apply(this, arguments);
-  };
-}
 globalThis.libh = {
   get version() {
     return "0.0.16";
+  },
+  appendHook(BASE_CLASS, TARGET, ADDITION) {
+    if (BASE_CLASS.prototype[TARGET]) {
+      BASE_CLASS = BASE_CLASS.prototype;
+    } else if (!BASE_CLASS[TARGET]) {
+      throw new Error("Cannot find hook");
+    }
+    ;
+    const ORIGIN = BASE_CLASS[TARGET];
+    BASE_CLASS[TARGET] = function() {
+      arguments[arguments.length] = ORIGIN;
+      arguments.length++;
+      return ADDITION.apply(this, arguments);
+    };
   }
 };
 Object.defineProperty(globalThis, "libh", { configurable: false });
 
 // src/html.js
-appendHook(Node, "appendChild", function() {
+libh.appendHook(Node, "appendChild", function() {
   const HAS_LIBH_FLAG = arguments[0].FLAG === "LIBH_INSTANCE";
   const LIBH_ELEMENT_NODE = arguments[0].getAsNode;
   arguments[arguments.length - 1].apply(

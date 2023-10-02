@@ -1,7 +1,7 @@
 import * as CORE from "./core.js";
 
 
-CORE.appendHook(Node, "appendChild", function() {
+libh.appendHook(Node, "appendChild", function() {
 	const HAS_LIBH_FLAG = (arguments[0].FLAG === "LIBH_INSTANCE");
 	const LIBH_ELEMENT_NODE = arguments[0].getAsNode
 	arguments[arguments.length - 1].apply(
