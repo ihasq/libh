@@ -179,6 +179,15 @@ Object.assign(html, {
       "onclick",
       "onchange"
     ];
+  },
+  get info() {
+    return {
+      "package": "libh",
+      "cdn": "npm",
+      "module": "html",
+      "version": "0.0.16",
+      "available-flags": Object.keys(HTML_FLAG)
+    };
   }
 });
 html.flag = function() {
