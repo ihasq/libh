@@ -62,8 +62,7 @@ const RELEASE_VERSION = "0.0.17";
 
 	await esbuild.build(Object.assign(CONFIG, {
 		treeShaking: true,
-		bundle: true,
-		entryPoints: [`./src/libh.js`],
+		entryPoints: [`./src/html.js`],
 	}));
 
 });

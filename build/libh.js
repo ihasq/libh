@@ -33,16 +33,20 @@ var __privateSet = (obj, member, value, setter) => {
   setter ? setter.call(obj, value) : member.set(obj, value);
   return value;
 };
-
-// src/libh.js
-var libh_exports = {};
-__export(libh_exports, {
-  css: () => css,
+var html_exports = {};
+__export(html_exports, {
   html: () => html
 });
-module.exports = __toCommonJS(libh_exports);
-
-// src/util.js
+module.exports = __toCommonJS(html_exports);
+function getDeepCopy(objectData) {
+  const KEY_DATA = Object.keys(objectData);
+  const RETURN_BUFFER = /* @__PURE__ */ Object.create(null);
+  for (let objectKeyIndex = 0; objectKeyIndex < Object.keys(objectData).length; objectKeyIndex++) {
+    RETURN_BUFFER[KEY_DATA[objectKeyIndex]] = typeof objectData[KEY_DATA[objectKeyIndex]] === "object" ? getDeepCopy(objectData[KEY_DATA[objectKeyIndex]]) : objectData[KEY_DATA[objectKeyIndex]];
+  }
+  ;
+  return RETURN_BUFFER;
+}
 function appendHook(BASE_CLASS, TARGET, ADDITION) {
   if (BASE_CLASS.prototype[TARGET]) {
     BASE_CLASS = BASE_CLASS.prototype;
@@ -57,17 +61,6 @@ function appendHook(BASE_CLASS, TARGET, ADDITION) {
     return ADDITION.apply(this, arguments);
   };
 }
-function getDeepCopy(objectData) {
-  const KEY_DATA = Object.keys(objectData);
-  const RETURN_BUFFER = /* @__PURE__ */ Object.create(null);
-  for (let objectKeyIndex = 0; objectKeyIndex < Object.keys(objectData).length; objectKeyIndex++) {
-    RETURN_BUFFER[KEY_DATA[objectKeyIndex]] = typeof objectData[KEY_DATA[objectKeyIndex]] === "object" ? getDeepCopy(objectData[KEY_DATA[objectKeyIndex]]) : objectData[KEY_DATA[objectKeyIndex]];
-  }
-  ;
-  return RETURN_BUFFER;
-}
-
-// src/html.js
 appendHook(Node, "appendChild", function() {
   const HAS_LIBH_FLAG = arguments[0].FLAG === "LIBH_INSTANCE";
   const LIBH_ELEMENT_NODE = arguments[0].getAsNode;
@@ -79,11 +72,11 @@ appendHook(Node, "appendChild", function() {
     return LIBH_ELEMENT_NODE;
   }
 });
-var PARSE_BUFFER = {
+const PARSE_BUFFER = {
   registry: /* @__PURE__ */ Object.create(null),
   HTMLParser: new DOMParser()
 };
-var BANNED_PROPERTY = [
+const BANNED_PROPERTY = [
   "prop",
   "super",
   "__proto__",
@@ -92,11 +85,11 @@ var BANNED_PROPERTY = [
   "__lookupGetter__",
   "__lookupSetter__"
 ];
-var HTML_FLAG = {
+const HTML_FLAG = {
   "enable-node-return": false
 };
 var _buffer;
-var LibhNode = class extends String {
+class LibhNode extends String {
   constructor({ RENDER_TARGET_NONCE, STRINGS, KEYS }) {
     super(`<span id=${RENDER_TARGET_NONCE} hidden></span>`);
     __privateAdd(this, _buffer, void 0);
@@ -186,7 +179,7 @@ var LibhNode = class extends String {
     RETURN_NODE.id = __privateGet(this, _buffer).RENDER_TARGET_NONCE;
     return RETURN_NODE;
   }
-};
+}
 _buffer = new WeakMap();
 function html(STRINGS, ...KEYS) {
   return new LibhNode({
@@ -237,12 +230,7 @@ Object.assign(html.flag, {
     return JSON.parse(JSON.stringify(HTML_FLAG));
   }
 });
-
-// src/css.js
-function css(strings, ...keys) {
-}
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
-  css,
   html
 });
