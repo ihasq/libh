@@ -167,18 +167,24 @@ function html(STRINGS, ...KEYS) {
     }
   });
 }
-Object.assign(html, {
-  get reservedKey() {
-    return QUERY.RESERVED_KEY;
+Object.defineProperties(html, {
+  reservedKey: {
+    get: function() {
+      return QUERY.RESERVED_KEY;
+    },
+    configurable: false
   },
-  get info() {
-    return {
-      "package": "libh",
-      "cdn": "npm",
-      "module": "html",
-      "version": "0.0.16",
-      "available-flags": Object.keys(BUFFER.flags)
-    };
+  info: {
+    get: function() {
+      return {
+        "package": "libh",
+        "cdn": "npm",
+        "module": "html",
+        "version": "0.0.16",
+        "available-flags": Object.keys(BUFFER.flags)
+      };
+    },
+    configurable: false
   }
 });
 html.flag = function(...flag) {
@@ -190,14 +196,21 @@ html.flag = function(...flag) {
   }
   ;
 };
-Object.assign(html.flag, {
-  get list() {
-    return Object.keys(BUFFER.flags);
+Object.defineProperties(html.flag, {
+  list: {
+    get: function() {
+      return Object.keys(BUFFER.flags);
+    },
+    configurable: false
   },
-  get state() {
-    return JSON.parse(JSON.stringify(BUFFER.flags));
+  state: {
+    get: function() {
+      return JSON.parse(JSON.stringify(BUFFER.flags));
+    },
+    configurable: false
   }
 });
+Object.freeze(html);
 export {
   html
 };
