@@ -38,10 +38,6 @@ const UTIL = {
 		};
 		return RETURN_BUFFER;
 	},
-};
-
-const PARSE_BUFFER = {
-	registry: Object.create(null),
 	HTMLParser: new DOMParser(),
 };
 

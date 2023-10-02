@@ -77,10 +77,7 @@ const UTIL = {
     }
     ;
     return RETURN_BUFFER;
-  }
-};
-const PARSE_BUFFER = {
-  registry: /* @__PURE__ */ Object.create(null),
+  },
   HTMLParser: new DOMParser()
 };
 const BANNED_PROPERTY = [
