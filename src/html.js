@@ -81,7 +81,7 @@ class LibhNode extends String {
 						if(KEYS[keyIndex].constructor.name !== "Function") {
 							throw new Error("Can not use async function");
 						} else {
-							const typeMap = CORE.getDeepCopy(KEYS[keyIndex](new Proxy({}, this.#buffer.proxyHandleTemplate)));
+							const typeMap = libh.getDeepCopy(KEYS[keyIndex](new Proxy({}, this.#buffer.proxyHandleTemplate)));
 							const resultBuffer = KEYS[keyIndex](typeMap);
 							resultBuffer.onclick();
 							console.log(typeMap);

@@ -43,19 +43,24 @@ __export(libh_exports, {
 module.exports = __toCommonJS(libh_exports);
 
 // src/core.js
-function getDeepCopy(objectData) {
-  const KEY_DATA = Object.keys(objectData);
-  const RETURN_BUFFER = /* @__PURE__ */ Object.create(null);
-  for (let objectKeyIndex = 0; objectKeyIndex < Object.keys(objectData).length; objectKeyIndex++) {
-    RETURN_BUFFER[KEY_DATA[objectKeyIndex]] = typeof objectData[KEY_DATA[objectKeyIndex]] === "object" ? getDeepCopy(objectData[KEY_DATA[objectKeyIndex]]) : objectData[KEY_DATA[objectKeyIndex]];
+var _buffer, _a;
+globalThis.libh = Object.freeze(new (_a = class {
+  constructor() {
+    __privateAdd(this, _buffer, void 0);
   }
-  ;
-  return RETURN_BUFFER;
-}
-globalThis.libh = {
   get version() {
     return "0.0.16";
-  },
+  }
+  /**
+   * 
+   * krmbn0576 さんに感謝します: Qiita記事「JavaScriptのフックパターンの楽な書き方」
+   * https://qiita.com/krmbn0576/items/473e18e182972b41dd1b
+   * 
+   * @param { function } BASE_CLASS
+   * @param { string } TARGET
+   * @param { function } ADDITION
+   * 
+   */
   appendHook(BASE_CLASS, TARGET, ADDITION) {
     if (BASE_CLASS.prototype[TARGET]) {
       BASE_CLASS = BASE_CLASS.prototype;
@@ -70,7 +75,16 @@ globalThis.libh = {
       return ADDITION.apply(this, arguments);
     };
   }
-};
+  getDeepCopy(objectData) {
+    const KEY_DATA = Object.keys(objectData);
+    const RETURN_BUFFER = /* @__PURE__ */ Object.create(null);
+    for (let objectKeyIndex = 0; objectKeyIndex < Object.keys(objectData).length; objectKeyIndex++) {
+      RETURN_BUFFER[KEY_DATA[objectKeyIndex]] = typeof objectData[KEY_DATA[objectKeyIndex]] === "object" ? getDeepCopy(objectData[KEY_DATA[objectKeyIndex]]) : objectData[KEY_DATA[objectKeyIndex]];
+    }
+    ;
+    return RETURN_BUFFER;
+  }
+}, _buffer = new WeakMap(), _a)());
 Object.defineProperty(globalThis, "libh", { configurable: false });
 
 // src/html.js
@@ -101,12 +115,12 @@ var BANNED_PROPERTY = [
 var HTML_FLAG = {
   "enable-node-return": false
 };
-var _buffer;
+var _buffer2;
 var LibhNode = class extends String {
   constructor({ RENDER_TARGET_NONCE, STRINGS, KEYS }) {
     super(`<span id=${RENDER_TARGET_NONCE} hidden></span>`);
-    __privateAdd(this, _buffer, void 0);
-    __privateSet(this, _buffer, {
+    __privateAdd(this, _buffer2, void 0);
+    __privateSet(this, _buffer2, {
       INSTANCE_UUID: crypto.randomUUID(),
       RENDER_TARGET_NONCE,
       keyMap: "",
@@ -136,15 +150,15 @@ var LibhNode = class extends String {
       }
     });
     for (let keyIndex = 0; keyIndex < STRINGS.length; keyIndex++) {
-      __privateGet(this, _buffer).keyMap += STRINGS[keyIndex];
+      __privateGet(this, _buffer2).keyMap += STRINGS[keyIndex];
       if (keyIndex + 1 !== STRINGS.length) {
         switch (typeof KEYS[keyIndex]) {
           case "function":
-            __privateGet(this, _buffer).keyMap += ` \${${__privateGet(this, _buffer).INSTANCE_UUID}:${keyIndex}} `;
+            __privateGet(this, _buffer2).keyMap += ` \${${__privateGet(this, _buffer2).INSTANCE_UUID}:${keyIndex}} `;
             if (KEYS[keyIndex].constructor.name !== "Function") {
               throw new Error("Can not use async function");
             } else {
-              const typeMap = getDeepCopy(KEYS[keyIndex](new Proxy({}, __privateGet(this, _buffer).proxyHandleTemplate)));
+              const typeMap = libh.getDeepCopy(KEYS[keyIndex](new Proxy({}, __privateGet(this, _buffer2).proxyHandleTemplate)));
               const resultBuffer = KEYS[keyIndex](typeMap);
               resultBuffer.onclick();
               console.log(typeMap);
@@ -152,29 +166,29 @@ var LibhNode = class extends String {
             ;
             break;
           case "object":
-            __privateGet(this, _buffer).keyMap += ` \${${__privateGet(this, _buffer).INSTANCE_UUID}:${keyIndex}} `;
-            __privateGet(this, _buffer).portConfig = KEYS[keyIndex];
+            __privateGet(this, _buffer2).keyMap += ` \${${__privateGet(this, _buffer2).INSTANCE_UUID}:${keyIndex}} `;
+            __privateGet(this, _buffer2).portConfig = KEYS[keyIndex];
             for (let banIndex = 0; banIndex < BANNED_PROPERTY.length; banIndex++) {
-              delete __privateGet(this, _buffer).portConfig[BANNED_PROPERTY[banIndex]];
+              delete __privateGet(this, _buffer2).portConfig[BANNED_PROPERTY[banIndex]];
             }
             ;
-            __privateGet(this, _buffer).portConfig.onclick(__privateGet(this, _buffer).portConfig);
-            console.log(__privateGet(this, _buffer).portConfig);
+            __privateGet(this, _buffer2).portConfig.onclick(__privateGet(this, _buffer2).portConfig);
+            console.log(__privateGet(this, _buffer2).portConfig);
             break;
           default:
-            __privateGet(this, _buffer).keyMap += KEYS[keyIndex];
+            __privateGet(this, _buffer2).keyMap += KEYS[keyIndex];
         }
         ;
       }
       ;
     }
     ;
-    console.log(__privateGet(this, _buffer).keyMap);
+    console.log(__privateGet(this, _buffer2).keyMap);
     setTimeout(function() {
       const TARGET = document.getElementById(RENDER_TARGET_NONCE);
       if (!TARGET) {
-        console.log(`instance created: ${__privateGet(this, _buffer).INSTANCE_UUID}`);
-        __privateGet(this, _buffer).returnObject.flag = void 0;
+        console.log(`instance created: ${__privateGet(this, _buffer2).INSTANCE_UUID}`);
+        __privateGet(this, _buffer2).returnObject.flag = void 0;
       } else {
         console.log("html appended");
         TARGET.removeAttribute("id");
@@ -189,11 +203,11 @@ var LibhNode = class extends String {
   get getAsNode() {
     const RETURN_NODE = document.createElement("span");
     RETURN_NODE.innerText = Date.now();
-    RETURN_NODE.id = __privateGet(this, _buffer).RENDER_TARGET_NONCE;
+    RETURN_NODE.id = __privateGet(this, _buffer2).RENDER_TARGET_NONCE;
     return RETURN_NODE;
   }
 };
-_buffer = new WeakMap();
+_buffer2 = new WeakMap();
 function html(STRINGS, ...KEYS) {
   return new LibhNode({
     RENDER_TARGET_NONCE: crypto.randomUUID(),

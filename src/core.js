@@ -52,36 +52,25 @@ const VIEW_MODEL = {
 
 const PLUGIN_REGISTRY = Object.create(null);
 
-function getDeepCopy(objectData) {
-	const KEY_DATA = Object.keys(objectData);
-	const RETURN_BUFFER = Object.create(null);
-	for(let objectKeyIndex = 0; objectKeyIndex < Object.keys(objectData).length; objectKeyIndex++) {
-		RETURN_BUFFER[KEY_DATA[objectKeyIndex]] = (
-			(typeof objectData[KEY_DATA[objectKeyIndex]] === "object")? getDeepCopy(objectData[KEY_DATA[objectKeyIndex]]) : objectData[KEY_DATA[objectKeyIndex]]
-		)
-	};
-	return RETURN_BUFFER;
-};
+globalThis.libh = Object.freeze(new class {
 
-/*
- * 	krmbn0576 さんに感謝します: Qiita記事「JavaScriptのフックパターンの楽な書き方」
- * 	https://qiita.com/krmbn0576/items/473e18e182972b41dd1b
- */
+	#buffer;
 
-/**
- * 
- * @param { function } BASE_CLASS
- * @param { string } TARGET
- * @param { function } ADDITION
- * 
- */
-
-
-
-globalThis.libh = {
 	get version() {
 		return "0.0.16"
-	},
+	};
+
+	/**
+	 * 
+	 * krmbn0576 さんに感謝します: Qiita記事「JavaScriptのフックパターンの楽な書き方」
+	 * https://qiita.com/krmbn0576/items/473e18e182972b41dd1b
+	 * 
+	 * @param { function } BASE_CLASS
+	 * @param { string } TARGET
+	 * @param { function } ADDITION
+	 * 
+	 */
+
 	appendHook(BASE_CLASS, TARGET, ADDITION) {
 		if (BASE_CLASS.prototype[TARGET]) {
 			BASE_CLASS = BASE_CLASS.prototype
@@ -94,12 +83,22 @@ globalThis.libh = {
 			arguments.length++;
 			return ADDITION.apply(this, arguments);
 		};
-	},
-}
+	};
+
+	getDeepCopy(objectData) {
+		const KEY_DATA = Object.keys(objectData);
+		const RETURN_BUFFER = Object.create(null);
+		for(let objectKeyIndex = 0; objectKeyIndex < Object.keys(objectData).length; objectKeyIndex++) {
+			RETURN_BUFFER[KEY_DATA[objectKeyIndex]] = (
+				(typeof objectData[KEY_DATA[objectKeyIndex]] === "object")? getDeepCopy(objectData[KEY_DATA[objectKeyIndex]]) : objectData[KEY_DATA[objectKeyIndex]]
+			)
+		};
+		return RETURN_BUFFER;
+	};
+})
 
 Object.defineProperty(globalThis, 'libh', { configurable: false });
 
 export {
 	Frameloop,
-	getDeepCopy,
 }
