@@ -67,44 +67,38 @@ const RELEASE_VERSION = "0.0.18";
 
 });
 
-["quick-start", "component"].forEach((EXAMPLE_NAME) => {
-	fs.writeFileSync(
-		`./examples/${EXAMPLE_NAME}/package.json`,
-		`{
-		    "name": "libh-example-${EXAMPLE_NAME}",
-		    "version": "${RELEASE_VERSION}",
-		    "license": "MIT",
-		    "dependencies": {
-		        "libh": "^${RELEASE_VERSION}"
-		    },
-		    "devDependencies": {
-		        "vite": "^3.0.1"
-		    },
-		    "stackblitz": {
-		        "startCommand": "vite"
-		    }
-		}`.replace(/\t/g, "").replace(/    /g, "\t")
-	)
+["quick-start", "component"].forEach(EXAMPLE_NAME => {
+	fs.writeFileSync(`./examples/${EXAMPLE_NAME}/package.json`, JSON.stringify({
+		name: `libh-example-${EXAMPLE_NAME}`,
+		version: RELEASE_VERSION,
+		license: "MIT",
+		dependencies: {
+			libh: `^${RELEASE_VERSION}`
+		},
+		devDependencies: {
+			vite: "^3.0.1"
+		},
+		stackblitz: {
+			startCommand: "vite"
+		},
+	}, null, 2))
 });
 
-fs.writeFileSync(
-	`./package.json`,
-	`{
-	    "name": "libh",
-	    "version": "${RELEASE_VERSION}",
-	    "description": "html in javascript",
-	    "main": "./build/libh.esm.min.js",
-	    "directories": {
-	        "cjs": "./build/libh.cjs"
-	    },
-	    "type": "module",
-	    "scripts": {
-	        "build": "node ./scripts/build"
-	    },
-	    "devDependencies": {
-	        "esbuild": "^0.19.3"
-	    },
-	    "author": "ihasq",
-	    "license": "MIT"
-	}`.replace(/\t/g, "").replace(/    /g, "\t")
-)
+fs.writeFileSync("./package.json", JSON.stringify({
+	name: "libh",
+	version: RELEASE_VERSION,
+	description: "html in javascript",
+	main: "./build/libh.esm.min.js",
+	directories: {
+		cjs: "./build/libh.cjs"
+	},
+	type: "module",
+	scripts: {
+		build: "node ./scripts/build"
+	},
+	devDependencies: {
+		esbuild: "^0.19.3"
+	},
+	author: "ihasq",
+	license: "MIT",
+}, null, 2))

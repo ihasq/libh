@@ -1,14 +1,14 @@
 {
-	"name": "libh-example-component",
-	"version": "0.0.18",
-	"license": "MIT",
-	"dependencies": {
-		"libh": "^0.0.18"
-	},
-	"devDependencies": {
-		"vite": "^3.0.1"
-	},
-	"stackblitz": {
-		"startCommand": "vite"
-	}
+  "name": "libh-example-component",
+  "version": "0.0.18",
+  "license": "MIT",
+  "dependencies": {
+    "libh": "^0.0.18"
+  },
+  "devDependencies": {
+    "vite": "^3.0.1"
+  },
+  "stackblitz": {
+    "startCommand": "vite"
+  }
 }
