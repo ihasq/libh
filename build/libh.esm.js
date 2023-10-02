@@ -32,7 +32,7 @@ var __privateSet = (obj, member, value, setter) => {
       }
     }
   }
-].forEach(({ BASE_CLASS, TARGET, ADDITION }) => {
+].forEach(function({ BASE_CLASS, TARGET, ADDITION }) {
   if (BASE_CLASS.prototype[TARGET]) {
     BASE_CLASS = BASE_CLASS.prototype;
   } else if (!BASE_CLASS[TARGET]) {

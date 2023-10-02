@@ -54,7 +54,7 @@ module.exports = __toCommonJS(libh_exports);
       }
     }
   }
-].forEach(({ BASE_CLASS, TARGET, ADDITION }) => {
+].forEach(function({ BASE_CLASS, TARGET, ADDITION }) {
   if (BASE_CLASS.prototype[TARGET]) {
     BASE_CLASS = BASE_CLASS.prototype;
   } else if (!BASE_CLASS[TARGET]) {
