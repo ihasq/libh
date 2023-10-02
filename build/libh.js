@@ -38,16 +38,23 @@ __export(libh_exports, {
   html: () => html
 });
 module.exports = __toCommonJS(libh_exports);
-function getDeepCopy(objectData) {
-  const KEY_DATA = Object.keys(objectData);
-  const RETURN_BUFFER = /* @__PURE__ */ Object.create(null);
-  for (let objectKeyIndex = 0; objectKeyIndex < Object.keys(objectData).length; objectKeyIndex++) {
-    RETURN_BUFFER[KEY_DATA[objectKeyIndex]] = typeof objectData[KEY_DATA[objectKeyIndex]] === "object" ? getDeepCopy(objectData[KEY_DATA[objectKeyIndex]]) : objectData[KEY_DATA[objectKeyIndex]];
+[
+  {
+    BASE_CLASS: Node,
+    TARGET: "appendChild",
+    ADDITION: function() {
+      const HAS_LIBH_FLAG = arguments[0].FLAG === "LIBH_INSTANCE";
+      const LIBH_ELEMENT_NODE = arguments[0].getAsNode;
+      arguments[arguments.length - 1].apply(
+        this,
+        HAS_LIBH_FLAG ? [LIBH_ELEMENT_NODE] : arguments
+      );
+      if (HAS_LIBH_FLAG) {
+        return LIBH_ELEMENT_NODE;
+      }
+    }
   }
-  ;
-  return RETURN_BUFFER;
-}
-function appendHook(BASE_CLASS, TARGET, ADDITION) {
+].forEach(({ BASE_CLASS, TARGET, ADDITION }) => {
   if (BASE_CLASS.prototype[TARGET]) {
     BASE_CLASS = BASE_CLASS.prototype;
   } else if (!BASE_CLASS[TARGET]) {
@@ -60,18 +67,18 @@ function appendHook(BASE_CLASS, TARGET, ADDITION) {
     arguments.length++;
     return ADDITION.apply(this, arguments);
   };
-}
-appendHook(Node, "appendChild", function() {
-  const HAS_LIBH_FLAG = arguments[0].FLAG === "LIBH_INSTANCE";
-  const LIBH_ELEMENT_NODE = arguments[0].getAsNode;
-  arguments[arguments.length - 1].apply(
-    this,
-    HAS_LIBH_FLAG ? [LIBH_ELEMENT_NODE] : arguments
-  );
-  if (HAS_LIBH_FLAG) {
-    return LIBH_ELEMENT_NODE;
-  }
 });
+const UTIL = {
+  getDeepCopy(objectData) {
+    const KEY_DATA = Object.keys(objectData);
+    const RETURN_BUFFER = /* @__PURE__ */ Object.create(null);
+    for (let objectKeyIndex = 0; objectKeyIndex < Object.keys(objectData).length; objectKeyIndex++) {
+      RETURN_BUFFER[KEY_DATA[objectKeyIndex]] = typeof objectData[KEY_DATA[objectKeyIndex]] === "object" ? getDeepCopy(objectData[KEY_DATA[objectKeyIndex]]) : objectData[KEY_DATA[objectKeyIndex]];
+    }
+    ;
+    return RETURN_BUFFER;
+  }
+};
 const PARSE_BUFFER = {
   registry: /* @__PURE__ */ Object.create(null),
   HTMLParser: new DOMParser()
@@ -132,7 +139,7 @@ function html(STRINGS, ...KEYS) {
               if (KEYS2[keyIndex].constructor.name !== "Function") {
                 throw new Error("Can not use async function");
               } else {
-                const typeMap = getDeepCopy(KEYS2[keyIndex](new Proxy({}, __privateGet(this, _buffer).proxyHandleTemplate)));
+                const typeMap = UTIL.getDeepCopy(KEYS2[keyIndex](new Proxy({}, __privateGet(this, _buffer).proxyHandleTemplate)));
                 const resultBuffer = KEYS2[keyIndex](typeMap);
                 resultBuffer.onclick();
                 console.log(typeMap);

@@ -110,7 +110,7 @@ function html(STRINGS, ...KEYS) {
 							if(KEYS[keyIndex].constructor.name !== "Function") {
 								throw new Error("Can not use async function");
 							} else {
-								const typeMap = getDeepCopy(KEYS[keyIndex](new Proxy({}, this.#buffer.proxyHandleTemplate)));
+								const typeMap = UTIL.getDeepCopy(KEYS[keyIndex](new Proxy({}, this.#buffer.proxyHandleTemplate)));
 								const resultBuffer = KEYS[keyIndex](typeMap);
 								resultBuffer.onclick();
 								console.log(typeMap);
