@@ -59,6 +59,7 @@ class LibhBuffer {
 class LibhNode extends String {
 
 	#BUFFER;
+	#RENDER_TARGET_NONCE;
 
 	constructor({ RENDER_TARGET_NONCE, STRINGS, KEYS }) {
 
