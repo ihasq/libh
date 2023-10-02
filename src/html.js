@@ -33,7 +33,7 @@ class LibhNode extends String {
 
 		this.#BUFFER = {
 			INSTANCE_UUID: crypto.randomUUID(),
-			RENDER_TARGET_UUID: RENDER_TARGET_NONCE,
+			RENDER_TARGET_NONCE,
 			keyMap: "",
 			funcList: [],
 			portConfig: Object.create(null),
@@ -106,6 +106,7 @@ class LibhNode extends String {
 			} else {
 				// appending process
 				console.log("html appended");
+				// removing nonce from identifier
 				TARGET.removeAttribute("id");
 				TARGET.removeAttribute("hidden");
 			};
@@ -119,7 +120,7 @@ class LibhNode extends String {
 	get getAsNode() {
 		const RETURN_NODE = document.createElement("span");
 		RETURN_NODE.innerText = Date.now();
-		RETURN_NODE.id = this.#BUFFER.RENDER_TARGET_UUID;
+		RETURN_NODE.id = this.#BUFFER.RENDER_TARGET_NONCE;
 		return RETURN_NODE;
 	}
 };
