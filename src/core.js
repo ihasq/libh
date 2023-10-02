@@ -90,13 +90,13 @@ function appendHook(BASE_CLASS, TARGET, ADDITION) {
 	};
 };
 
-
-
-globalThis.libh = Object.freeze({
+globalThis.libh = {
 	get version() {
 		return "0.0.16"
-	},
-})
+	}
+}
+
+Object.defineProperty(globalThis, 'libh', { configurable: false });
 
 export {
 	Frameloop,

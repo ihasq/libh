@@ -1,8 +1,5 @@
 import * as CORE from "./core.js";
 
-const HTML_FLAG = {
-	"enable-node-return": false
-}
 
 CORE.appendHook(Node, "appendChild", function() {
 	const HAS_LIBH_FLAG = (arguments[0].FLAG === "LIBH_INSTANCE");
@@ -29,7 +26,11 @@ const BANNED_PROPERTY = [
 	"__defineSetter__",
 	"__lookupGetter__",
 	"__lookupSetter__",
-]
+];
+
+const HTML_FLAG = {
+	"enable-node-return": false
+};
 
 class LibhNode extends String {
 

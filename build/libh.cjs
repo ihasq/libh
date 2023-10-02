@@ -66,16 +66,14 @@ function appendHook(BASE_CLASS, TARGET, ADDITION) {
     return ADDITION.apply(this, arguments);
   };
 }
-globalThis.libh = Object.freeze({
+globalThis.libh = {
   get version() {
     return "0.0.16";
   }
-});
+};
+Object.defineProperty(globalThis, "libh", { configurable: false });
 
 // src/html.js
-var HTML_FLAG = {
-  "enable-node-return": false
-};
 appendHook(Node, "appendChild", function() {
   const HAS_LIBH_FLAG = arguments[0].FLAG === "LIBH_INSTANCE";
   const LIBH_ELEMENT_NODE = arguments[0].getAsNode;
@@ -100,6 +98,9 @@ var BANNED_PROPERTY = [
   "__lookupGetter__",
   "__lookupSetter__"
 ];
+var HTML_FLAG = {
+  "enable-node-return": false
+};
 var _buffer;
 var LibhNode = class extends String {
   constructor({ RENDER_TARGET_NONCE, STRINGS, KEYS }) {
