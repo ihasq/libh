@@ -23,6 +23,7 @@ const PARSE_BUFFER = {
 
 const BANNED_PROPERTY = [
 	"prop",
+	"super",
 	"__proto__",
 	"__defineGetter__",
 	"__defineSetter__",
@@ -84,21 +85,22 @@ class LibhNode extends String {
 							resultBuffer.onclick();
 							console.log(typeMap);
 						};
-						break;
+					break;
 							
 					case "object":
 						this.#buffer.keyMap += ` \${${this.#buffer.INSTANCE_UUID}:${keyIndex}} `;
 						this.#buffer.portConfig = KEYS[keyIndex];
+
 						// sanitizing process
 						for(let banIndex = 0; banIndex < BANNED_PROPERTY.length; banIndex++) {
-							this.#buffer.portConfig[BANNED_PROPERTY[banIndex]] = undefined;
+							delete this.#buffer.portConfig[BANNED_PROPERTY[banIndex]];
 						};
 
 						this.#buffer.portConfig.onclick(this.#buffer.portConfig)
 						console.log((this.#buffer.portConfig))
-						break;
+					break;
 	
-					default: this.#buffer.keyMap += KEYS[keyIndex]
+					default: this.#buffer.keyMap += KEYS[keyIndex];
 
 				};
 			};

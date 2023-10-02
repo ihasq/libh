@@ -68,6 +68,7 @@ var PARSE_BUFFER = {
 };
 var BANNED_PROPERTY = [
   "prop",
+  "super",
   "__proto__",
   "__defineGetter__",
   "__defineSetter__",
@@ -128,7 +129,7 @@ var LibhNode = class extends String {
             __privateGet(this, _buffer).keyMap += ` \${${__privateGet(this, _buffer).INSTANCE_UUID}:${keyIndex}} `;
             __privateGet(this, _buffer).portConfig = KEYS[keyIndex];
             for (let banIndex = 0; banIndex < BANNED_PROPERTY.length; banIndex++) {
-              __privateGet(this, _buffer).portConfig[BANNED_PROPERTY[banIndex]] = void 0;
+              delete __privateGet(this, _buffer).portConfig[BANNED_PROPERTY[banIndex]];
             }
             ;
             __privateGet(this, _buffer).portConfig.onclick(__privateGet(this, _buffer).portConfig);
