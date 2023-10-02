@@ -1,9 +1,3 @@
-var __defProp = Object.defineProperty;
-var __defNormalProp = (obj, key, value) => key in obj ? __defProp(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
-var __publicField = (obj, key, value) => {
-  __defNormalProp(obj, typeof key !== "symbol" ? key + "" : key, value);
-  return value;
-};
 var __accessCheck = (obj, member, msg) => {
   if (!member.has(obj))
     throw TypeError("Cannot " + msg);
@@ -67,45 +61,40 @@ var PARSE_BUFFER = {
   registry: /* @__PURE__ */ Object.create(null),
   HTMLParser: new DOMParser()
 };
-var LibhBuffer = class {
-  constructor({ RENDER_TARGET_NONCE }) {
-    __publicField(this, "INSTANCE_UUID", crypto.randomUUID());
-    __publicField(this, "RENDER_TARGET_NONCE");
-    __publicField(this, "keyMap", "");
-    __publicField(this, "funcList", []);
-    __publicField(this, "portConfig", /* @__PURE__ */ Object.create(null));
-    __publicField(this, "proxyRegistry", /* @__PURE__ */ Object.create(null));
-    __publicField(this, "proxyHandleTemplate", {
-      get(target, prop) {
-        console.dir(target);
-        if (prop in target) {
-          console.log("already has");
-          return target[prop];
-        } else {
-          const proxyRef = crypto.randomUUID();
-          console.log("proxy created");
-          target[prop] = /* @__PURE__ */ Object.create(null);
-          return new Proxy(target[prop], this);
-        }
-      },
-      set(target, prop, value) {
-        target[prop] = value;
-      }
-    });
-    __publicField(this, "elementProperty", {
-      globalVariable: /* @__PURE__ */ Object.create(null),
-      propReference: null
-    });
-    this.RENDER_TARGET_NONCE = RENDER_TARGET_NONCE;
-  }
-};
-var _BUFFER, _RENDER_TARGET_NONCE;
+var _BUFFER;
 var LibhNode = class extends String {
   constructor({ RENDER_TARGET_NONCE, STRINGS, KEYS }) {
     super(`<span id=${RENDER_TARGET_NONCE} hidden></span>`);
     __privateAdd(this, _BUFFER, void 0);
-    __privateAdd(this, _RENDER_TARGET_NONCE, void 0);
-    __privateSet(this, _BUFFER, new LibhBuffer({ RENDER_TARGET_NONCE }));
+    __privateSet(this, _BUFFER, {
+      INSTANCE_UUID: crypto.randomUUID(),
+      RENDER_TARGET_NONCE,
+      keyMap: "",
+      funcList: [],
+      portConfig: /* @__PURE__ */ Object.create(null),
+      proxyRegistry: /* @__PURE__ */ Object.create(null),
+      proxyHandleTemplate: {
+        get(target, prop) {
+          console.dir(target);
+          if (prop in target) {
+            console.log("already has");
+            return target[prop];
+          } else {
+            const proxyRef = crypto.randomUUID();
+            console.log("proxy created");
+            target[prop] = /* @__PURE__ */ Object.create(null);
+            return new Proxy(target[prop], this);
+          }
+        },
+        set(target, prop, value) {
+          target[prop] = value;
+        }
+      },
+      elementProperty: {
+        globalVariable: /* @__PURE__ */ Object.create(null),
+        propReference: null
+      }
+    });
     for (let keyIndex = 0; keyIndex < STRINGS.length; keyIndex++) {
       __privateGet(this, _BUFFER).keyMap += STRINGS[keyIndex];
       if (keyIndex + 1 !== STRINGS.length) {
@@ -169,7 +158,6 @@ var LibhNode = class extends String {
   }
 };
 _BUFFER = new WeakMap();
-_RENDER_TARGET_NONCE = new WeakMap();
 function html(STRINGS, ...KEYS) {
   return new LibhNode({
     RENDER_TARGET_NONCE: crypto.randomUUID(),
