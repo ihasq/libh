@@ -1,4 +1,4 @@
-import "./core.js";
+import * as util from "./util.js"
 
 function css(strings, ...keys) {};
 

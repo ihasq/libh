@@ -17,111 +17,33 @@ var __privateSet = (obj, member, value, setter) => {
   return value;
 };
 
-// src/core.js
-var _buffer;
-if (!("libh" in globalThis)) {
-  class LibhRuntime {
-    constructor() {
-      __privateAdd(this, _buffer, {
-        frameLoop: {
-          isActive: false,
-          rafID: "",
-          ignite() {
-            if (!this.isActive) {
-              this.rafID = window.requestAnimationFrame(this.run);
-              this.isActive = true;
-            }
-            ;
-          },
-          cancel() {
-            window.cancelAnimationFrame(this.rafID);
-            this.rafID = "";
-            this.isActive = false;
-          },
-          func: {
-            stack: [],
-            pendedDiff: /* @__PURE__ */ Object.create(null)
-          },
-          task: {
-            stack: []
-          },
-          registerNewFunction(keyFn) {
-            this.func.stack.push({
-              funcBody: keyFn,
-              result: null
-            });
-          },
-          pushNewTask(taskFn) {
-            this.task.stack.push(taskFn);
-          },
-          run() {
-            if (Frameloop.func.stack.length !== 0) {
-              for (let i = 0; i < Frameloop.func.stack.length; i++) {
-                if (Frameloop.func.stack[i].result !== Frameloop.func.stack[i].funcBody()) {
-                }
-              }
-            }
-            if (Frameloop.task.stack.length !== 0) {
-              for (let i = 0; i < Frameloop.task.stack.length; i++) {
-                Frameloop.task.stack[i]();
-              }
-            }
-            ;
-            Frameloop.task.stack = [];
-            window.requestAnimationFrame(Frameloop.run);
-          }
-        },
-        pluginRegistry: /* @__PURE__ */ Object.create(null),
-        viewModel: /* @__PURE__ */ Object.create(null)
-      });
-    }
-    get version() {
-      return "0.0.16";
-    }
-    /**
-     * 
-     * krmbn0576 さんに感謝します: Qiita記事「JavaScriptのフックパターンの楽な書き方」
-     * https://qiita.com/krmbn0576/items/473e18e182972b41dd1b
-     * 
-     * @param { function } BASE_CLASS
-     * @param { string } TARGET
-     * @param { function } ADDITION
-     * 
-     */
-    appendHook(BASE_CLASS, TARGET, ADDITION) {
-      if (BASE_CLASS.prototype[TARGET]) {
-        BASE_CLASS = BASE_CLASS.prototype;
-      } else if (!BASE_CLASS[TARGET]) {
-        throw new Error("Cannot find hook");
-      }
-      ;
-      const ORIGIN = BASE_CLASS[TARGET];
-      BASE_CLASS[TARGET] = function() {
-        arguments[arguments.length] = ORIGIN;
-        arguments.length++;
-        return ADDITION.apply(this, arguments);
-      };
-    }
-    getDeepCopy(objectData) {
-      const KEY_DATA = Object.keys(objectData);
-      const RETURN_BUFFER = /* @__PURE__ */ Object.create(null);
-      for (let objectKeyIndex = 0; objectKeyIndex < Object.keys(objectData).length; objectKeyIndex++) {
-        RETURN_BUFFER[KEY_DATA[objectKeyIndex]] = typeof objectData[KEY_DATA[objectKeyIndex]] === "object" ? getDeepCopy(objectData[KEY_DATA[objectKeyIndex]]) : objectData[KEY_DATA[objectKeyIndex]];
-      }
-      ;
-      return RETURN_BUFFER;
-    }
-    appendFrameTaskPath(structuredLibhInstance) {
-    }
+// src/util.js
+function appendHook(BASE_CLASS, TARGET, ADDITION) {
+  if (BASE_CLASS.prototype[TARGET]) {
+    BASE_CLASS = BASE_CLASS.prototype;
+  } else if (!BASE_CLASS[TARGET]) {
+    throw new Error("Cannot find hook");
   }
-  _buffer = new WeakMap();
   ;
-  globalThis.libh = new LibhRuntime();
+  const ORIGIN = BASE_CLASS[TARGET];
+  BASE_CLASS[TARGET] = function() {
+    arguments[arguments.length] = ORIGIN;
+    arguments.length++;
+    return ADDITION.apply(this, arguments);
+  };
 }
-Object.defineProperty(globalThis, "libh", { writable: false, configurable: false });
+function getDeepCopy(objectData) {
+  const KEY_DATA = Object.keys(objectData);
+  const RETURN_BUFFER = /* @__PURE__ */ Object.create(null);
+  for (let objectKeyIndex = 0; objectKeyIndex < Object.keys(objectData).length; objectKeyIndex++) {
+    RETURN_BUFFER[KEY_DATA[objectKeyIndex]] = typeof objectData[KEY_DATA[objectKeyIndex]] === "object" ? getDeepCopy(objectData[KEY_DATA[objectKeyIndex]]) : objectData[KEY_DATA[objectKeyIndex]];
+  }
+  ;
+  return RETURN_BUFFER;
+}
 
 // src/html.js
-libh.appendHook(Node, "appendChild", function() {
+appendHook(Node, "appendChild", function() {
   const HAS_LIBH_FLAG = arguments[0].FLAG === "LIBH_INSTANCE";
   const LIBH_ELEMENT_NODE = arguments[0].getAsNode;
   arguments[arguments.length - 1].apply(
@@ -148,12 +70,12 @@ var BANNED_PROPERTY = [
 var HTML_FLAG = {
   "enable-node-return": false
 };
-var _buffer2;
+var _buffer;
 var LibhNode = class extends String {
   constructor({ RENDER_TARGET_NONCE, STRINGS, KEYS }) {
     super(`<span id=${RENDER_TARGET_NONCE} hidden></span>`);
-    __privateAdd(this, _buffer2, void 0);
-    __privateSet(this, _buffer2, {
+    __privateAdd(this, _buffer, void 0);
+    __privateSet(this, _buffer, {
       INSTANCE_UUID: crypto.randomUUID(),
       RENDER_TARGET_NONCE,
       keyMap: "",
@@ -183,15 +105,15 @@ var LibhNode = class extends String {
       }
     });
     for (let keyIndex = 0; keyIndex < STRINGS.length; keyIndex++) {
-      __privateGet(this, _buffer2).keyMap += STRINGS[keyIndex];
+      __privateGet(this, _buffer).keyMap += STRINGS[keyIndex];
       if (keyIndex + 1 !== STRINGS.length) {
         switch (typeof KEYS[keyIndex]) {
           case "function":
-            __privateGet(this, _buffer2).keyMap += ` \${${__privateGet(this, _buffer2).INSTANCE_UUID}:${keyIndex}} `;
+            __privateGet(this, _buffer).keyMap += ` \${${__privateGet(this, _buffer).INSTANCE_UUID}:${keyIndex}} `;
             if (KEYS[keyIndex].constructor.name !== "Function") {
               throw new Error("Can not use async function");
             } else {
-              const typeMap = libh.getDeepCopy(KEYS[keyIndex](new Proxy({}, __privateGet(this, _buffer2).proxyHandleTemplate)));
+              const typeMap = getDeepCopy(KEYS[keyIndex](new Proxy({}, __privateGet(this, _buffer).proxyHandleTemplate)));
               const resultBuffer = KEYS[keyIndex](typeMap);
               resultBuffer.onclick();
               console.log(typeMap);
@@ -199,29 +121,29 @@ var LibhNode = class extends String {
             ;
             break;
           case "object":
-            __privateGet(this, _buffer2).keyMap += ` \${${__privateGet(this, _buffer2).INSTANCE_UUID}:${keyIndex}} `;
-            __privateGet(this, _buffer2).portConfig = KEYS[keyIndex];
+            __privateGet(this, _buffer).keyMap += ` \${${__privateGet(this, _buffer).INSTANCE_UUID}:${keyIndex}} `;
+            __privateGet(this, _buffer).portConfig = KEYS[keyIndex];
             for (let banIndex = 0; banIndex < BANNED_PROPERTY.length; banIndex++) {
-              delete __privateGet(this, _buffer2).portConfig[BANNED_PROPERTY[banIndex]];
+              delete __privateGet(this, _buffer).portConfig[BANNED_PROPERTY[banIndex]];
             }
             ;
-            __privateGet(this, _buffer2).portConfig.onclick(__privateGet(this, _buffer2).portConfig);
-            console.log(__privateGet(this, _buffer2).portConfig);
+            __privateGet(this, _buffer).portConfig.onclick(__privateGet(this, _buffer).portConfig);
+            console.log(__privateGet(this, _buffer).portConfig);
             break;
           default:
-            __privateGet(this, _buffer2).keyMap += KEYS[keyIndex];
+            __privateGet(this, _buffer).keyMap += KEYS[keyIndex];
         }
         ;
       }
       ;
     }
     ;
-    console.log(__privateGet(this, _buffer2).keyMap);
+    console.log(__privateGet(this, _buffer).keyMap);
     setTimeout(function() {
       const TARGET = document.getElementById(RENDER_TARGET_NONCE);
       if (!TARGET) {
-        console.log(`instance created: ${__privateGet(this, _buffer2).INSTANCE_UUID}`);
-        __privateGet(this, _buffer2).returnObject.flag = void 0;
+        console.log(`instance created: ${__privateGet(this, _buffer).INSTANCE_UUID}`);
+        __privateGet(this, _buffer).returnObject.flag = void 0;
       } else {
         console.log("html appended");
         TARGET.removeAttribute("id");
@@ -236,11 +158,11 @@ var LibhNode = class extends String {
   get getAsNode() {
     const RETURN_NODE = document.createElement("span");
     RETURN_NODE.innerText = Date.now();
-    RETURN_NODE.id = __privateGet(this, _buffer2).RENDER_TARGET_NONCE;
+    RETURN_NODE.id = __privateGet(this, _buffer).RENDER_TARGET_NONCE;
     return RETURN_NODE;
   }
 };
-_buffer2 = new WeakMap();
+_buffer = new WeakMap();
 function html(STRINGS, ...KEYS) {
   return new LibhNode({
     RENDER_TARGET_NONCE: crypto.randomUUID(),

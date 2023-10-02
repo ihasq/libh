@@ -1,6 +1,6 @@
-import "./core.js";
+import * as util from "./util.js"
 
-libh.appendHook(Node, "appendChild", function() {
+util.appendHook(Node, "appendChild", function() {
 	const HAS_LIBH_FLAG = (arguments[0].FLAG === "LIBH_INSTANCE");
 	const LIBH_ELEMENT_NODE = arguments[0].getAsNode
 	arguments[arguments.length - 1].apply(
@@ -80,7 +80,7 @@ class LibhNode extends String {
 						if(KEYS[keyIndex].constructor.name !== "Function") {
 							throw new Error("Can not use async function");
 						} else {
-							const typeMap = libh.getDeepCopy(KEYS[keyIndex](new Proxy({}, this.#buffer.proxyHandleTemplate)));
+							const typeMap = util.getDeepCopy(KEYS[keyIndex](new Proxy({}, this.#buffer.proxyHandleTemplate)));
 							const resultBuffer = KEYS[keyIndex](typeMap);
 							resultBuffer.onclick();
 							console.log(typeMap);
