@@ -70,8 +70,11 @@ const BUFFER = {
 		"enable-node-return": false
 	},
 	elementRegistry: Object.create(null),
-	createElement() {
-		const INSTANCE_UUID = crypto.randomUUID()
+
+	createElement({ STRINGS, KEYS }) {
+
+		const INSTANCE_UUID = crypto.randomUUID();
+
 		this.elementRegistry[INSTANCE_UUID] = {
 			INSTANCE_UUID,
 			keyMap: "",
@@ -100,12 +103,57 @@ const BUFFER = {
 				propReference: null,
 			},
 			createRenderPath() {
+
+				const PROXIED_RENDER_PATH = new Proxy({}, {
+					
+				})
+
 				return {
 					NONCE: crypto.randomUUID(),
-				}
+				};
 			}
 		};
-		return this.elementRegistry[INSTANCE_UUID];
+
+		const REGISTRY = this.elementRegistry[INSTANCE_UUID];
+
+		for(let keyIndex = 0; keyIndex < STRINGS.length; keyIndex++) {
+			REGISTRY.keyMap += STRINGS[keyIndex];
+			if(keyIndex + 1 !== STRINGS.length) {
+	
+				switch(typeof KEYS[keyIndex]) {
+	
+					case "function":
+						REGISTRY.keyMap += ` \${${REGISTRY.INSTANCE_UUID}:${keyIndex}} `;
+						if(KEYS[keyIndex].constructor.name !== "Function") {
+							throw new Error("Can not use async function");
+						} else {
+							const typeMap = UTIL.getDeepCopy(KEYS[keyIndex](new Proxy({}, REGISTRY.proxyHandleTemplate)));
+							const resultBuffer = KEYS[keyIndex](typeMap);
+							resultBuffer.onclick();
+							console.log(typeMap);
+						};
+					break;
+							
+					case "object":
+						REGISTRY.keyMap += ` \${${REGISTRY.INSTANCE_UUID}:${keyIndex}} `;
+						REGISTRY.portConfig = KEYS[keyIndex];
+	
+						// sanitizing process
+						for(let banIndex = 0; banIndex < QUERY.BANNED_PROPERTY.length; banIndex++) {
+							delete REGISTRY.portConfig[QUERY.BANNED_PROPERTY[banIndex]];
+						};
+	
+						REGISTRY.portConfig.onclick(REGISTRY.portConfig)
+						console.log((REGISTRY.portConfig))
+					break;
+	
+					default: REGISTRY.keyMap += KEYS[keyIndex];
+	
+				};
+			};
+		};
+
+		return REGISTRY;
 	},
 }
 
@@ -118,46 +166,9 @@ const BUFFER = {
 
 function html(STRINGS, ...KEYS) {
 
-	const BUFFER_PATH = BUFFER.createElement();
+	const BUFFER_PATH = BUFFER.createElement({ STRINGS, KEYS });
 
 	const RENDER_PATH = BUFFER_PATH.createRenderPath();
-
-	for(let keyIndex = 0; keyIndex < STRINGS.length; keyIndex++) {
-		BUFFER_PATH.keyMap += STRINGS[keyIndex];
-		if(keyIndex + 1 !== STRINGS.length) {
-
-			switch(typeof KEYS[keyIndex]) {
-
-				case "function":
-					BUFFER_PATH.keyMap += ` \${${BUFFER_PATH.INSTANCE_UUID}:${keyIndex}} `;
-					if(KEYS[keyIndex].constructor.name !== "Function") {
-						throw new Error("Can not use async function");
-					} else {
-						const typeMap = UTIL.getDeepCopy(KEYS[keyIndex](new Proxy({}, BUFFER_PATH.proxyHandleTemplate)));
-						const resultBuffer = KEYS[keyIndex](typeMap);
-						resultBuffer.onclick();
-						console.log(typeMap);
-					};
-				break;
-						
-				case "object":
-					BUFFER_PATH.keyMap += ` \${${BUFFER_PATH.INSTANCE_UUID}:${keyIndex}} `;
-					BUFFER_PATH.portConfig = KEYS[keyIndex];
-
-					// sanitizing process
-					for(let banIndex = 0; banIndex < QUERY.BANNED_PROPERTY.length; banIndex++) {
-						delete BUFFER_PATH.portConfig[QUERY.BANNED_PROPERTY[banIndex]];
-					};
-
-					BUFFER_PATH.portConfig.onclick(BUFFER_PATH.portConfig)
-					console.log((BUFFER_PATH.portConfig))
-				break;
-
-				default: BUFFER_PATH.keyMap += KEYS[keyIndex];
-
-			};
-		};
-	};
 
 	setTimeout(function() {
 		const TARGET = document.getElementById(RENDER_PATH.NONCE);
@@ -175,6 +186,9 @@ function html(STRINGS, ...KEYS) {
 	}, 0);
 
 	return Object.assign(new String(`<span id=${RENDER_PATH.NONCE} hidden></span>`), {
+		get NONCE() {
+			return RENDER_PATH.NONCE
+		},
 		get FLAG() {
 			return "LIBH_INSTANCE"
 		},
