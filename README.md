@@ -1,10 +1,14 @@
 <div align="center">
-    <img src="resources/logo.svg"/>
-    <h1><code>html in javascript</code></h1>
-</div>
+
+![license](resources/logo.svg)
 
 [![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz_small.svg)](https://stackblitz.com/github/ihasq/libh/tree/main/examples/quick-start?file=index.js)
-![](https://img.shields.io/badge/license-MIT-red)
+![license](https://img.shields.io/badge/license-MIT-red)
+![npm](https://img.shields.io/npm/v/libh)
+</div>
+
+
+
 
 html in javascript.\
 less overhead, interacts with vanilla api.
