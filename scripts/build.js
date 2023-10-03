@@ -67,23 +67,6 @@ const RELEASE_VERSION = "0.0.23";
 
 });
 
-["quick-start", "component"].forEach(EXAMPLE_NAME => {
-	fs.writeFileSync(`./examples/${EXAMPLE_NAME}/package.json`, JSON.stringify({
-		name: `libh-example-${EXAMPLE_NAME}`,
-		version: RELEASE_VERSION,
-		license: "MIT",
-		dependencies: {
-			libh: `^${RELEASE_VERSION}`
-		},
-		devDependencies: {
-			vite: "^3.0.1"
-		},
-		stackblitz: {
-			startCommand: "vite"
-		},
-	}, null, 2))
-});
-
 fs.writeFileSync("./package.json", JSON.stringify({
 	name: "libh",
 	version: RELEASE_VERSION,
