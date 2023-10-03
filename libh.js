@@ -104,9 +104,8 @@ const BUFFER = {
 			},
 			createRenderPath() {
 
-				const PROXIED_RENDER_PATH = new Proxy({}, {
-					
-				})
+				const PROXIED_RENDER_PATH = Object.create(null);
+				Object.defineProperty()
 
 				return {
 					NONCE: crypto.randomUUID(),
