@@ -4,7 +4,7 @@
 
 [![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz_small.svg)](https://stackblitz.com/github/ihasq/libh/tree/main/examples/quick-start?file=index.js)
 ![license](https://img.shields.io/badge/license-MIT-red)
-![npm](https://img.shields.io/npm/v/libh)
+[![npm](https://img.shields.io/npm/v/libh)](https://www.npmjs.com/package/libh)
 </div>
 
 ----
