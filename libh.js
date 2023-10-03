@@ -8,11 +8,15 @@ Object.defineProperty(Element.prototype, "innerHTML", {
 		if(STRING instanceof Node && BUFFER.flags["disable-innerhtml-node"]) {
 			this.replaceChildren();
 			this.appendChild(STRING);
+			if(STRING.FLAG === "LIBH_INSTANCE") {
+				BUFFER.igniteElement(STRING);
+			}
 		} else {
 			DESC["innerHTML"].set.call(this, STRING);
 		};
 	}
 });
+
 
 const UTIL = {
 	getDeepCopy(objectData) {
@@ -107,6 +111,9 @@ const BUFFER = {
 
 		return REGISTRY;
 	},
+	igniteElement(ELEMENT) {
+
+	}
 }
 
 /**

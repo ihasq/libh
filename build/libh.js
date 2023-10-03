@@ -29,6 +29,9 @@ Object.defineProperty(Element.prototype, "innerHTML", {
     if (STRING instanceof Node && BUFFER.flags["disable-innerhtml-node"]) {
       this.replaceChildren();
       this.appendChild(STRING);
+      if (STRING.FLAG === "LIBH_INSTANCE") {
+        BUFFER.igniteElement(STRING);
+      }
     } else {
       DESC["innerHTML"].set.call(this, STRING);
     }
@@ -114,6 +117,8 @@ const BUFFER = {
     };
     const REGISTRY = this.elementRegistry[INSTANCE_UUID];
     return REGISTRY;
+  },
+  igniteElement(ELEMENT) {
   }
 };
 function html(STRINGS, ...KEYS) {
