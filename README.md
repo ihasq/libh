@@ -2,7 +2,7 @@
 [![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz_small.svg)](https://stackblitz.com/github/ihasq/libh/tree/main/examples/quick-start?file=index.js)
 ![](https://img.shields.io/badge/license-MIT-red)
 
-organic html templating utilities.\
+html in javascript.\
 less overhead, interacts with vanilla api.
 
 ```javascript
