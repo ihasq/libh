@@ -1,45 +1,16 @@
-[
-	{
-		BASE_CLASS: Node,
-		TARGET: "appendChild",
-		ADDITION: function() {
-			const HAS_LIBH_FLAG = (arguments[0].constructor.name === "String" && arguments[0].FLAG === "LIBH_INSTANCE");
-			const LIBH_ELEMENT_NODE = arguments[0].getAsNode
-			arguments[arguments.length - 1].apply(
-				this, HAS_LIBH_FLAG? [LIBH_ELEMENT_NODE] : arguments
-			);
-			if(HAS_LIBH_FLAG) {
-				return LIBH_ELEMENT_NODE;
-			}
-		}
-	}
-].forEach(function({ BASE_CLASS, TARGET, ADDITION }) {
-	if (BASE_CLASS.prototype[TARGET]) {
-		BASE_CLASS = BASE_CLASS.prototype
-	} else if (!BASE_CLASS[TARGET]) {
-		throw new Error('Cannot find hook')
-	};
-	const ORIGIN = BASE_CLASS[TARGET];
-	BASE_CLASS[TARGET] = function() {
-		arguments[arguments.length] = ORIGIN;
-		arguments.length++;
-		return ADDITION.apply(this, arguments);
-	};
-});
-
 const DESC = {
-	"innerHTML": Object.getOwnPropertyDescriptor(Element.prototype, "innerHTML"),
-	"insertAdjacentHTML": Object.getOwnPropertyDescriptor(Element.prototype, "insertAdjacentHTML"),
-}
+	innerHTML: Object.getOwnPropertyDescriptor(Element.prototype, "innerHTML"),
+	insertAdjacentHTML: Object.getOwnPropertyDescriptor(Element.prototype, "insertAdjacentHTML"),
+};
 
 Object.defineProperty(Element.prototype, "innerHTML", {
 	set: function(STRING){
-		if(typeof STRING === "object" && STRING.FLAG === "LIBH_INSTANCE") {
-			const LIBH_OBJ = STRING;
-			DESC["innerHTML"].set.call(this, LIBH_OBJ);
+		if(STRING instanceof Node && BUFFER.flags["disable-innerhtml-node"]) {
+			this.replaceChildren();
+			this.appendChild(STRING);
 		} else {
 			DESC["innerHTML"].set.call(this, STRING);
-		}
+		};
 	}
 });
 
@@ -83,7 +54,8 @@ const QUERY = {
 
 const BUFFER = {
 	flags: {
-		"enable-node-return": false
+		"enable-node-return": false,
+		"disable-innerhtml-node": false,
 	},
 	elementRegistry: Object.create(null),
 
@@ -122,50 +94,16 @@ const BUFFER = {
 
 				const PROXIED_RENDER_PATH = Object.create(null);
 
-				return {
-					NONCE: crypto.randomUUID(),
-				};
-			}
+				const ELEMENT = document.createDocumentFragment();
+
+				ELEMENT.appendChild(document.createElement("span"))
+
+				return ELEMENT;
+			},
 		};
 
 		const REGISTRY = this.elementRegistry[INSTANCE_UUID];
 
-		for(let keyIndex = 0; keyIndex < STRINGS.length; keyIndex++) {
-			REGISTRY.keyMap += STRINGS[keyIndex];
-			if(keyIndex + 1 !== STRINGS.length) {
-	
-				switch(typeof KEYS[keyIndex]) {
-	
-					case "function":
-						REGISTRY.keyMap += ` \${${REGISTRY.INSTANCE_UUID}:${keyIndex}} `;
-						if(KEYS[keyIndex].constructor.name !== "Function") {
-							throw new Error("Can not use async function");
-						} else {
-							const typeMap = UTIL.getDeepCopy(KEYS[keyIndex](new Proxy({}, REGISTRY.proxyHandleTemplate)));
-							const resultBuffer = KEYS[keyIndex](typeMap);
-							resultBuffer.onclick();
-							console.log(typeMap);
-						};
-					break;
-							
-					case "object":
-						REGISTRY.keyMap += ` \${${REGISTRY.INSTANCE_UUID}:${keyIndex}} `;
-						REGISTRY.portConfig = KEYS[keyIndex];
-	
-						// sanitizing process
-						for(let banIndex = 0; banIndex < QUERY.BANNED_PROPERTY.length; banIndex++) {
-							delete REGISTRY.portConfig[QUERY.BANNED_PROPERTY[banIndex]];
-						};
-	
-						REGISTRY.portConfig.onclick(REGISTRY.portConfig)
-						console.log((REGISTRY.portConfig))
-					break;
-	
-					default: REGISTRY.keyMap += KEYS[keyIndex];
-	
-				};
-			};
-		};
 
 		return REGISTRY;
 	},
@@ -182,37 +120,54 @@ function html(STRINGS, ...KEYS) {
 
 	const BUFFER_PATH = BUFFER.createElement({ STRINGS, KEYS });
 
-	const RENDER_PATH = BUFFER_PATH.createRenderPath();
+	return BUFFER_PATH.createRenderPath();
 
-	setTimeout(function() {
-		const TARGET = document.getElementById(RENDER_PATH.NONCE);
-		if(!TARGET) {
-			// instance creation process
-			console.log(`instance created: ${BUFFER_PATH.INSTANCE_UUID}`);
-			BUFFER_PATH.returnObject.flag = undefined;
-		} else {
-			// appending process
-			console.log("html appended");
-			// removing nonce from identifier
-			TARGET.removeAttribute("id");
-			TARGET.removeAttribute("hidden");
-		};
-	}, 0);
+};
 
-	return Object.assign(new String(`<span id=${RENDER_PATH.NONCE} hidden>${Date.now()}</span>`), {
-		get NONCE() {
-			return RENDER_PATH.NONCE
-		},
-		get FLAG() {
-			return "LIBH_INSTANCE"
-		},
-		get getAsNode() {
-			const RETURN_NODE = document.createElement("span");
-			RETURN_NODE.innerText = Date.now();
-			RETURN_NODE.id = RENDER_PATH.NONCE;
-			return RETURN_NODE;
-		},
-	});
+
+// for(let keyIndex = 0; keyIndex < STRINGS.length; keyIndex++) {
+// 	REGISTRY.keyMap += STRINGS[keyIndex];
+// 	if(keyIndex + 1 !== STRINGS.length) {
+
+// 		switch(typeof KEYS[keyIndex]) {
+
+// 			case "function":
+// 				REGISTRY.keyMap += ` \${${REGISTRY.INSTANCE_UUID}:${keyIndex}} `;
+// 				if(KEYS[keyIndex].constructor.name !== "Function") {
+// 					throw new Error("Can not use async function");
+// 				} else {
+// 					const typeMap = UTIL.getDeepCopy(KEYS[keyIndex](new Proxy({}, REGISTRY.proxyHandleTemplate)));
+// 					const resultBuffer = KEYS[keyIndex](typeMap);
+// 					resultBuffer.onclick();
+// 					console.log(typeMap);
+// 				};
+// 			break;
+					
+// 			case "object":
+// 				REGISTRY.keyMap += ` \${${REGISTRY.INSTANCE_UUID}:${keyIndex}} `;
+// 				REGISTRY.portConfig = KEYS[keyIndex];
+
+// 				// sanitizing process
+// 				for(let banIndex = 0; banIndex < QUERY.BANNED_PROPERTY.length; banIndex++) {
+// 					delete REGISTRY.portConfig[QUERY.BANNED_PROPERTY[banIndex]];
+// 				};
+
+// 				REGISTRY.portConfig.onclick(REGISTRY.portConfig)
+// 				console.log((REGISTRY.portConfig))
+// 			break;
+
+// 			default: REGISTRY.keyMap += KEYS[keyIndex];
+
+// 		};
+// 	};
+// };
+
+const INFO = {
+	"package": "libh",
+	"cdn": "npm",
+	"module": "html",
+	"version": "0.0.16",
+	"available-flags": Object.keys(BUFFER.flags),
 };
 
 Object.defineProperties(html, {
@@ -224,13 +179,7 @@ Object.defineProperties(html, {
 	},
 	info: {
 		get: function() {
-			return {
-				"package": "libh",
-				"cdn": "npm",
-				"module": "html",
-				"version": "0.0.16",
-				"available-flags": Object.keys(BUFFER.flags),
-			}
+			return JSON.parse(JSON.stringify(INFO))
 		},
 		configurable: false,
 	}
@@ -242,9 +191,13 @@ Object.defineProperties(html, {
 
 html.flag = function(...flag) {
 	for(const FLAG_INDEX of flag) {
-		if(FLAG_INDEX in BUFFER.flags && !(BUFFER.flags[FLAG_INDEX])) {
-			BUFFER.flags[FLAG_INDEX] = true;
-		};
+		if(FLAG_INDEX in BUFFER.flags) {
+			if(!(BUFFER.flags[FLAG_INDEX])) {
+				BUFFER.flags[FLAG_INDEX] = true;
+			};
+		} else {
+			console.warn(`Flag "${FLAG_INDEX}" is not available in version ${INFO.version}`);
+		}
 	};
 };
 
