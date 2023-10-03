@@ -4,7 +4,7 @@ const DESC = {
 };
 Object.defineProperty(Element.prototype, "innerHTML", {
   set: function(STRING) {
-    if (STRING instanceof Node && BUFFER.flags["disable-innerhtml-node"]) {
+    if (!BUFFER.flags["disable-innerhtml-node"] && STRING instanceof Node) {
       this.replaceChildren();
       this.appendChild(STRING);
       if (STRING.FLAG === "LIBH_INSTANCE") {
@@ -57,7 +57,19 @@ const BUFFER = {
     "disable-innerhtml-node": false
   },
   elementRegistry: /* @__PURE__ */ Object.create(null),
+  sortTemplateMap({ STRINGS, KEYS }) {
+    const RETURN_BUFFER = /* @__PURE__ */ Object.create(null);
+    let index = 0;
+    for (index; index < STRINGS.length; index++) {
+      RETURN_BUFFER[index * 2] = STRINGS[index];
+      RETURN_BUFFER[index * 2 + 1] = KEYS[index];
+    }
+    ;
+    delete RETURN_BUFFER[index * 2 - 1];
+    return RETURN_BUFFER;
+  },
   createElement({ STRINGS, KEYS }) {
+    const TEMPLATE_MAP = this.sortTemplateMap({ STRINGS, KEYS });
     const INSTANCE_UUID = crypto.randomUUID();
     this.elementRegistry[INSTANCE_UUID] = {
       INSTANCE_UUID,
@@ -88,9 +100,7 @@ const BUFFER = {
       },
       createRenderPath() {
         const PROXIED_RENDER_PATH = /* @__PURE__ */ Object.create(null);
-        const ELEMENT = document.createDocumentFragment();
-        ELEMENT.appendChild(document.createElement("span"));
-        return ELEMENT;
+        return document.createElement("span");
       }
     };
     const REGISTRY = this.elementRegistry[INSTANCE_UUID];
@@ -100,8 +110,7 @@ const BUFFER = {
   }
 };
 function html(STRINGS, ...KEYS) {
-  const BUFFER_PATH = BUFFER.createElement({ STRINGS, KEYS });
-  return BUFFER_PATH.createRenderPath();
+  return BUFFER.createElement({ STRINGS, KEYS });
 }
 const INFO = {
   "package": "libh",
