@@ -1,9 +1,9 @@
 {
   "name": "libh-example-component",
-  "version": "0.0.19",
+  "version": "0.0.20",
   "license": "MIT",
   "dependencies": {
-    "libh": "^0.0.19"
+    "libh": "^0.0.20"
   },
   "devDependencies": {
     "vite": "^3.0.1"

@@ -10,11 +10,11 @@ const DESC = {
   insertAdjacentHTML: Object.getOwnPropertyDescriptor(Element.prototype, "insertAdjacentHTML")
 };
 const UTIL = {
-  getDeepCopy(objectData) {
-    const KEY_DATA = Object.keys(objectData);
+  getDeepCopy(OBJECT_DATA) {
+    const KEY_DATA = Object.keys(OBJECT_DATA);
     const RETURN_BUFFER = /* @__PURE__ */ Object.create(null);
-    for (let objectKeyIndex = 0; objectKeyIndex < Object.keys(objectData).length; objectKeyIndex++) {
-      RETURN_BUFFER[KEY_DATA[objectKeyIndex]] = typeof objectData[KEY_DATA[objectKeyIndex]] === "object" ? this.getDeepCopy(objectData[KEY_DATA[objectKeyIndex]]) : objectData[KEY_DATA[objectKeyIndex]];
+    for (let objectKeyIndex = 0; objectKeyIndex < Object.keys(OBJECT_DATA).length; objectKeyIndex++) {
+      RETURN_BUFFER[KEY_DATA[objectKeyIndex]] = typeof OBJECT_DATA[KEY_DATA[objectKeyIndex]] === "object" ? this.getDeepCopy(OBJECT_DATA[KEY_DATA[objectKeyIndex]]) : OBJECT_DATA[KEY_DATA[objectKeyIndex]];
     }
     ;
     return RETURN_BUFFER;
