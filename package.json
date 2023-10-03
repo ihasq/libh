@@ -1,6 +1,6 @@
 {
   "name": "libh",
-  "version": "0.0.18",
+  "version": "0.0.19",
   "description": "html in javascript",
   "main": "./build/libh.esm.min.js",
   "directories": {

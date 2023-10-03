@@ -5,11 +5,13 @@ const DESC = {
 Object.defineProperty(Element.prototype, "innerHTML", {
   set: function(STRING) {
     if (!BUFFER.flags["disable-innerhtml-node"] && STRING instanceof Node) {
-      this.replaceChildren();
-      this.appendChild(STRING);
       if (STRING.FLAG === "LIBH_INSTANCE") {
         BUFFER.igniteElement(STRING);
       }
+      ;
+      this.id = "a";
+      this.replaceChildren();
+      this.appendChild(STRING);
     } else {
       DESC["innerHTML"].set.call(this, STRING);
     }
