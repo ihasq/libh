@@ -9,7 +9,6 @@ Object.defineProperty(Element.prototype, "innerHTML", {
         BUFFER.igniteElement(STRING);
       }
       ;
-      this.id = "a";
       this.replaceChildren();
       this.appendChild(STRING);
     } else {
@@ -73,16 +72,18 @@ const BUFFER = {
   createElement({ STRINGS, KEYS }) {
     const INSTANCE_UUID = crypto.randomUUID();
     let staticBuffer = "";
-    STRINGS.forEach((string, index) => {
-      staticBuffer += string + (index + 1 === STRINGS.length ? "" : " ${" + INSTANCE_UUID + ":" + index + "} ");
+    STRINGS.forEach(function(string, index) {
+      staticBuffer += string + (index + 1 === STRINGS.length ? "" : " id=libh-" + INSTANCE_UUID + "-" + index + " ");
     });
     staticBuffer = staticBuffer.slice(staticBuffer.indexOf("{") + 1, staticBuffer.lastIndexOf("}"));
     const RETURN_BUFFER = document.createDocumentFragment();
-    const TEMPLATE_ELEMENT = UTIL.HTMLParser.parseFromString(staticBuffer, "text/html").body.children;
+    const TEMPLATE_BODY = UTIL.HTMLParser.parseFromString(staticBuffer, "text/html").body;
+    const TEMPLATE_ELEMENT = TEMPLATE_BODY.children;
     for (let index = 0; index < TEMPLATE_ELEMENT.length; index++) {
       RETURN_BUFFER.appendChild(TEMPLATE_ELEMENT[index]);
     }
     ;
+    const EVENT_QUERY = {};
     return RETURN_BUFFER;
     console.log(staticBuffer);
     const TEMPLATE_MAP = this.sortTemplateMap({ STRINGS, KEYS });
