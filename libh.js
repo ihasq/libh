@@ -1,108 +1,104 @@
-const { INFO, DESC, UTIL, QUERY, BUFFER, } = {
+const INFO = {
+	"package": "libh",
+	"cdn": "npm",
+	"module": "html",
+	"version": "0.0.16",
+	"available-flags": Object.keys(BUFFER.flags),
+};
 
-	INFO: {
-		"package": "libh",
-		"cdn": "npm",
-		"module": "html",
-		"version": "0.0.16",
-		"available-flags": Object.keys(BUFFER.flags),
+const DESC = {
+	innerHTML: Object.getOwnPropertyDescriptor(Element.prototype, "innerHTML"),
+	insertAdjacentHTML: Object.getOwnPropertyDescriptor(Element.prototype, "insertAdjacentHTML"),
+};
+
+const UTIL = {
+	getDeepCopy(objectData) {
+		const KEY_DATA = Object.keys(objectData);
+		const RETURN_BUFFER = Object.create(null);
+		for(let objectKeyIndex = 0; objectKeyIndex < Object.keys(objectData).length; objectKeyIndex++) {
+			RETURN_BUFFER[KEY_DATA[objectKeyIndex]] = (
+				(typeof objectData[KEY_DATA[objectKeyIndex]] === "object")? this.getDeepCopy(objectData[KEY_DATA[objectKeyIndex]]) : objectData[KEY_DATA[objectKeyIndex]]
+			)
+		};
+		return RETURN_BUFFER;
+	},
+	HTMLParser: new DOMParser(),
+};
+
+const QUERY = {
+	BANNED_PROPERTY: [
+		"prop",
+		"super",
+		"__proto__",
+		"__defineGetter__",
+		"__defineSetter__",
+		"__lookupGetter__",
+		"__lookupSetter__",
+	],
+	RESERVED_KEY: [
+		"global",
+		"shared",
+		"prop",
+		"this",
+		"static",
+		"method",
+		"meta",
+		"event",
+		"onclick",
+		"onchange"
+	]
+};
+
+const BUFFER = {
+	flags: {
+		"enable-node-return": false,
+		"disable-innerhtml-node": false,
+	},
+	elementRegistry: Object.create(null),
+
+	sortTemplateMap({ STRINGS, KEYS }) {
+		const RETURN_BUFFER = Object.create(null);
+		let index = 0;
+		for(index; index < STRINGS.length; index++) {
+			RETURN_BUFFER[index * 2] = STRINGS[index];
+			RETURN_BUFFER[index * 2 + 1] = KEYS[index];
+		};
+		delete RETURN_BUFFER[index * 2 - 1];
+		return RETURN_BUFFER;
 	},
 
-	DESC: {
-		innerHTML: Object.getOwnPropertyDescriptor(Element.prototype, "innerHTML"),
-		insertAdjacentHTML: Object.getOwnPropertyDescriptor(Element.prototype, "insertAdjacentHTML"),
-	},
+	createElement({ STRINGS, KEYS }) {
 
-	UTIL: {
-		getDeepCopy(objectData) {
-			const KEY_DATA = Object.keys(objectData);
-			const RETURN_BUFFER = Object.create(null);
-			for(let objectKeyIndex = 0; objectKeyIndex < Object.keys(objectData).length; objectKeyIndex++) {
-				RETURN_BUFFER[KEY_DATA[objectKeyIndex]] = (
-					(typeof objectData[KEY_DATA[objectKeyIndex]] === "object")? this.getDeepCopy(objectData[KEY_DATA[objectKeyIndex]]) : objectData[KEY_DATA[objectKeyIndex]]
-				)
-			};
-			return RETURN_BUFFER;
-		},
-		HTMLParser: new DOMParser(),
-	},
+		const INSTANCE_UUID = crypto.randomUUID();
 
-	QUERY: {
-		BANNED_PROPERTY: [
-			"prop",
-			"super",
-			"__proto__",
-			"__defineGetter__",
-			"__defineSetter__",
-			"__lookupGetter__",
-			"__lookupSetter__",
-		],
-		RESERVED_KEY: [
-			"global",
-			"shared",
-			"prop",
-			"this",
-			"static",
-			"method",
-			"meta",
-			"event",
-			"onclick",
-			"onchange"
-		]
-	},
+		let staticBuffer = "";
 
-	BUFFER: {
-		flags: {
-			"enable-node-return": false,
-			"disable-innerhtml-node": false,
-		},
-		elementRegistry: Object.create(null),
-	
-		sortTemplateMap({ STRINGS, KEYS }) {
-			const RETURN_BUFFER = Object.create(null);
-			let index = 0;
-			for(index; index < STRINGS.length; index++) {
-				RETURN_BUFFER[index * 2] = STRINGS[index];
-				RETURN_BUFFER[index * 2 + 1] = KEYS[index];
-			};
-			delete RETURN_BUFFER[index * 2 - 1];
-			return RETURN_BUFFER;
-		},
-	
-		createElement({ STRINGS, KEYS }) {
-	
-			const INSTANCE_UUID = crypto.randomUUID();
-	
-			let staticBuffer = "";
-	
-			STRINGS.forEach(function(string, index) {
-				staticBuffer += string + ((index + 1 === STRINGS.length)? "" : " libh-tag=instance-" + INSTANCE_UUID + "-" + index + " ");
-			});
-	
-			staticBuffer = staticBuffer.slice(staticBuffer.indexOf("{") + 1, staticBuffer.lastIndexOf("}"));
-	
-			const RETURN_BUFFER = document.createDocumentFragment();
-	
-			const TEMPLATE_BODY = UTIL.HTMLParser.parseFromString(staticBuffer, "text/html").body
-	
-			const TEMPLATE_ELEMENT = TEMPLATE_BODY.children; 
-	
-			for(let index = 0; index < TEMPLATE_ELEMENT.length; index++) {
-				RETURN_BUFFER.appendChild(TEMPLATE_ELEMENT[index]);
-			};
-	
-			const EVENT_QUERY = {
-	
-			}
-	
-			return RETURN_BUFFER;
-		},
-	
-		igniteElement(ELEMENT) {
-			
+		STRINGS.forEach(function(string, index) {
+			staticBuffer += string + ((index + 1 === STRINGS.length)? "" : " libh-tag=instance-" + INSTANCE_UUID + "-" + index + " ");
+		});
+
+		staticBuffer = staticBuffer.slice(staticBuffer.indexOf("{") + 1, staticBuffer.lastIndexOf("}"));
+
+		const RETURN_BUFFER = document.createDocumentFragment();
+
+		const TEMPLATE_BODY = UTIL.HTMLParser.parseFromString(staticBuffer, "text/html").body
+
+		const TEMPLATE_ELEMENT = TEMPLATE_BODY.children; 
+
+		for(let index = 0; index < TEMPLATE_ELEMENT.length; index++) {
+			RETURN_BUFFER.appendChild(TEMPLATE_ELEMENT[index]);
+		};
+
+		const EVENT_QUERY = {
+
 		}
+
+		return RETURN_BUFFER;
 	},
-	
+
+	igniteElement(ELEMENT) {
+		
+	}
 };
 
 Object.defineProperty(Element.prototype, "innerHTML", {
