@@ -27,6 +27,22 @@
 	};
 });
 
+const DESC = {
+	"innerHTML": Object.getOwnPropertyDescriptor(Element.prototype, "innerHTML"),
+	"insertAdjacentHTML": Object.getOwnPropertyDescriptor(Element.prototype, "insertAdjacentHTML"),
+}
+
+Object.defineProperty(Element.prototype, "innerHTML", {
+	set: function(STRING){
+		if(typeof STRING === "object" && STRING.FLAG === "LIBH_INSTANCE") {
+			const LIBH_OBJ = STRING;
+			DESC["innerHTML"].set.call(this, LIBH_OBJ);
+		} else {
+			DESC["innerHTML"].set.call(this, STRING);
+		}
+	}
+});
+
 const UTIL = {
 	getDeepCopy(objectData) {
 		const KEY_DATA = Object.keys(objectData);
@@ -105,7 +121,6 @@ const BUFFER = {
 			createRenderPath() {
 
 				const PROXIED_RENDER_PATH = Object.create(null);
-				Object.defineProperty()
 
 				return {
 					NONCE: crypto.randomUUID(),
@@ -184,7 +199,7 @@ function html(STRINGS, ...KEYS) {
 		};
 	}, 0);
 
-	return Object.assign(new String(`<span id=${RENDER_PATH.NONCE} hidden></span>`), {
+	return Object.assign(new String(`<span id=${RENDER_PATH.NONCE} hidden>${Date.now()}</span>`), {
 		get NONCE() {
 			return RENDER_PATH.NONCE
 		},
