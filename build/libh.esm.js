@@ -69,8 +69,21 @@ const BUFFER = {
     return RETURN_BUFFER;
   },
   createElement({ STRINGS, KEYS }) {
-    const TEMPLATE_MAP = this.sortTemplateMap({ STRINGS, KEYS });
     const INSTANCE_UUID = crypto.randomUUID();
+    let staticBuffer = "";
+    STRINGS.forEach((string, index) => {
+      staticBuffer += string + (index + 1 === STRINGS.length ? "" : " ${" + INSTANCE_UUID + ":" + index + "} ");
+    });
+    staticBuffer = staticBuffer.slice(staticBuffer.indexOf("{") + 1, staticBuffer.lastIndexOf("}"));
+    const RETURN_BUFFER = document.createDocumentFragment();
+    const TEMPLATE_ELEMENT = UTIL.HTMLParser.parseFromString(staticBuffer, "text/html").body.children;
+    for (let index = 0; index < TEMPLATE_ELEMENT.length; index++) {
+      RETURN_BUFFER.appendChild(TEMPLATE_ELEMENT[index]);
+    }
+    ;
+    return RETURN_BUFFER;
+    console.log(staticBuffer);
+    const TEMPLATE_MAP = this.sortTemplateMap({ STRINGS, KEYS });
     this.elementRegistry[INSTANCE_UUID] = {
       INSTANCE_UUID,
       keyMap: "",
