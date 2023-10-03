@@ -7,8 +7,7 @@
 ![npm](https://img.shields.io/npm/v/libh)
 </div>
 
-
-
+----
 
 html in javascript.\
 less overhead, interacts with vanilla api.
