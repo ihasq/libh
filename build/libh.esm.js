@@ -1,10 +1,3 @@
-const INFO = {
-  "package": "libh",
-  "cdn": "npm",
-  "module": "html",
-  "version": "0.0.16",
-  "available-flags": Object.keys(BUFFER.flags)
-};
 const DESC = {
   innerHTML: Object.getOwnPropertyDescriptor(Element.prototype, "innerHTML"),
   insertAdjacentHTML: Object.getOwnPropertyDescriptor(Element.prototype, "insertAdjacentHTML")
@@ -80,6 +73,13 @@ const BUFFER = {
   },
   igniteElement(ELEMENT) {
   }
+};
+const INFO = {
+  "package": "libh",
+  "cdn": "npm",
+  "module": "html",
+  "version": "0.0.16",
+  "available-flags": Object.keys(BUFFER.flags)
 };
 Object.defineProperty(Element.prototype, "innerHTML", {
   set: function(STRING) {
