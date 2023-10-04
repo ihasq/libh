@@ -60,6 +60,7 @@ const BUFFER = {
 		"enable-node-return": false,
 		"disable-innerhtml-node": false,
 	},
+
 	elementRegistry: Object.create(null),
 
 	sortTemplateMap({ STRINGS, KEYS }) {
@@ -131,7 +132,7 @@ const INFO = {
  * @returns 
  */
 
-function html(STRINGS, ...KEYS) {
+const html = (STRINGS, ...KEYS) => {
 	return BUFFER.createElement({ STRINGS, KEYS });
 };
 
