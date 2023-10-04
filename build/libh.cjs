@@ -125,9 +125,9 @@ const INFO = {
   "version": "0.0.16",
   "available-flags": Object.keys(BUFFER.flags)
 };
-function html(STRINGS, ...KEYS) {
+const html = (STRINGS, ...KEYS) => {
   return BUFFER.createElement({ STRINGS, KEYS });
-}
+};
 Object.defineProperties(html, {
   reservedKey: {
     get: function() {
