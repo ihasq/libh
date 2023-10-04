@@ -4,7 +4,7 @@
 
 [![npm](https://img.shields.io/npm/v/libh)](https://www.npmjs.com/package/libh)
 ![npm package minimized gzipped size (select exports)](https://img.shields.io/bundlejs/size/libh)
-![npm](https://img.shields.io/npm/dm/libh)
+![npm](https://img.shields.io/npm/dt/libh)
 
 </div>
 
