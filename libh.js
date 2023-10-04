@@ -1,3 +1,17 @@
+Object.defineProperty(Element.prototype, "innerHTML", {
+	set: function(STRING){
+		if(!BUFFER.flags["disable-innerhtml-node"] && STRING instanceof Node) {
+			if(STRING.FLAG === "LIBH_INSTANCE") {
+				BUFFER.igniteElement(STRING);
+			};
+			this.replaceChildren();
+			this.appendChild(STRING);
+		} else {
+			DESC["innerHTML"].set.call(this, STRING);
+		};
+	}
+});
+
 const DESC = {
 	innerHTML: Object.getOwnPropertyDescriptor(Element.prototype, "innerHTML"),
 	insertAdjacentHTML: Object.getOwnPropertyDescriptor(Element.prototype, "insertAdjacentHTML"),
@@ -100,20 +114,6 @@ const INFO = {
 	"version": "0.0.16",
 	"available-flags": Object.keys(BUFFER.flags),
 };
-
-Object.defineProperty(Element.prototype, "innerHTML", {
-	set: function(STRING){
-		if(!BUFFER.flags["disable-innerhtml-node"] && STRING instanceof Node) {
-			if(STRING.FLAG === "LIBH_INSTANCE") {
-				BUFFER.igniteElement(STRING);
-			};
-			this.replaceChildren();
-			this.appendChild(STRING);
-		} else {
-			DESC["innerHTML"].set.call(this, STRING);
-		};
-	}
-});
 
 /**
  * 

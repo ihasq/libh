@@ -2,15 +2,18 @@
 
 ![license](https://raw.githubusercontent.com/ihasq/libh/main/resources/logo.svg)
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz_small.svg)](https://stackblitz.com/edit/js-qfh42g?file=index.js)
-![license](https://img.shields.io/badge/license-MIT-red)
 [![npm](https://img.shields.io/npm/v/libh)](https://www.npmjs.com/package/libh)
+![npm package minimized gzipped size (select exports)](https://img.shields.io/bundlejs/size/libh)
+![npm](https://img.shields.io/npm/dm/libh)
+
 </div>
 
 ----
 
 html in javascript.\
 less overhead, interacts with vanilla api.
+
+[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/edit/js-qfh42g?file=index.js)
 
 ```javascript
 import { html } from "libh";
