@@ -15,8 +15,6 @@ less overhead, interacts with vanilla api.
 ```javascript
 import { html } from "libh";
 
-html.flag("enable-innerhtml-node");
-
 document.body.innerHTML = html`{
     <h1>Current date is ${Date}</h1>
 }`;
