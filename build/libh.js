@@ -20,6 +20,21 @@ __export(libh_exports, {
   html: () => html
 });
 module.exports = __toCommonJS(libh_exports);
+Object.defineProperty(Element.prototype, "innerHTML", {
+  set: function(STRING) {
+    if (!BUFFER.flags["disable-innerhtml-node"] && STRING instanceof Node) {
+      if (STRING.FLAG === "LIBH_INSTANCE") {
+        BUFFER.igniteElement(STRING);
+      }
+      ;
+      this.replaceChildren();
+      this.appendChild(STRING);
+    } else {
+      DESC["innerHTML"].set.call(this, STRING);
+    }
+    ;
+  }
+});
 const DESC = {
   innerHTML: Object.getOwnPropertyDescriptor(Element.prototype, "innerHTML"),
   insertAdjacentHTML: Object.getOwnPropertyDescriptor(Element.prototype, "insertAdjacentHTML")
@@ -82,6 +97,13 @@ const BUFFER = {
     STRINGS.forEach(function(string, index) {
       staticBuffer += string + (index + 1 === STRINGS.length ? "" : " libh-tag=instance-" + INSTANCE_UUID + "-" + index + " ");
     });
+    KEYS.forEach(function(key, index) {
+      switch (typeof key) {
+        case "object":
+          if (key instanceof Node) {
+          }
+      }
+    });
     staticBuffer = staticBuffer.slice(staticBuffer.indexOf("{") + 1, staticBuffer.lastIndexOf("}"));
     const RETURN_BUFFER = document.createDocumentFragment();
     const TEMPLATE_BODY = UTIL.HTMLParser.parseFromString(staticBuffer, "text/html").body;
@@ -103,21 +125,6 @@ const INFO = {
   "version": "0.0.16",
   "available-flags": Object.keys(BUFFER.flags)
 };
-Object.defineProperty(Element.prototype, "innerHTML", {
-  set: function(STRING) {
-    if (!BUFFER.flags["disable-innerhtml-node"] && STRING instanceof Node) {
-      if (STRING.FLAG === "LIBH_INSTANCE") {
-        BUFFER.igniteElement(STRING);
-      }
-      ;
-      this.replaceChildren();
-      this.appendChild(STRING);
-    } else {
-      DESC["innerHTML"].set.call(this, STRING);
-    }
-    ;
-  }
-});
 function html(STRINGS, ...KEYS) {
   return BUFFER.createElement({ STRINGS, KEYS });
 }
@@ -136,17 +143,18 @@ Object.defineProperties(html, {
   }
 });
 html.flag = function(...flag) {
-  for (const FLAG_INDEX of flag) {
+  flag.forEach(function(FLAG_INDEX) {
     if (FLAG_INDEX in BUFFER.flags) {
       if (!BUFFER.flags[FLAG_INDEX]) {
         BUFFER.flags[FLAG_INDEX] = true;
+      } else {
+        console.info(`Flag "${FLAG_INDEX}" is already enabled`);
       }
-      ;
     } else {
       console.warn(`Flag "${FLAG_INDEX}" is not available in version ${INFO.version}`);
     }
-  }
-  ;
+    ;
+  });
 };
 Object.defineProperties(html.flag, {
   list: {

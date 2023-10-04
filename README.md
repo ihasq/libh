@@ -10,7 +10,7 @@
 
 ----
 
-html in javascript.\
+HTML in JavaScript.\
 less overhead, interacts with vanilla api.
 
 [![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/edit/js-qfh42g?file=index.js)

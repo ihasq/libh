@@ -83,6 +83,15 @@ const BUFFER = {
 			staticBuffer += string + ((index + 1 === STRINGS.length)? "" : " libh-tag=instance-" + INSTANCE_UUID + "-" + index + " ");
 		});
 
+		KEYS.forEach(function(key, index) {
+			switch(typeof key) {
+				case "object":
+					if(key instanceof Node) {
+
+					}
+			}
+		});
+
 		staticBuffer = staticBuffer.slice(staticBuffer.indexOf("{") + 1, staticBuffer.lastIndexOf("}"));
 
 		const RETURN_BUFFER = document.createDocumentFragment();
@@ -97,7 +106,7 @@ const BUFFER = {
 
 		const EVENT_QUERY = {
 
-		}
+		};
 
 		return RETURN_BUFFER;
 	},
@@ -126,44 +135,6 @@ function html(STRINGS, ...KEYS) {
 	return BUFFER.createElement({ STRINGS, KEYS });
 };
 
-
-// for(let keyIndex = 0; keyIndex < STRINGS.length; keyIndex++) {
-// 	REGISTRY.keyMap += STRINGS[keyIndex];
-// 	if(keyIndex + 1 !== STRINGS.length) {
-
-// 		switch(typeof KEYS[keyIndex]) {
-
-// 			case "function":
-// 				REGISTRY.keyMap += ` \${${REGISTRY.INSTANCE_UUID}:${keyIndex}} `;
-// 				if(KEYS[keyIndex].constructor.name !== "Function") {
-// 					throw new Error("Can not use async function");
-// 				} else {
-// 					const typeMap = UTIL.getDeepCopy(KEYS[keyIndex](new Proxy({}, REGISTRY.proxyHandleTemplate)));
-// 					const resultBuffer = KEYS[keyIndex](typeMap);
-// 					resultBuffer.onclick();
-// 					console.log(typeMap);
-// 				};
-// 			break;
-					
-// 			case "object":
-// 				REGISTRY.keyMap += ` \${${REGISTRY.INSTANCE_UUID}:${keyIndex}} `;
-// 				REGISTRY.portConfig = KEYS[keyIndex];
-
-// 				// sanitizing process
-// 				for(let banIndex = 0; banIndex < QUERY.BANNED_PROPERTY.length; banIndex++) {
-// 					delete REGISTRY.portConfig[QUERY.BANNED_PROPERTY[banIndex]];
-// 				};
-
-// 				REGISTRY.portConfig.onclick(REGISTRY.portConfig)
-// 				console.log((REGISTRY.portConfig))
-// 			break;
-
-// 			default: REGISTRY.keyMap += KEYS[keyIndex];
-
-// 		};
-// 	};
-// };
-
 Object.defineProperties(html, {
 	reservedKey: {
 		get: function() {
@@ -184,15 +155,17 @@ Object.defineProperties(html, {
  */
 
 html.flag = function(...flag) {
-	for(const FLAG_INDEX of flag) {
+	flag.forEach(function(FLAG_INDEX) {
 		if(FLAG_INDEX in BUFFER.flags) {
 			if(!(BUFFER.flags[FLAG_INDEX])) {
 				BUFFER.flags[FLAG_INDEX] = true;
-			};
+			} else {
+				console.info(`Flag "${FLAG_INDEX}" is already enabled`);
+			}
 		} else {
 			console.warn(`Flag "${FLAG_INDEX}" is not available in version ${INFO.version}`);
-		}
-	};
+		};
+	});
 };
 
 Object.defineProperties(html.flag, {
