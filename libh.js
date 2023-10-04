@@ -132,9 +132,7 @@ const INFO = {
  * @returns 
  */
 
-const html = (STRINGS, ...KEYS) => {
-	return BUFFER.createElement({ STRINGS, KEYS });
-};
+const html = (STRINGS, ...KEYS) => BUFFER.createElement({ STRINGS, KEYS });
 
 Object.defineProperties(html, {
 	reservedKey: {
