@@ -182,6 +182,14 @@ Object.defineProperties(html.flag, {
 	}
 });
 
+html.getTemplate = function() {
+	return {
+		router: {
+			
+		}
+	}
+}
+
 Object.freeze(html);
 
 export { html };
