@@ -1,23 +1,10 @@
 Object.defineProperty(Element.prototype, "innerHTML", {
   set: function() {
     if (!BUFFER.flags["disable-element-extension"] && arguments[0] instanceof Node) {
-      this.replaceChildren(arguments[0]);
+      this.replaceChild();
+      this.appendChild(arguments[0]);
       if (arguments[0].FLAG === "LIBH_INSTANCE") {
         BUFFER.igniteElement(arguments[0]);
-      }
-      ;
-    } else {
-      DESC["innerHTML"].set.call(this, arguments);
-    }
-    ;
-  }
-});
-Object.defineProperty(Element.prototype, "insertAdjacentHTML", {
-  set: function() {
-    if (!BUFFER.flags["disable-element-extension"] && arguments[1] instanceof Node) {
-      this.replaceChildren(arguments[1]);
-      if (arguments[0].FLAG === "LIBH_INSTANCE") {
-        BUFFER.igniteElement(arguments[1]);
       }
       ;
     } else {
@@ -29,7 +16,7 @@ Object.defineProperty(Element.prototype, "insertAdjacentHTML", {
 Object.defineProperty(Document.prototype, "body", {
   set: function() {
     if (!BUFFER.flags["disable-element-extension"] && arguments[0] instanceof Node) {
-      this.body.replaceChildren(arguments[0]);
+      this.body.parentNode.replaceChild(arguments[0], this.body);
       if (arguments[0].FLAG === "LIBH_INSTANCE") {
         BUFFER.igniteElement(arguments[0]);
       }
