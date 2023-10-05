@@ -21,23 +21,51 @@ __export(libh_exports, {
 });
 module.exports = __toCommonJS(libh_exports);
 Object.defineProperty(Element.prototype, "innerHTML", {
-  set: function(STRING) {
-    if (!BUFFER.flags["disable-innerhtml-node"] && STRING instanceof Node) {
-      if (STRING.FLAG === "LIBH_INSTANCE") {
-        BUFFER.igniteElement(STRING);
+  set: function() {
+    if (!BUFFER.flags["disable-element-extension"] && arguments[0] instanceof Node) {
+      this.replaceChildren(arguments[0]);
+      if (arguments[0].FLAG === "LIBH_INSTANCE") {
+        BUFFER.igniteElement(arguments[0]);
       }
       ;
-      this.replaceChildren();
-      this.appendChild(STRING);
     } else {
-      DESC["innerHTML"].set.call(this, STRING);
+      DESC["innerHTML"].set.call(this, arguments);
+    }
+    ;
+  }
+});
+Object.defineProperty(Element.prototype, "insertAdjacentHTML", {
+  set: function() {
+    if (!BUFFER.flags["disable-element-extension"] && arguments[1] instanceof Node) {
+      this.replaceChildren(arguments[1]);
+      if (arguments[0].FLAG === "LIBH_INSTANCE") {
+        BUFFER.igniteElement(arguments[1]);
+      }
+      ;
+    } else {
+      DESC["innerHTML"].set.call(this, arguments);
+    }
+    ;
+  }
+});
+Object.defineProperty(Document.prototype, "body", {
+  set: function() {
+    if (!BUFFER.flags["disable-element-extension"] && arguments[0] instanceof Node) {
+      this.body.replaceChildren(arguments[0]);
+      if (arguments[0].FLAG === "LIBH_INSTANCE") {
+        BUFFER.igniteElement(arguments[0]);
+      }
+      ;
+    } else {
+      DESC["body"].set.call(this, arguments);
     }
     ;
   }
 });
 const DESC = {
   innerHTML: Object.getOwnPropertyDescriptor(Element.prototype, "innerHTML"),
-  insertAdjacentHTML: Object.getOwnPropertyDescriptor(Element.prototype, "insertAdjacentHTML")
+  insertAdjacentHTML: Object.getOwnPropertyDescriptor(Element.prototype, "insertAdjacentHTML"),
+  body: Object.getOwnPropertyDescriptor(Document.prototype, "body")
 };
 const UTIL = {
   getDeepCopy(OBJECT_DATA) {
@@ -77,7 +105,7 @@ const QUERY = {
 const BUFFER = {
   flags: {
     "enable-node-return": false,
-    "disable-innerhtml-node": false
+    "disable-element-extension": false
   },
   elementRegistry: /* @__PURE__ */ Object.create(null),
   sortTemplateMap({ STRINGS, KEYS }) {
@@ -106,12 +134,15 @@ const BUFFER = {
     });
     staticBuffer = staticBuffer.slice(staticBuffer.indexOf("{") + 1, staticBuffer.lastIndexOf("}"));
     const RETURN_BUFFER = document.createDocumentFragment();
-    const TEMPLATE_BODY = UTIL.HTMLParser.parseFromString(staticBuffer, "text/html").body;
-    const TEMPLATE_ELEMENT = TEMPLATE_BODY.children;
-    for (let index = 0; index < TEMPLATE_ELEMENT.length; index++) {
-      RETURN_BUFFER.appendChild(TEMPLATE_ELEMENT[index]);
+    const TEMPLATE_BODY = UTIL.HTMLParser.parseFromString(staticBuffer, "text/html").body.children;
+    for (let index = 0; index < 2; index++) {
+      RETURN_BUFFER.appendChild(TEMPLATE_BODY[0]);
     }
     ;
+    RETURN_BUFFER.querySelector("button").addEventListener("click", (event) => {
+      console.log("wee");
+    });
+    RETURN_BUFFER.FLAG = "LIBH_INSTANCE";
     const EVENT_QUERY = {};
     return RETURN_BUFFER;
   },
@@ -168,4 +199,9 @@ Object.defineProperties(html.flag, {
     configurable: false
   }
 });
+html.getTemplate = function() {
+  return {
+    router: {}
+  };
+};
 Object.freeze(html);
