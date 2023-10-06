@@ -1,8 +1,7 @@
 Object.defineProperty(Element.prototype, "innerHTML", {
 	set: function() {
 		if(!BUFFER.flags["disable-element-extension"] && arguments[0] instanceof Node) {
-			this.replaceChild();
-			this.appendChild(arguments[0]);
+			this.parentNode.replaceChild(arguments[0], this);
 			if(arguments[0].FLAG === "LIBH_INSTANCE") {
 				BUFFER.igniteElement(arguments[0]);
 			};
@@ -113,7 +112,7 @@ const BUFFER = {
 
 		const TEMPLATE_BODY = UTIL.HTMLParser.parseFromString(staticBuffer, "text/html").body.children;
 
-		for(let index = 0; index < 2; index++) {
+		for(let index = 0; index < TEMPLATE_BODY.length; index++) {
 			RETURN_BUFFER.appendChild(TEMPLATE_BODY[0]);
 		};
 
@@ -121,7 +120,7 @@ const BUFFER = {
 			console.log("wee")
 		});
 
-		RETURN_BUFFER.FLAG = "LIBH_INSTANCE";
+		// RETURN_BUFFER.FLAG = "LIBH_INSTANCE";
 
 		const EVENT_QUERY = {
 
@@ -206,7 +205,7 @@ html.getTemplate = function() {
 			
 		}
 	}
-}
+};
 
 Object.freeze(html);
 
