@@ -1,6 +1,6 @@
 Object.defineProperty(Document.prototype, "body", {
   set: function() {
-    if (!BUFFER.flags["disable-element-extension"] && arguments[0] instanceof Node) {
+    if (!FLAGS["disable-element-extension"] && arguments[0] instanceof Node) {
       this.body.parentNode.replaceChild(arguments[0], this.body);
       if (arguments[0].FLAG === "LIBH_INSTANCE") {
         BUFFER.igniteElement(arguments[0]);
@@ -52,60 +52,52 @@ const QUERY = {
     "onchange"
   ]
 };
-const BUFFER = {
-  flags: {
-    "enable-node-return": false,
-    "disable-element-extension": false
-  },
-  elementRegistry: /* @__PURE__ */ Object.create(null),
-  sortTemplateMap({ STRINGS, KEYS }) {
-    const RETURN_BUFFER = /* @__PURE__ */ Object.create(null);
-    let index = 0;
-    for (index; index < STRINGS.length; index++) {
-      RETURN_BUFFER[index * 2] = STRINGS[index];
-      RETURN_BUFFER[index * 2 + 1] = KEYS[index];
+const propertyPreset = {
+  global: () => "",
+  class: (key) => key.class.split(" ")
+};
+function createElement({ STRINGS, KEYS }) {
+  const INSTANCE_UUID = crypto.randomUUID();
+  let staticBuffer = "";
+  STRINGS.forEach(function(string, index) {
+    staticBuffer += string + (index + 1 === STRINGS.length ? "" : " libh-tag=instance-" + INSTANCE_UUID + "-" + index + " ");
+  });
+  const KEY_BUFFER = /* @__PURE__ */ Object.create(null);
+  KEYS.forEach((key, index) => {
+    switch (typeof key) {
+      case "object":
+        for (const symbol in key) {
+          KEY_BUFFER[symbol] = symbol in propertyPreset ? propertyPreset[symbol](key) : key[symbol];
+        }
+        ;
+        break;
     }
-    ;
-    delete RETURN_BUFFER[index * 2 - 1];
-    return RETURN_BUFFER;
-  },
-  createElement({ STRINGS, KEYS }) {
-    const INSTANCE_UUID = crypto.randomUUID();
-    let staticBuffer = "";
-    STRINGS.forEach(function(string, index) {
-      staticBuffer += string + (index + 1 === STRINGS.length ? "" : " libh-tag=instance-" + INSTANCE_UUID + "-" + index + " ");
-    });
-    KEYS.forEach(function(key, index) {
-      switch (typeof key) {
-        case "object":
-          if (key instanceof Node) {
-          }
-      }
-    });
-    staticBuffer = staticBuffer.slice(staticBuffer.indexOf("{") + 1, staticBuffer.lastIndexOf("}"));
-    const RETURN_BUFFER = document.createDocumentFragment();
-    const TEMPLATE_BODY = UTIL.HTMLParser.parseFromString(staticBuffer, "text/html").body.children;
-    for (let index = 0; index < TEMPLATE_BODY.length; index++) {
-      RETURN_BUFFER.appendChild(TEMPLATE_BODY[0]);
-    }
-    ;
-    RETURN_BUFFER.querySelector("button").addEventListener("click", (event) => {
-      console.log("wee");
-    });
-    const EVENT_QUERY = {};
-    return RETURN_BUFFER;
-  },
-  igniteElement(ELEMENT) {
+  });
+  staticBuffer = staticBuffer.slice(staticBuffer.indexOf("{") + 1, staticBuffer.lastIndexOf("}"));
+  const RETURN_BUFFER = document.createDocumentFragment();
+  const TEMPLATE_BODY = UTIL.HTMLParser.parseFromString(staticBuffer, "text/html").body.children;
+  for (let index = 0; index < TEMPLATE_BODY.length; index++) {
+    RETURN_BUFFER.appendChild(TEMPLATE_BODY[0]);
   }
+  ;
+  RETURN_BUFFER.querySelector("button").addEventListener("click", (event) => {
+    console.log("wee");
+  });
+  const EVENT_QUERY = {};
+  return RETURN_BUFFER;
+}
+const FLAGS = {
+  "enable-node-return": false,
+  "disable-element-extension": false
 };
 const INFO = {
   "package": "libh",
   "cdn": "npm",
   "module": "html",
   "version": "0.0.16",
-  "available-flags": Object.keys(BUFFER.flags)
+  "available-flags": Object.keys(FLAGS)
 };
-const html = (STRINGS, ...KEYS) => BUFFER.createElement({ STRINGS, KEYS });
+const html = (STRINGS, ...KEYS) => createElement({ STRINGS, KEYS });
 Object.defineProperties(html, {
   reservedKey: {
     get: function() {
@@ -122,9 +114,9 @@ Object.defineProperties(html, {
 });
 html.flag = function(...flag) {
   flag.forEach(function(FLAG_INDEX) {
-    if (FLAG_INDEX in BUFFER.flags) {
-      if (!BUFFER.flags[FLAG_INDEX]) {
-        BUFFER.flags[FLAG_INDEX] = true;
+    if (FLAG_INDEX in FLAGS) {
+      if (!FLAGS[FLAG_INDEX]) {
+        FLAGS[FLAG_INDEX] = true;
       } else {
         console.info(`Flag "${FLAG_INDEX}" is already enabled`);
       }
@@ -137,13 +129,13 @@ html.flag = function(...flag) {
 Object.defineProperties(html.flag, {
   list: {
     get: function() {
-      return Object.keys(BUFFER.flags);
+      return Object.keys(FLAGS);
     },
     configurable: false
   },
   state: {
     get: function() {
-      return JSON.parse(JSON.stringify(BUFFER.flags));
+      return JSON.parse(JSON.stringify(FLAGS));
     },
     configurable: false
   }
