@@ -1,15 +1,19 @@
 <div align="center">
 
-![license](https://raw.githubusercontent.com/ihasq/libh/main/resources/logo.svg)
+![logo](https://raw.githubusercontent.com/ihasq/libh/main/resources/logo.svg)
 
 ![npm](https://img.shields.io/npm/v/libh?logo=npm&label=%20&labelColor=%23eee)
 ![GitHub Repo stars](https://img.shields.io/github/stars/ihasq/libh?logo=github)
 ![npm](https://img.shields.io/npm/dt/libh?logo=stackblitz)
 
 ![npm package minimized gzipped size (select exports)](https://img.shields.io/bundlejs/size/libh)
+
+<hr/>
+
+![example](https://raw.githubusercontent.com/ihasq/libh/main/resources/eg.png)
 </div>
 
-----
+
 
 HTML in JavaScript.\
 less overhead, interacts with vanilla api.
