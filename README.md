@@ -10,7 +10,7 @@
 
 <hr/>
 
-![example](https://raw.githubusercontent.com/ihasq/libh/main/resources/example.png)
+[![example](https://raw.githubusercontent.com/ihasq/libh/main/resources/example.png)](https://stackblitz.com/edit/js-qfh42g?file=index.js)
 </div>
 
 
