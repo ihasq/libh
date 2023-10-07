@@ -20,20 +20,6 @@ __export(libh_exports, {
   html: () => html
 });
 module.exports = __toCommonJS(libh_exports);
-Object.defineProperty(Element.prototype, "innerHTML", {
-  set: function() {
-    if (!BUFFER.flags["disable-element-extension"] && arguments[0] instanceof Node) {
-      this.parentNode.replaceChild(arguments[0], this);
-      if (arguments[0].FLAG === "LIBH_INSTANCE") {
-        BUFFER.igniteElement(arguments[0]);
-      }
-      ;
-    } else {
-      DESC["innerHTML"].set.call(this, arguments);
-    }
-    ;
-  }
-});
 Object.defineProperty(Document.prototype, "body", {
   set: function() {
     if (!BUFFER.flags["disable-element-extension"] && arguments[0] instanceof Node) {
