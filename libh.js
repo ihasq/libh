@@ -17,17 +17,18 @@ const DESC = {
 	body: Object.getOwnPropertyDescriptor(Document.prototype, "body"),
 };
 
+function getDeepCopy(OBJECT_DATA) {
+	const KEY_DATA = Object.keys(OBJECT_DATA);
+	const RETURN_BUFFER = Object.create(null);
+	for(let objectKeyIndex = 0; objectKeyIndex < Object.keys(OBJECT_DATA).length; objectKeyIndex++) {
+		RETURN_BUFFER[KEY_DATA[objectKeyIndex]] = (
+			(typeof OBJECT_DATA[KEY_DATA[objectKeyIndex]] === "object")? getDeepCopy(OBJECT_DATA[KEY_DATA[objectKeyIndex]]) : OBJECT_DATA[KEY_DATA[objectKeyIndex]]
+		)
+	};
+	return RETURN_BUFFER;
+};
+
 const UTIL = {
-	getDeepCopy(OBJECT_DATA) {
-		const KEY_DATA = Object.keys(OBJECT_DATA);
-		const RETURN_BUFFER = Object.create(null);
-		for(let objectKeyIndex = 0; objectKeyIndex < Object.keys(OBJECT_DATA).length; objectKeyIndex++) {
-			RETURN_BUFFER[KEY_DATA[objectKeyIndex]] = (
-				(typeof OBJECT_DATA[KEY_DATA[objectKeyIndex]] === "object")? this.getDeepCopy(OBJECT_DATA[KEY_DATA[objectKeyIndex]]) : OBJECT_DATA[KEY_DATA[objectKeyIndex]]
-			)
-		};
-		return RETURN_BUFFER;
-	},
 	HTMLParser: new DOMParser(),
 };
 
@@ -55,10 +56,20 @@ const QUERY = {
 	]
 };
 
+
+
 const propertyPreset = {
 	global: () => "",
 	class: key => key.class.split(" "),
 };
+
+const handleTemplate = {
+	get: (target, prop) => {
+		if(!(prop in target)) {
+			return new Proxy(target, this)
+		};
+	},
+}
 
 function createElement({ STRINGS, KEYS }) {
 
@@ -74,6 +85,8 @@ function createElement({ STRINGS, KEYS }) {
 
 	KEYS.forEach((key, index) => {
 		switch(typeof key) {
+			case "function":
+			break;
 			case "object":
 				for(const symbol in key) {
 					KEY_BUFFER[symbol] = (symbol in propertyPreset)? propertyPreset[symbol](key) : key[symbol];

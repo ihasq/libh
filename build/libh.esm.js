@@ -18,15 +18,6 @@ const DESC = {
   body: Object.getOwnPropertyDescriptor(Document.prototype, "body")
 };
 const UTIL = {
-  getDeepCopy(OBJECT_DATA) {
-    const KEY_DATA = Object.keys(OBJECT_DATA);
-    const RETURN_BUFFER = /* @__PURE__ */ Object.create(null);
-    for (let objectKeyIndex = 0; objectKeyIndex < Object.keys(OBJECT_DATA).length; objectKeyIndex++) {
-      RETURN_BUFFER[KEY_DATA[objectKeyIndex]] = typeof OBJECT_DATA[KEY_DATA[objectKeyIndex]] === "object" ? this.getDeepCopy(OBJECT_DATA[KEY_DATA[objectKeyIndex]]) : OBJECT_DATA[KEY_DATA[objectKeyIndex]];
-    }
-    ;
-    return RETURN_BUFFER;
-  },
   HTMLParser: new DOMParser()
 };
 const QUERY = {
@@ -65,6 +56,8 @@ function createElement({ STRINGS, KEYS }) {
   const KEY_BUFFER = /* @__PURE__ */ Object.create(null);
   KEYS.forEach((key, index) => {
     switch (typeof key) {
+      case "function":
+        break;
       case "object":
         for (const symbol in key) {
           KEY_BUFFER[symbol] = symbol in propertyPreset ? propertyPreset[symbol](key) : key[symbol];
