@@ -105,9 +105,9 @@ function createElement({ STRINGS, KEYS }) {
 		RETURN_BUFFER.appendChild(TEMPLATE_BODY[0]);
 	};
 
-	RETURN_BUFFER.querySelector("button").addEventListener("click", event => {
-		console.log("wee")
-	});
+	// RETURN_BUFFER.querySelector("button").addEventListener("click", event => {
+	// 	console.log("wee")
+	// });
 
 	// RETURN_BUFFER.FLAG = "LIBH_INSTANCE";
 
