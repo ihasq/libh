@@ -33,8 +33,10 @@ document.body = html`{
 ```javascript
 // ...
 
+import style from "./style.css" assert { type: "css" }
+
 const reactiveButton = html`{
-    <button onclick=${$ => $.count++}>
+    <button onclick=${$ => $.count++} style=${style}>
         I got clicked ${$ => $.count} times!
     </button>
 }`;

@@ -1,7 +1,7 @@
 import esbuild from "esbuild";
 import fs from "node:fs";
 
-const RELEASE_VERSION = "0.0.27";
+const RELEASE_VERSION = "0.0.28";
 
 [
 	{
@@ -62,7 +62,7 @@ const RELEASE_VERSION = "0.0.27";
 
 	await esbuild.build(Object.assign(CONFIG, {
 		treeShaking: true,
-		entryPoints: [`./libh.js`],
+		entryPoints: [`./src/libh.js`],
 	}));
 
 });

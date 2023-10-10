@@ -17,6 +17,12 @@ const DESC = {
 	body: Object.getOwnPropertyDescriptor(Document.prototype, "body"),
 };
 
+/**
+ * 
+ * @param { object } OBJECT_DATA 
+ * @returns { object }
+ */
+
 function getDeepCopy(OBJECT_DATA) {
 	const KEY_DATA = Object.keys(OBJECT_DATA);
 	const RETURN_BUFFER = Object.create(null);
@@ -69,7 +75,7 @@ const handleTemplate = {
 			return new Proxy(target, this)
 		};
 	},
-}
+};
 
 function createElement({ STRINGS, KEYS }) {
 
