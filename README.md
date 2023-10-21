@@ -41,9 +41,7 @@ const reactiveButton = html`{
     })}>I got clicked ${$ => $.count} times!</button>
 }`;
 
-document.body.innerHTML = html`{
-    <${reactiveButton} />
-}`;
+document.body.appendChild(reactiveButton.node());
 
 // or
 
