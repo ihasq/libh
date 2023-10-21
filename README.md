@@ -41,15 +41,17 @@ const ReactiveButton = html`{
     })}>I got clicked ${$ => $.count} times!</button>
 }`;
 
+// use as node
+
 document.body.appendChild(new ReactiveButton());
 
-// or
+// embed in
 
 document.body.innerHTML = html`{
     <${ReactiveButton} />
 }`;
 
-// or
+// or export
 
 export { ReactiveButton };
 ```
