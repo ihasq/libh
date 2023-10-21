@@ -9,16 +9,7 @@
 ![npm package minimized gzipped size (select exports)](https://img.shields.io/bundlejs/size/libh)
 
 <hr/>
-
-[![example](https://raw.githubusercontent.com/ihasq/libh/main/resources/example.png)](https://stackblitz.com/edit/js-qfh42g?file=index.js)
 </div>
-
-
-
-HTML in JavaScript.\
-less overhead, interacts with vanilla api.
-
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/edit/js-qfh42g?file=index.js)
 
 ```javascript
 import { html } from "libh";
@@ -30,15 +21,24 @@ document.body.innerHTML = html`{
 // Active values ​​should be placed as pre-execution functions, not as primitive type
 ```
 
+HTML in JavaScript.\
+less overhead, interacts with vanilla api.
+
+[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/edit/js-qfh42g?file=index.js)
+
 ```javascript
 // ...
 
 import style from "./style.css" assert { type: "css" }
 
 const reactiveButton = html`{
-    <button onclick=${$ => $.count++} style=${style}>
-        I got clicked ${$ => $.count} times!
-    </button>
+    <button ${$ => ({
+        style,
+        count: 0
+        onclick() {
+            $.count++
+        },
+    })}>I got clicked ${$ => $.count} times!</button>
 }`;
 
 document.body.innerHTML = html`{
