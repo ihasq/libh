@@ -31,7 +31,7 @@ less overhead, interacts with vanilla api.
 
 import style from "./style.css" assert { type: "css" }
 
-const reactiveButton = html`{
+const ReactiveButton = html`{
     <button ${$ => ({
         style,
         count: 0
@@ -41,11 +41,17 @@ const reactiveButton = html`{
     })}>I got clicked ${$ => $.count} times!</button>
 }`;
 
-document.body.appendChild(reactiveButton.node());
+document.body.appendChild(new ReactiveButton());
 
 // or
 
-export { reactiveButton };
+document.body.innerHTML = html`{
+    <${ReactiveButton} />
+}`;
+
+// or
+
+export { ReactiveButton };
 ```
 ### installation (npm)
 ```
