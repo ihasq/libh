@@ -1,38 +1,43 @@
-Object.defineProperty(Document.prototype, "body", {
-	set: function() {
-		if(!FLAGS["disable-element-extension"] && arguments[0] instanceof Node) {
-			this.body.parentNode.replaceChild(arguments[0], this.body);
-			if(arguments[0].FLAG === "LIBH_INSTANCE") {
-				BUFFER.igniteElement(arguments[0]);
-			};
-		} else {
-			DESC["body"].set.call(this, arguments);
-		};
-	}
-});
-
-const DESC = {
-	innerHTML: Object.getOwnPropertyDescriptor(Element.prototype, "innerHTML"),
-	insertAdjacentHTML: Object.getOwnPropertyDescriptor(Element.prototype, "insertAdjacentHTML"),
-	body: Object.getOwnPropertyDescriptor(Document.prototype, "body"),
-};
-
 /**
  * 
- * @param { object } OBJECT_DATA 
+ * @param { function } callbackFn
  * @returns { object }
+ * 
  */
 
-function getDeepCopy(OBJECT_DATA) {
-	const KEY_DATA = Object.keys(OBJECT_DATA);
-	const RETURN_BUFFER = Object.create(null);
-	for(let objectKeyIndex = 0; objectKeyIndex < Object.keys(OBJECT_DATA).length; objectKeyIndex++) {
-		RETURN_BUFFER[KEY_DATA[objectKeyIndex]] = (
-			(typeof OBJECT_DATA[KEY_DATA[objectKeyIndex]] === "object")? getDeepCopy(OBJECT_DATA[KEY_DATA[objectKeyIndex]]) : OBJECT_DATA[KEY_DATA[objectKeyIndex]]
-		)
+function objectAnalyzer(callbackFn) {
+
+	const analyzerTemplate = {
+		get(target, property) {
+			if(!(property in target)) {
+				target[property] = Object.create(null);
+				return new Proxy(target[property], analyzerTemplate);
+			};
+		},
 	};
-	return RETURN_BUFFER;
+
+	function getDeepCopy(OBJECT_DATA) {
+		const KEY_DATA = Object.keys(OBJECT_DATA);
+		const RETURN_BUFFER = Object.create(null);
+		for(let objectKeyIndex = 0; objectKeyIndex < Object.keys(OBJECT_DATA).length; objectKeyIndex++) {
+			RETURN_BUFFER[KEY_DATA[objectKeyIndex]] = (
+				(typeof OBJECT_DATA[KEY_DATA[objectKeyIndex]] === "object")? getDeepCopy(OBJECT_DATA[KEY_DATA[objectKeyIndex]]) : OBJECT_DATA[KEY_DATA[objectKeyIndex]]
+			);
+		};
+		return RETURN_BUFFER;
+	};
+
+	const outTemplate = callbackFn(new Proxy({}, analyzerTemplate));
+	const objectKey = getDeepCopy(outTemplate);
+
+	return callbackFn(objectKey);
+
 };
+
+console.log(objectAnalyzer($ => ({
+	b: "wow",
+	a: $.b,
+})));
 
 const UTIL = {
 	HTMLParser: new DOMParser(),
@@ -103,25 +108,31 @@ function createElement({ STRINGS, KEYS }) {
 
 	staticBuffer = staticBuffer.slice(staticBuffer.indexOf("{") + 1, staticBuffer.lastIndexOf("}"));
 
-	const RETURN_BUFFER = document.createDocumentFragment();
+	// const RETURN_BUFFER = document.createDocumentFragment();
 
-	const TEMPLATE_BODY = UTIL.HTMLParser.parseFromString(staticBuffer, "text/html").body.children;
+	// const TEMPLATE_BODY = ;
 
-	for(let index = 0; index < TEMPLATE_BODY.length; index++) {
-		RETURN_BUFFER.appendChild(TEMPLATE_BODY[0]);
-	};
+	// for(let index = 0; index < TEMPLATE_BODY.length; index++) {
+	// 	RETURN_BUFFER.appendChild(TEMPLATE_BODY[0]);
+	// };
 
-	// RETURN_BUFFER.querySelector("button").addEventListener("click", event => {
-	// 	console.log("wee")
-	// });
+	// // RETURN_BUFFER.querySelector("button").addEventListener("click", event => {
+	// // 	console.log("wee")
+	// // });
 
-	// RETURN_BUFFER.FLAG = "LIBH_INSTANCE";
+	// // RETURN_BUFFER.FLAG = "LIBH_INSTANCE";
 
-	const EVENT_QUERY = {
+	// const EVENT_QUERY = {
 
-	};
+	// };
 
-	return RETURN_BUFFER;
+	setTimeout(function() {
+
+	}, 0);
+
+	return Object.assign(staticBuffer, {
+		LIBH_VERIFIER: ""
+	});
 };
 
 const FLAGS = {

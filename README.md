@@ -23,7 +23,7 @@ less overhead, interacts with vanilla api.
 ```javascript
 import { html } from "libh";
 
-document.body = html`{
+document.body.innerHTML = html`{
     <h1>Current date is ${Date}</h1>
 }`;
 
@@ -41,7 +41,7 @@ const reactiveButton = html`{
     </button>
 }`;
 
-document.body = html`{
+document.body.innerHTML = html`{
     <${reactiveButton} />
 }`;
 

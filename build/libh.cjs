@@ -20,25 +20,6 @@ __export(libh_exports, {
   html: () => html
 });
 module.exports = __toCommonJS(libh_exports);
-Object.defineProperty(Document.prototype, "body", {
-  set: function() {
-    if (!FLAGS["disable-element-extension"] && arguments[0] instanceof Node) {
-      this.body.parentNode.replaceChild(arguments[0], this.body);
-      if (arguments[0].FLAG === "LIBH_INSTANCE") {
-        BUFFER.igniteElement(arguments[0]);
-      }
-      ;
-    } else {
-      DESC["body"].set.call(this, arguments);
-    }
-    ;
-  }
-});
-const DESC = {
-  innerHTML: Object.getOwnPropertyDescriptor(Element.prototype, "innerHTML"),
-  insertAdjacentHTML: Object.getOwnPropertyDescriptor(Element.prototype, "insertAdjacentHTML"),
-  body: Object.getOwnPropertyDescriptor(Document.prototype, "body")
-};
 const UTIL = {
   HTMLParser: new DOMParser()
 };
@@ -89,14 +70,11 @@ function createElement({ STRINGS, KEYS }) {
     }
   });
   staticBuffer = staticBuffer.slice(staticBuffer.indexOf("{") + 1, staticBuffer.lastIndexOf("}"));
-  const RETURN_BUFFER = document.createDocumentFragment();
-  const TEMPLATE_BODY = UTIL.HTMLParser.parseFromString(staticBuffer, "text/html").body.children;
-  for (let index = 0; index < TEMPLATE_BODY.length; index++) {
-    RETURN_BUFFER.appendChild(TEMPLATE_BODY[0]);
-  }
-  ;
-  const EVENT_QUERY = {};
-  return RETURN_BUFFER;
+  setTimeout(function() {
+  }, 0);
+  return Object.assign(staticBuffer, {
+    LIBH_VERIFIER: ""
+  });
 }
 const FLAGS = {
   "enable-node-return": false,
