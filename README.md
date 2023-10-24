@@ -15,7 +15,7 @@
 import { html } from "libh";
 
 document.body.innerHTML = html`{
-    <h1>Current date is ${Date}</h1>
+    <h1>Current date is { Date }</h1>
 }`;
 
 // Active values ​​should be placed as pre-execution functions, not as primitive type
@@ -32,13 +32,13 @@ less overhead, interacts with vanilla api.
 import style from "./style.css" assert { type: "css" }
 
 const ReactiveButton = html`{
-    <button ${$ => ({
+    <button ${{
         style,
         count: 0
         onclick() {
-            $.count++
+            this.count++
         },
-    })}>I got clicked ${$ => $.count} times!</button>
+    }}>I got clicked { this.count } times!</button>
 }`;
 
 // use as node
@@ -54,6 +54,16 @@ document.body.innerHTML = html`{
 // or export
 
 export { ReactiveButton };
+```
+
+```javascript
+// use function in html
+
+const multiply = value => value * 2;
+
+const NumberDemo = html`{
+    <input id="input_num" type="number" /> * 2 = ${multiply}(document.getElementById("input_num").value)
+}`;
 ```
 ### installation (npm)
 ```
