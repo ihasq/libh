@@ -62,8 +62,11 @@ export { ReactiveButton };
 const multiply = value => value * 2;
 
 const NumberDemo = html`{
-    <input id="input_num" type="number" /> * 2 = ${multiply}(document.getElementById("input_num").value)
-}`;
+    <input ${{
+        id:"input_num"
+        type:"number"
+    }} /> * 2 = ${multiply}(this.select("input_num").value)
+}`
 ```
 ### installation (npm)
 ```
