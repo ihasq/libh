@@ -14,20 +14,25 @@
 ```javascript
 import { html } from "libh";
 
-const Main = $ => {
+const Button = $ => {
 
-    let
-        count = 0,
+    let count = 0,
         setCount = () => count++;
     
     return () => html`
         <button onclick=${setCount}>
             I got clicked ${count} times!
         </button>
-    `
+    `;
 }
 
-// Active values ​​should be placed as pre-execution functions, not as primitive type
+// create HTMLElement
+
+document.body.append(html.createElement(Button))
+
+// or define as Web Components
+
+html.define({ "stupid-counter": Button })
 ```
 
 HTML in JavaScript.\
