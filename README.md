@@ -14,9 +14,18 @@
 ```javascript
 import { html } from "libh";
 
-document.body.innerHTML = html`{
-    <h1>Current date is { Date }</h1>
-}`;
+const Main = $ => {
+
+    let
+        count = 0,
+        setCount = () => count++;
+    
+    return () => html`
+        <button onclick=${setCount}>
+            I got clicked ${count} times!
+        </button>
+    `
+}
 
 // Active values ​​should be placed as pre-execution functions, not as primitive type
 ```
@@ -26,48 +35,6 @@ less overhead, interacts with vanilla api.
 
 [![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/edit/js-qfh42g?file=index.js)
 
-```javascript
-// ...
-
-import style from "./style.css" assert { type: "css" }
-
-const ReactiveButton = html`{
-    <button ${{
-        style,
-        count: 0
-        onclick() {
-            this.count++
-        },
-    }}>I got clicked { this.count } times!</button>
-}`;
-
-// use as node
-
-document.body.appendChild(new ReactiveButton());
-
-// embed in
-
-document.body.innerHTML = html`{
-    <${ReactiveButton} />
-}`;
-
-// or export
-
-export { ReactiveButton };
-```
-
-```javascript
-// use function in html
-
-const multiply = value => value * 2;
-
-const NumberDemo = html`{
-    <input ${{
-        id:"input_num"
-        type:"number"
-    }} /> * 2 = ${multiply}(this.select("input_num").value)
-}`
-```
 ### installation (npm)
 ```
 npm i libh
