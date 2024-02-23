@@ -18,8 +18,6 @@ const Counter = $ => {
 
     let count = 0,
         setCount = () => count++;
-
-    $.libh.onbeforechange = () => Object.assign($, { count })
     
     return () => html`
         <button onclick=${setCount}>
@@ -57,6 +55,20 @@ npm run build
 ```javascript
 // ...
 
+const Counter = $ => {
+
+    let count = 0,
+        setCount = () => count++;
+
+    $.libh.onbeforechange = () => Object.assign($, { count });
+    
+    return () => html`
+        <button onclick=${setCount}>
+            I got clicked ${count} times!
+        </button>
+    `;
+}
+
 const Main = $ => {
 
     let countProp = 0;
@@ -64,12 +76,12 @@ const Main = $ => {
     $.libh.onchange = () => countProp = $.querySelector("#counter").count;
 
     return () => html`
-        <div>
+        <body>
             <${Counter} id=counter/>
             ☝ She got clicked ${countProp} times!
-        </div>
+        </body>
     `
 }
 
-document.body.append(html.createElement(Main))
+document.body = html.createElement(Main)
 ```
