@@ -14,10 +14,14 @@
 ```javascript
 import { html } from "libh";
 
-const Button = $ => {
+const Counter = $ => {
 
     let count = 0,
         setCount = () => count++;
+    
+    $.libh.onwrite = () => {
+        $.libh.count = count;
+    }
     
     return () => html`
         <button onclick=${setCount}>
@@ -26,13 +30,13 @@ const Button = $ => {
     `;
 }
 
-// create HTMLElement
+// create HTML Element
 
-document.body.append(html.createElement(Button))
+document.body.append(html.createElement(Counter))
 
 // or define as Web Components
 
-html.define({ "stupid-counter": Button })
+customElements.define("stupid-counter", html.createClass(Counter))
 ```
 
 HTML in JavaScript.\
@@ -49,4 +53,22 @@ npm i libh
 ```
 git clone https://github.com/ihasq/libh.git
 npm run build
+```
+
+### usage
+```javascript
+// ...
+
+const Main = $ => {
+
+    $.libh.onwrite = () => {
+        $.querySelector("counter").libh.count;
+    }
+
+    return () => html`
+        <div>
+            <${Counter} id=counter/>
+        </div>
+    `
+}
 ```
