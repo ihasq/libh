@@ -16,11 +16,10 @@ import { html } from "libh";
 
 const Counter = $ => {
 
-    let count = 0,
-        setCount = () => count++;
+    let count = 0;
     
     return () => html`
-        <button onclick=${setCount}>
+        <button onclick=${() => count++}>
             I got clicked ${count} times!
         </button>
     `;
@@ -58,30 +57,26 @@ npm run build
 const Counter = $ => {
 
     let count = 0,
-        setCount = () => count++;
+        addCount = () => count++;
 
-    $.libh.onbeforechange = () => Object.assign($, { count });
+    $.libh.onbeforechange = () => Object.assign($, { count, addCount }); // public
     
     return () => html`
-        <button onclick=${setCount}>
+        <button onclick=${addCount}>
             I got clicked ${count} times!
         </button>
     `;
 }
 
-const Main = $ => {
-
-    let countProp = 0;
-
-    $.libh.onbeforechange = () => countProp = $.querySelector("#counter").count;
-
-    return () => html`
-        <body>
-            <${Counter} id=counter/>
-            ☝ She got clicked ${countProp} times!
-        </body>
-    `;
-}
+const Main = $ => () => html`
+    <body>
+        <${Counter} id=counter/>
+        ☝ She got clicked ${$`#counter`.count} times!
+        <button onclick=${$`#counter`.addCount()}>
+            add more!
+        </button>
+    </body>
+`;
 
 document.body = html.createElement(Main)
 ```
@@ -89,8 +84,7 @@ document.body = html.createElement(Main)
 ```javascript
 const TodoList = $ => {
 
-    const todo = [],
-        addTodo = () => todo.push($.querySelector("input[type=text]").value);
+    let todo = [];
 
     return () => html`
         <div>
@@ -98,7 +92,7 @@ const TodoList = $ => {
                 <li>${el}</li>
             `)}</ul>
             <input type=text/>
-            <input type=button onclick=${addTodo}/>
+            <input type=button onclick=${() => todo.push($`input[type=text]`.value)}/>
         </div>
     `;
 }
