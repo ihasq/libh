@@ -73,15 +73,33 @@ const Main = $ => {
 
     let countProp = 0;
 
-    $.libh.onchange = () => countProp = $.querySelector("#counter").count;
+    $.libh.onbeforechange = () => countProp = $.querySelector("#counter").count;
 
     return () => html`
         <body>
             <${Counter} id=counter/>
             ☝ She got clicked ${countProp} times!
         </body>
-    `
+    `;
 }
 
 document.body = html.createElement(Main)
+```
+
+```javascript
+const TodoList = $ => {
+
+    const todo = [],
+        addTodo = () => todo.push($.querySelector("input[type=text]").value);
+
+    return () => html`
+        <div>
+            <ul>${todo.map(el => html`
+                <li>${el}</li>
+            `)}</ul>
+            <input type=text/>
+            <input type=button onclick=${addTodo}/>
+        </div>
+    `;
+}
 ```
