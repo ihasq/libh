@@ -19,9 +19,7 @@ const Counter = $ => {
     let count = 0,
         setCount = () => count++;
     
-    $.libh.onwrite = () => {
-        $.libh.count = count;
-    }
+    $.libh.subscribe(() => ({ count }));
     
     return () => html`
         <button onclick=${setCount}>
@@ -40,7 +38,7 @@ customElements.define("stupid-counter", html.createClass(Counter))
 ```
 
 HTML in JavaScript.\
-less overhead, interacts with vanilla api.
+less overhead, built on top of standard html reference.
 
 [![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/edit/js-qfh42g?file=index.js)
 
@@ -61,13 +59,16 @@ npm run build
 
 const Main = $ => {
 
-    $.libh.onwrite = () => {
-        $.querySelector("counter").libh.count;
-    }
+    let countProp = 0;
+
+    $.libh.subscribe(() => {
+        countProp = $.querySelector("#counter").count;
+    })
 
     return () => html`
         <div>
             <${Counter} id=counter/>
+            ☝ She got clicked ${countProp} times!
         </div>
     `
 }
