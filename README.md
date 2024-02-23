@@ -18,8 +18,8 @@ const Counter = $ => {
 
     let count = 0,
         setCount = () => count++;
-    
-    $.libh.subscribe(() => ({ count }));
+
+    $.libh.onbeforechange = () => Object.assign($, { count })
     
     return () => html`
         <button onclick=${setCount}>
@@ -61,9 +61,7 @@ const Main = $ => {
 
     let countProp = 0;
 
-    $.libh.subscribe(() => {
-        countProp = $.querySelector("#counter").count;
-    })
+    $.libh.onchange = () => countProp = $.querySelector("#counter").count;
 
     return () => html`
         <div>
@@ -72,4 +70,6 @@ const Main = $ => {
         </div>
     `
 }
+
+document.body.append(html.createElement(Main))
 ```
