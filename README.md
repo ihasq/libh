@@ -14,7 +14,7 @@
 ```javascript
 import { html } from "libh";
 
-const Counter = $ => {
+const Counter = () => {
 
     let count = 0;
     
@@ -59,7 +59,7 @@ const Counter = $ => {
     let count = 0,
         addCount = () => count++;
 
-    $.libh.onbeforechange = () => Object.assign($, { count, addCount }); // public
+    $.onchange = () => Object.assign($, { count, addCount });
     
     return () => html`
         <button onclick=${addCount}>
@@ -68,23 +68,22 @@ const Counter = $ => {
     `;
 }
 
-const Main = $ => () => html`
+document.body = html.createElement($ => () => html`
     <body>
         <${Counter} id=counter/>
         ☝ She got clicked ${$`#counter`.count} times!
-        <button onclick=${$`#counter`.addCount()}>
+        <button onclick=${$`#counter`.addCount}>
             add more!
         </button>
     </body>
-`;
-
-document.body = html.createElement(Main)
+`);
 ```
 
 ```javascript
 const TodoList = $ => {
 
-    let todo = [];
+    let todo = [],
+        addTodo = () => todo.push($`input[type=text]`.value);
 
     return () => html`
         <div>
@@ -92,7 +91,7 @@ const TodoList = $ => {
                 <li>${el}</li>
             `)}</ul>
             <input type=text/>
-            <input type=button onclick=${() => todo.push($`input[type=text]`.value)}/>
+            <input type=button onclick=${addTodo}/>
         </div>
     `;
 }
