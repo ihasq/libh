@@ -39,7 +39,7 @@ customElements.define("stupid-counter", html.createClass(Counter))
 ```
 
 HTML in JavaScript.\
-less overhead, built on top of standard html reference.
+less boilerplate, transparent, built on top of standard html reference.
 
 [![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/edit/js-qfh42g?file=index.js)
 
@@ -58,15 +58,15 @@ npm run build
 ```javascript
 // ...
 
+html.publicAttribute = ["class"];
+
 const Counter = $ => {
 
     let count = 0,
-        addCount = () => count++;
+        onclick = () => count++;
 
-    $.onchange = () => Object.assign($, { count, addCount });
-    
     return () => html`
-        <button onclick=${addCount}>
+        <button onclick=${addCount} count=${count}>
             I got clicked ${count} times!
         </button>
     `;
@@ -76,7 +76,7 @@ document.body = html.createElement($ => () => html`
     <body>
         <p>👇 She got clicked ${$(Counter).count} times!</p>
         <${Counter}/>
-        <button onclick=${$(Counter).addCount}>
+        <button onclick=${$(Counter).onclick}>
             add more!
         </button>
     </body>
