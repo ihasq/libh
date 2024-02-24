@@ -20,9 +20,12 @@ const Counter = () => {
         addCount = () => count++;
     
     return () => html`
-        <button onclick=${addCount}>
-            I got clicked ${count} times!
-        </button>
+        <div>
+            <p>You clicked ${count} times</p>
+            <button onClick=${addCount}>
+                Click me
+            </button>
+        </div>
     `;
 }
 
@@ -71,8 +74,8 @@ const Counter = $ => {
 
 document.body = html.createElement($ => () => html`
     <body>
+        <p>👇 She got clicked ${$(Counter).count} times!</p>
         <${Counter}/>
-        ☝ She got clicked ${$(Counter).count} times!
         <button onclick=${$(Counter).addCount}>
             add more!
         </button>
