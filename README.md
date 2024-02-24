@@ -56,14 +56,12 @@ npm run build
 
 ### usage
 ```javascript
-// ...
-
-html.publicAttribute = ["class"];
+import { html } from "libh";
 
 const Counter = $ => {
 
     let count = 0,
-        onclick = () => count++;
+        addCount = () => count++,
 
     return () => html`
         <button onclick=${addCount} count=${count}>
@@ -76,7 +74,7 @@ document.body = html.createElement($ => () => html`
     <body>
         <p>👇 She got clicked ${$(Counter).count} times!</p>
         <${Counter}/>
-        <button onclick=${$(Counter).onclick}>
+        <button onclick=${$(Counter).onclick}> <!-- call addCount() in Counter -->
             add more!
         </button>
     </body>
