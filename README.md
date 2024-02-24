@@ -70,9 +70,9 @@ const Counter = $ => {
 
 document.body = html.createElement($ => () => html`
     <body>
-        <${Counter} id=counter/>
-        ☝ She got clicked ${$`#counter`.count} times!
-        <button onclick=${$`#counter`.addCount}>
+        <${Counter}/>
+        ☝ She got clicked ${$(Counter).count} times!
+        <button onclick=${$(Counter).addCount}>
             add more!
         </button>
     </body>
@@ -80,10 +80,17 @@ document.body = html.createElement($ => () => html`
 ```
 
 ```javascript
+/**
+ *  $ {
+ *      element: raw element reference includes querySelector or getAttribute
+ *      onclick, onmousedown... setter of events, not like standard on-action event listener
+ *  }
+ **/
 const TodoList = $ => {
 
-    let todo = [],
-        addTodo = () => todo.push($`input[type=text]`.value);
+    let text = $`input[type=text]`,
+        todo = [],
+        addTodo = () => todo.push(text.value);
 
     return () => html`
         <div>
