@@ -16,10 +16,11 @@ import { html } from "libh";
 
 const Counter = () => {
 
-    let count = 0;
+    let count = 0,
+        addCount = () => count++;
     
     return () => html`
-        <button onclick=${() => count++}>
+        <button onclick=${addCount}>
             I got clicked ${count} times!
         </button>
     `;
