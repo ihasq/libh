@@ -14,7 +14,7 @@
 ```javascript
 import { html } from "libh";
 
-const Counter = () => {
+const Count = () => {
 
     let count = 0,
         addCount = () => count++;
@@ -22,7 +22,7 @@ const Counter = () => {
     return () => html`
         <div>
             <p>You clicked ${count} times</p>
-            <button onClick=${addCount}>
+            <button onclick=${addCount}>
                 Click me
             </button>
         </div>
@@ -31,11 +31,11 @@ const Counter = () => {
 
 // create HTML Element
 
-document.body.append(html.createElement(Counter))
+document.body.append(html.createElement(Count));
 
 // or define as Web Components
 
-customElements.define("stupid-counter", html.createClass(Counter))
+customElements.define("something-reactive", html.createClass(Count));
 ```
 
 HTML in JavaScript.\
@@ -50,7 +50,7 @@ npm i libh
 
 ### build from source
 ```
-git clone https://github.com/ihasq/libh.git
+git clone https://github.com/ihasq/libh
 npm run build
 ```
 
@@ -61,7 +61,7 @@ import { html } from "libh";
 const Counter = $ => {
 
     let count = 0,
-        addCount = () => count++,
+        addCount = () => count++;
 
     return () => html`
         <button onclick=${addCount} count=${count}>
@@ -72,10 +72,10 @@ const Counter = $ => {
 
 document.body = html.createElement($ => () => html`
     <body>
-        <p>👇 She got clicked ${$(Counter).count} times!</p>
+        <p>👇 She got clicked ${$(Counter).count} times</p>
         <${Counter}/>
         <button onclick=${$(Counter).onclick}> <!-- call addCount() in Counter -->
-            add more!
+            Bring some more
         </button>
     </body>
 `);
