@@ -90,9 +90,8 @@ document.body = html.createElement($ => () => html`
  **/
 const TodoList = $ => {
 
-    let text = $`input[type=text]`,
-        todo = [],
-        addTodo = () => todo.push(text.value);
+    let todo = [],
+        addTodo = () => todo.push($`input[type=text]`.value);
 
     return () => html`
         <div>
