@@ -1,7 +1,9 @@
 import { html } from "./src/mod.js";
 
-const Main = $ => {
+const Main = () => {
+
 	let count = 0;
+
 	return () => html`
 		<body>
 			<button onclick=${() => count++}>${count}</button>

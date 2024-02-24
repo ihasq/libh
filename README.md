@@ -72,7 +72,7 @@ const Counter = $ => {
 
 document.body = html.createElement($ => () => html`
     <body>
-        <p>👇 She got clicked ${$(Counter).count} times</p>
+        <p>👇 She got clicked ${$(Counter).count} times</p> <!-- go public as top-level attributes -->
         <${Counter}/>
         <button onclick=${$(Counter).onclick}> <!-- call addCount() in Counter -->
             Bring some more
