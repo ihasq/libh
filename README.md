@@ -39,7 +39,7 @@ customElements.define("something-reactive", html.createClass(Count));
 ```
 
 HTML in JavaScript.\
-less boilerplate, transparent, built on top of standard html reference.
+less boilerplate, safe, built on top of standard html reference.
 
 [![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/edit/js-qfh42g?file=index.js)
 
@@ -82,12 +82,6 @@ document.body = html.createElement($ => () => html`
 ```
 
 ```javascript
-/**
- *  $ {
- *      element: raw element reference includes querySelector or getAttribute
- *      onclick, onmousedown... setter of events, not like standard on-action event listener
- *  }
- **/
 const TodoList = $ => {
 
     let todo = [],
@@ -102,5 +96,30 @@ const TodoList = $ => {
             <input type=button onclick=${addTodo}/>
         </div>
     `;
+}
+```
+
+```javascript
+const C2DApp = $ => {
+
+    let ctx = undefined;
+
+    $.onload = () => {
+
+        $`canvas`.onmousedown = event => {
+
+        };
+
+        ctx = $`canvas`.element.getContext("2d");
+        // ...
+    }
+
+    return () => html`<canvas></canvas>`.then(() => {
+
+        ctx.fillStyle = "#f00";
+        ctx.rect(0, 0, 256, 256);
+        // ...
+
+    });
 }
 ```
