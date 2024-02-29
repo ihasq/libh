@@ -33,7 +33,7 @@ const Count = () => {
 
 document.body.append(html.createElement(Count));
 
-// or define as Web Components
+// define as Web Components
 
 customElements.define("something-reactive", html.createClass(Count));
 ```
@@ -104,22 +104,16 @@ const C2DApp = $ => {
 
     let ctx = undefined;
 
-    $.onload = () => {
+    setTimeout(() => {
 
         $`canvas`.onmousedown = event => {
-
+        
         };
 
         ctx = $`canvas`.element.getContext("2d");
         // ...
-    }
+    });
 
-    return () => {
-        ctx.fillStyle = "#f00";
-        ctx.rect(0, 0, 256, 256);
-        // ...
-
-        return html`<canvas></canvas>`
-    }
+    return () => html`<canvas></canvas>`;
 }
 ```
