@@ -6,7 +6,9 @@ const Main = () => {
 
 	return () => html`
 		<body>
-			<button onclick=${() => count++}>${count}</button>
+			<button onclick=${() => count++}>
+				${count}
+			</button>
 		</body>
 	`;
 };

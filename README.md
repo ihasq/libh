@@ -114,12 +114,12 @@ const C2DApp = $ => {
         // ...
     }
 
-    return () => html`<canvas></canvas>`.then(() => {
-
+    return () => {
         ctx.fillStyle = "#f00";
         ctx.rect(0, 0, 256, 256);
         // ...
 
-    });
+        return html`<canvas></canvas>`
+    }
 }
 ```
