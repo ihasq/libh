@@ -72,8 +72,8 @@ const Counter = $ => {
 
 document.body = html.createElement($ => () => html`
     <body>
+        <p>👇 She got clicked ${$(Counter).count} times</p> <!-- pre-initialization $().property returns Promise -->
         <${Counter}/>
-        <p>☝ She got clicked ${$(Counter).count} times</p> <!-- every properties are functions -->
         <button onclick=${$(Counter).onclick}> <!-- call addCount() in Counter -->
             Bring some more
         </button>
