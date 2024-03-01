@@ -72,7 +72,7 @@ const Counter = $ => {
 
 document.body = html.createElement($ => () => html`
     <body>
-        <p>👇 She got clicked ${$(Counter).count} times</p> <!-- pre-initialization $().property returns Promise -->
+        <p>👇 She got clicked ${$(Counter).count} times</p> <!-- pre-initialization $() returns Proxy with Promises -->
         <${Counter}/>
         <button onclick=${$(Counter).onclick}> <!-- call addCount() in Counter -->
             Bring some more
