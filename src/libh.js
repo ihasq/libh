@@ -64,6 +64,3 @@ const Main = () => {
 		</div>
 	`;
 }
-
-document.body.innerHTML = write(Main)
- 
