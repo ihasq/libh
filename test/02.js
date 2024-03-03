@@ -1,17 +1,24 @@
 import { html } from "../src/mod.js";
 
-const Counter = () => {
+const Child = () => {
 
 	let count = 0;
 
 	return () => html`
-		<button onclick=${() => count++}>
+		<button onclick=${() => count++} count=${count}>
 			${count}
 		</button>
 	`;
 };
 
-document.body.append(html.createElement(Counter));
+const Parent = $ => () => html`
+	<div>
+		<${Child}/>
+		<span>${$(Child).count}</span>
+	</div>
+`;
+
+document.body.append(html.createElement(Parent));
 
 document.querySelector("body > button").click();
 

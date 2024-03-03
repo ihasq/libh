@@ -58,7 +58,7 @@ npm run build
 ```javascript
 import { html } from "libh";
 
-const Counter = $ => {
+const Counter = () => {
 
     let count = 0,
         addCount = () => count++;
@@ -72,7 +72,7 @@ const Counter = $ => {
 
 document.body = html.createElement($ => () => html`
     <body>
-        <p>👇 She got clicked ${$(Counter).count} times</p> <!-- pre-initialization $() returns Proxy with Promises -->
+        <p>👇 She got clicked ${$(Counter).count} times</p> <!-- pre-initialization $() returns Proxy with Functions -->
         <${Counter}/>
         <button onclick=${$(Counter).onclick}> <!-- call addCount() in Counter -->
             Bring some more
@@ -104,7 +104,7 @@ const C2DApp = $ => {
 
     let ctx = undefined;
 
-    setTimeout(() => {
+    $.onload = () => {
 
         $`canvas`.onmousedown = event => {
 
@@ -112,7 +112,7 @@ const C2DApp = $ => {
 
         ctx = $`canvas`.element.getContext("2d");
         // ...
-    });
+    };
 
     return () => html`<canvas></canvas>`;
 }
