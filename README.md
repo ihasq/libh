@@ -12,7 +12,7 @@
 </div>
 
 ```javascript
-import { html } from "libh";
+import { html } from "https://esm.sh/libh";
 
 const Count = () => {
 
@@ -124,3 +124,7 @@ const C2DApp = $ => {
     return () => html`<canvas></canvas>`;
 }
 ```
+
+### Double-Function Architecture
+libh avoids using "reactive" things like ````state```` and ````hook```` to build the DOM tree.\
+Maintain state in scoped variables such as regular ````let```` or ````const```` by forcing the use of functions that return functions, or "double functions" to do.
