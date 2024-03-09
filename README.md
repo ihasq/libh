@@ -2,7 +2,7 @@
 
 ![logo](https://raw.githubusercontent.com/ihasq/libh/main/resources/logo.svg)
 
-![npm](https://img.shields.io/npm/v/libh?logo=npm&label=%20&labelColor=%23eee)
+[![npm](https://img.shields.io/npm/v/libh?logo=npm&label=%20&labelColor=%23eee)](https://www.npmjs.com/package/libh)
 ![GitHub Repo stars](https://img.shields.io/github/stars/ihasq/libh?logo=github)
 ![npm](https://img.shields.io/npm/dt/libh?logo=stackblitz)
 
@@ -72,7 +72,7 @@ const Counter = () => {
 
 document.body = html.createElement($ => () => html`
     <body>
-        <p>👇 She got clicked ${$(Counter).count} times</p> <!-- pre-initialization $() returns Proxy with Functions -->
+        <p>👇 She got clicked ${$(Counter).count} times</p> <!-- pre-initialization $() returns LHPtr, contains Proxy with Functions -->
         <${Counter}/>
         <button onclick=${$(Counter).onclick}> <!-- call addCount() in Counter -->
             Bring some more
@@ -85,7 +85,7 @@ document.body = html.createElement($ => () => html`
 const TodoRow = $ => () => html`
     <div>
         <span>${$.el}</span>
-        <button onclick=${() => $.element.remove()}>delete</button>
+        <button onclick=${() => $.remove()}>delete</button>
     </div>
 `;
 
@@ -96,8 +96,8 @@ const TodoList = $ => {
 
     return () => html`
         <div>
-            <ul>${todo.map(el => html`
-                <${TodoRow} el=${el}/>
+            <ul>${todo.map((el, i) => html`
+                <${TodoRow} el=${el} remove=${() => delete todo[i]}/>
             `)}</ul>
             <input type=text/>
             <input type=button onclick=${addTodo}/>
