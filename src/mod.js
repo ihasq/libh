@@ -9,7 +9,7 @@ const initTag = ("libh" + btoa(
 		null,
 		crypto.getRandomValues(new Uint8Array(64)),
 	)
-));
+) + "\u0020");
 
 const localSelector = (selectorTemplates, ...selectorValues) => {
 	if(
@@ -47,8 +47,11 @@ const $ = new Proxy(localSelector, {
 });
 
 const html = (htmlTemplates, ...htmlValues) => {
-
-	templateConstructor.innerHTML = htmlTemplates.join(initTag);
+	const joinedHTMLTemplates = htmlTemplates.join(initTag);
+	if(!instanceBuffer.htmlTempMap.has(joinedHTMLTemplates)) {
+		templateConstructor.innerHTML = joinedHTMLTemplates;
+		
+	}
 
 	const joinedString = htmlTemplates.join(""),
 		encodedHTMLTemp = instanceBuffer.htmlTempMap.get(joinedString);

@@ -14,24 +14,24 @@
 ```javascript
 import { html } from "libh";
 
-const Count = () => {
+const Main = () => {
 
     let count = 0,
         addCount = () => count++;
     
     return () => html`
-        <div>
+        <body>
             <p>You clicked ${count} times</p>
             <button onclick=${addCount}>
                 Click me
             </button>
-        </div>
+        </body>
     `;
 }
 
 // create HTML Element
 
-document.body.append(html.createElement(Count));
+document.body = html.createElement(Count);
 
 // define as Web Components
 
@@ -82,6 +82,13 @@ document.body = html.createElement($ => () => html`
 ```
 
 ```javascript
+const TodoRow = $ => () => html`
+    <div>
+        <span>${$.el}</span>
+        <button onclick=${() => $.element.remove()}>delete</button>
+    </div>
+`;
+
 const TodoList = $ => {
 
     let todo = [],
@@ -90,7 +97,7 @@ const TodoList = $ => {
     return () => html`
         <div>
             <ul>${todo.map(el => html`
-                <li>${el}</li>
+                <${TodoRow} el=${el}/>
             `)}</ul>
             <input type=text/>
             <input type=button onclick=${addTodo}/>

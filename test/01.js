@@ -11,7 +11,7 @@ const Counter = () => {
 	`;
 };
 
-document.body.append(html.createElement(Counter));
+document.body.append(html.createElement(Counter)); // HTMLButtonElement should be appended
 
 document.querySelector("body > button").click();
 
