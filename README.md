@@ -127,4 +127,4 @@ const C2DApp = $ => {
 
 ### Double-Function Architecture
 libh avoids using "reactive" things like ````state```` and ````hook```` to build the DOM tree.\
-Maintain state in scoped variables such as regular ````let```` or ````const```` by forcing the use of functions that return functions, or "double functions" to do.
+By forcing the use of functions that return functions, so-called **double functions**, you can use international standard scope variables such as ```let``` and ```const``` to maintain its state.
