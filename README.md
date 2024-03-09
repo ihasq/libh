@@ -14,24 +14,24 @@
 ```javascript
 import { html } from "libh";
 
-const Main = () => {
+const Count = () => {
 
     let count = 0,
         addCount = () => count++;
     
     return () => html`
-        <body>
+        <div>
             <p>You clicked ${count} times</p>
             <button onclick=${addCount}>
                 Click me
             </button>
-        </body>
+        </div>
     `;
 }
 
 // create HTML Element
 
-document.body = html.createElement(Count);
+document.body.appendChild(html.createElement(Count));
 
 // define as Web Components
 
