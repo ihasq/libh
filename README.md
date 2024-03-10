@@ -31,11 +31,7 @@ const Count = () => {
 
 // create HTML Element
 
-document.body.appendChild(html.createElement(Count));
-
-// define as Web Components
-
-customElements.define("something-reactive", html.createClass(Count));
+document.body.appendChild(new html(Count));
 ```
 
 HTML in JavaScript.\
@@ -70,7 +66,7 @@ const Counter = () => {
     `;
 }
 
-document.body = html.createElement($ => () => html`
+document.body = new html($ => () => html`
     <body>
         <p>👇 She got clicked ${$(Counter).count} times</p> <!-- pre-initialization $() returns LHPtr, contains Proxy with Functions -->
         <${Counter}/>

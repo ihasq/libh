@@ -18,7 +18,7 @@ const Parent = $ => () => html`
 	</div>
 `;
 
-document.body.append(html.createElement(Parent));
+document.body.append(new html(Parent));
 
 document.querySelector("body > div > button").click();
 
