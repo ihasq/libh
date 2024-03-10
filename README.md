@@ -43,18 +43,18 @@ less boilerplate, safe, built on top of standard html reference.
 
 [![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/edit/js-qfh42g?file=index.js)
 
-### installation (npm)
+### Installation (npm)
 ```
 npm i libh
 ```
 
-### build from source
+### Build From Source
 ```
 git clone https://github.com/ihasq/libh
 npm run build
 ```
 
-### usage
+### Usage
 ```javascript
 import { html } from "libh";
 

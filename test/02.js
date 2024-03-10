@@ -20,8 +20,8 @@ const Parent = $ => () => html`
 
 document.body.append(html.createElement(Parent));
 
-document.querySelector("body > button").click();
+document.querySelector("body > div > button").click();
 
-if(document.querySelector("body > button").textContent !== "1") {
+if(document.querySelector("body > div > span").textContent !== "1") {
 	throw Error("failed");
 }

@@ -50,7 +50,7 @@ const html = (htmlTemplates, ...htmlValues) => {
 	const joinedHTMLTemplates = htmlTemplates.join(initTag);
 	if(!instanceBuffer.htmlTempMap.has(joinedHTMLTemplates)) {
 		templateConstructor.innerHTML = joinedHTMLTemplates;
-		
+		// instanceBuffer.htmlTempMap.set(joinedHTMLTemplates, );
 	}
 
 	const joinedString = htmlTemplates.join(""),
@@ -71,11 +71,14 @@ const html = (htmlTemplates, ...htmlValues) => {
 }
 
 html.createElement = (templateFn) => {
-	templateFn($)
+	templateFn($);
+	return document.createElement("div");
 }
 
 html.createClass = (templateFn) => {
 
 }
+
+Object.freeze(html);
 
 export { html }
