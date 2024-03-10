@@ -126,5 +126,5 @@ const C2DApp = $ => {
 ```
 
 ### Double-Function Architecture
-libh avoids using "reactive" things like ````state```` and ````hook```` to build the DOM tree.\
+libh avoids using "reactive" things like ```state``` and ```hook``` to build the DOM tree.\
 By forcing the use of functions that return functions, so-called **double functions**, you can use international standard scope variables such as ```let``` and ```const``` to maintain its state.
