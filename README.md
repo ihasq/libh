@@ -31,7 +31,7 @@ const Count = () => {
 
 // create HTML Element
 
-document.body.appendChild(new html(Count));
+document.body.appendChild(html.createElement(Count));
 ```
 
 HTML in JavaScript.\
@@ -66,7 +66,7 @@ const Counter = () => {
     `;
 }
 
-document.body = new html($ => () => html`
+document.body = html.createElement($ => () => html`
     <body>
         <p>👇 She got clicked ${$(Counter).count} times</p> <!-- pre-initialization $() returns LHPtr, contains Proxy with Functions -->
         <${Counter}/>
@@ -88,7 +88,7 @@ const TodoRow = $ => () => html`
 const TodoList = $ => {
 
     let todo = [],
-        addTodo = () => todo.push($`input[type=text]`.value);
+        addTodo = async () => todo.push(await $`input[type=text]`.value); // Get real DOM value without setTimeout
 
     return () => html`
         <div>
