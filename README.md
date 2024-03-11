@@ -116,16 +116,16 @@ const ReverseStr = $ => {
     $`input[type=text]`.onkeydown = async () => {
 
         // Get Real-time DOM Value Without setTimeout()
-        revText = reverseString(await $`input[type=text]`.value);
+        revText = (await $`input[type=text]`.value).split("").reverse().join("");
 
     }
 
-	return () => html`
-		<div>
-			<input type="text"/>
-			<h2>${revText}</h2>
-		</div>
-	`;
+    return () => html`
+        <div>
+            <input type="text"/>
+            <h2>${revText}</h2>
+        </div>
+    `;
 }
 ```
 
