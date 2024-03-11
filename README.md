@@ -81,14 +81,18 @@ document.body = html.createElement($ => () => html`
 const TodoRow = $ => () => html`
     <div>
         <span>${$.el}</span>
-        <button onclick=${() => $.remove()}>delete</button>
+        <button onclick=${$.remove}>delete</button>
     </div>
 `;
 
 const TodoList = $ => {
 
     let todo = [],
-        addTodo = async () => todo.push(await $`input[type=text]`.value); // Get real DOM value without setTimeout
+        addTodo = async () => {
+            todo.push($`input[type=text]`.value);
+            $`input[type=text]`.value = "";
+        };
+    
 
     return () => html`
         <div>
@@ -99,6 +103,29 @@ const TodoList = $ => {
             <input type=button onclick=${addTodo}/>
         </div>
     `;
+}
+```
+
+```javascript
+const ReverseStr = $ => {
+
+	let revText = "",
+
+    // Pre-initialization Element Access (Setter Only)
+
+    $`input[type=text]`.onkeydown = async () => {
+
+        // Get Real-time DOM Value Without setTimeout()
+		revText = reverseString(await $`input[type=text]`.value);
+
+    }
+
+	return () => html`
+		<div>
+			<input type="text"/>
+			<h2>${revText}</h2>
+		</div>
+	`;
 }
 ```
 
