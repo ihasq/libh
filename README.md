@@ -109,14 +109,14 @@ const TodoList = $ => {
 ```javascript
 const ReverseStr = $ => {
 
-	let revText = "",
+    let revText = "",
 
     // Pre-initialization Element Access (Setter Only)
 
     $`input[type=text]`.onkeydown = async () => {
 
         // Get Real-time DOM Value Without setTimeout()
-		revText = reverseString(await $`input[type=text]`.value);
+        revText = reverseString(await $`input[type=text]`.value);
 
     }
 
