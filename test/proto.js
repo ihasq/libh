@@ -1,7 +1,5 @@
 import { html } from "../src/mod";
 
-html.configure({ asyncBinding: true });
-
 const ReactTextReverser = () => {
 	const [revText, setRevText] = useState("");
 	const inputElem = useRef();
@@ -35,4 +33,62 @@ const LibhTextReverser = $ => {
 	`;
 }
 
-document.body.append(html.createElement(LibhTextReverser));
+const ReactText = () => {
+	const inputEl = useRef(null);
+	const [text, setText] = useState("");
+	const handleClick = () => {
+		setText(inputEl.current.value);
+	};
+
+	console.log("レンダリング！！");
+
+	return (
+		<>
+			<input ref={inputEl} type="text" />
+			<button onClick={handleClick}>set text</button>
+			<p>テキスト : {text}</p>
+		</>
+	);
+};
+
+const LibhText = $ => {
+
+	let text = "";
+	const handleClick = async () => {
+		text = await $`input[type=text]`.value
+	}
+
+	$.onevent = () => {
+		console.log("レンダリング！！");
+	}
+
+	return () => html`
+		<div>
+			<input type="text" />
+			<button onclick=${handleClick}>set text</button>
+			<p>テキスト : ${text}</p>
+		</div>
+	`;
+}
+
+const Recorder = $ => {
+
+	const startRecording = async () => {
+
+		const src = await navigator.mediaDevices.getDisplayMedia({
+			video: {
+				width: 1280,
+				height: 720,
+				frameRate: 60
+			},
+			audio: false,
+		});
+
+		$`video`.srcObject = src;
+	};
+
+	return () => html`
+		<video></video>
+		<button onclick=${startRecording}>start recording</button>
+	`;
+}

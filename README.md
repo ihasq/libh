@@ -66,15 +66,27 @@ const Counter = () => {
     `;
 }
 
-document.body = html.createElement($ => () => html`
-    <body>
-        <p>👇 She got clicked ${$(Counter).count} times</p> <!-- pre-initialization $() returns LHPtr, contains Proxy with Functions -->
-        <${Counter}/>
-        <button onclick=${$(Counter).onclick}> <!-- call addCount() in Counter -->
-            Bring some more
-        </button>
-    </body>
-`);
+document.body = html.createElement($ => {
+
+    let clickedCount = 0,
+        callCounterClick;
+
+    $.onload = () => {
+        callCounterClick = $(Counter).onclick;
+    }
+
+    $(Counter).on({ click() {
+        clickedCount = $(Counter).count
+    }});
+
+    return () => html`
+        <body>
+            <p>👇 She got clicked ${clickedCount} times</p>
+            <${Counter}/>
+            <button onclick=${() => $(Counter).onclick()}>Bring some more</button>
+        </body>
+    `;
+});
 ```
 
 ```javascript
@@ -89,7 +101,7 @@ const TodoList = $ => {
 
     let todo = [],
         addTodo = async () => {
-            todo.push($`input[type=text]`.value);
+            todo.push(await $`input[type=text]`.value);
             $`input[type=text]`.value = "";
         };
     
@@ -111,13 +123,8 @@ const ReverseStr = $ => {
 
     let revText = "",
 
-    // Pre-initialization Element Access (Setter Only)
-
     $`input[type=text]`.onkeydown = async () => {
-
-        // Get Real-time DOM Value Without setTimeout()
         revText = (await $`input[type=text]`.value).split("").reverse().join("");
-
     }
 
     return () => html`
