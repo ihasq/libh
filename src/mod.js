@@ -2,6 +2,12 @@ const instanceBuffer = {
 	htmlTempMap: new Map()
 };
 
+class LHTemplate {
+	constructor() {
+
+	}
+}
+
 const templateConstructor = globalThis.document.createElement("div");
 
 const initTag = ("libh" + btoa(
@@ -81,4 +87,4 @@ html.createClass = (templateFn) => {
 
 Object.freeze(html);
 
-export { html }
+export default html;

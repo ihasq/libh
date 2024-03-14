@@ -12,7 +12,7 @@
 </div>
 
 ```javascript
-import { html } from "https://esm.sh/libh";
+import html from "https://esm.sh/libh";
 
 const Count = () => {
 
@@ -52,7 +52,7 @@ npm run build
 
 ### Usage
 ```javascript
-import { html } from "libh";
+import html from "libh";
 
 const Counter = () => {
 

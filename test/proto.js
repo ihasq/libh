@@ -1,4 +1,4 @@
-import { html } from "../src/mod";
+import html from "../src/mod";
 
 const ReactTextReverser = () => {
 	const [revText, setRevText] = useState("");
@@ -56,11 +56,11 @@ const LibhText = $ => {
 	let text = "";
 
 	$`div > button`.onclick = async () => {
-		text = await $`input[type=text]`.value
+		text = await $`input[type=text]`.value;
 	}
 
 	return () => html`
-		<div>
+		<div class=${stylex(s.redbox)}>
 			<input type="text" />
 			<button>set text</button>
 			<p>テキスト : ${text}</p>
