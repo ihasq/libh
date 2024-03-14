@@ -46,7 +46,7 @@ const $ = new Proxy(localSelector, {
 	}
 });
 
-const html = function(htmlTemplates, ...htmlValues) {
+const html = (htmlTemplates, ...htmlValues) => {
 	const joinedHTMLTemplates = htmlTemplates.join(initTag);
 	if(!instanceBuffer.htmlTempMap.has(joinedHTMLTemplates)) {
 		templateConstructor.innerHTML = joinedHTMLTemplates;

@@ -67,23 +67,11 @@ const Counter = () => {
 }
 
 document.body = html.createElement($ => {
-
-    let clickedCount = 0,
-        callCounterClick;
-
-    $.onload = () => {
-        callCounterClick = $(Counter).onclick;
-    }
-
-    $(Counter).on({ click() {
-        clickedCount = $(Counter).count
-    }});
-
     return () => html`
         <body>
-            <p>👇 She got clicked ${clickedCount} times</p>
+            <p>👇 She got clicked ${$(Counter).count} times</p>
             <${Counter}/>
-            <button onclick=${() => $(Counter).onclick()}>Bring some more</button>
+            <button onclick=${$(Counter).onclick}>Bring some more...</button>
         </body>
     `;
 });

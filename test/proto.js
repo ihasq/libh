@@ -54,21 +54,20 @@ const ReactText = () => {
 const LibhText = $ => {
 
 	let text = "";
-	const handleClick = async () => {
-		text = await $`input[type=text]`.value
-	}
 
-	$.onevent = () => {
-		console.log("レンダリング！！");
+	$`div > button`.onclick = async () => {
+		text = await $`input[type=text]`.value
 	}
 
 	return () => html`
 		<div>
 			<input type="text" />
-			<button onclick=${handleClick}>set text</button>
+			<button>set text</button>
 			<p>テキスト : ${text}</p>
 		</div>
-	`;
+	`.onchange(() => {
+		console.log("レンダリング！！"); // will executed when changed
+	});
 }
 
 const Recorder = $ => {
