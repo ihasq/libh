@@ -85,6 +85,10 @@ html.createClass = (templateFn) => {
 
 }
 
+html.map = (constructorFn) => {
+	
+}
+
 Object.freeze(html);
 
 export default html;

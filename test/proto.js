@@ -53,21 +53,23 @@ const ReactText = () => {
 
 const LibhText = $ => {
 
+	const style = stylex(s.redbox);
+
 	let text = "";
 
 	$`div > button`.onclick = async () => {
 		text = await $`input[type=text]`.value;
 	}
 
+	$.onchange = () => console.log("レンダリング！！")
+
 	return () => html`
-		<div class=${stylex(s.redbox)}>
+		<div style=${style}>
 			<input type="text" />
 			<button>set text</button>
 			<p>テキスト : ${text}</p>
 		</div>
-	`.onchange(() => {
-		console.log("レンダリング！！"); // will executed when changed
-	});
+	`;
 }
 
 const Recorder = $ => {

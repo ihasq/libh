@@ -78,6 +78,7 @@ document.body = html.createElement($ => {
 ```
 
 ```javascript
+
 const TodoRow = $ => () => html`
     <div>
         <span>${$.el}</span>
@@ -87,18 +88,18 @@ const TodoRow = $ => () => html`
 
 const TodoList = $ => {
 
-    let todo = [],
-        addTodo = async () => {
-            todo.push(await $`input[type=text]`.value);
-            $`input[type=text]`.value = "";
-        };
-    
+    const todo = html.map((el, id) => html`
+        <${TodoRow} el=${el} remove=${() => delete todo[id]}>
+    `);
+
+    const addTodo = async () => {
+        todo.push(await $`input[type=text]`.value);
+        $`input[type=text]`.value = "";
+    };
 
     return () => html`
         <div>
-            <ul>${todo.map((el, i) => html`
-                <${TodoRow} el=${el} remove=${() => delete todo[i]}/>
-            `)}</ul>
+            <ul>${todo}</ul>
             <input type=text/>
             <input type=button onclick=${addTodo}/>
         </div>
