@@ -54,10 +54,11 @@ npm run build
 ```javascript
 import html from "libh";
 
-const Counter = () => {
+const Counter = $ => {
 
-    let count = 0,
-        addCount = () => count++;
+    let { set } = $, // change into set mode
+        count = 0,
+        addCount = () => count = set(count + 1);
 
     return () => html`
         <button onclick=${addCount} count=${count}> <!-- go public as top-level attributes -->
@@ -149,6 +150,44 @@ const C2DApp = $ => {
     };
 
     return () => html`<canvas ${baseCanvas}></canvas>`;
+}
+```
+
+```javascript
+// frame mode, set mode, write mode
+
+const FrameMode = $ => {
+
+    let count = 0,
+        addCount = () => count++;
+
+    return () => html`<span>${count}</span>`;
+    // called every frame with requestAnimationFrame()
+}
+
+const SetMode = $ => {
+
+    const { set } = $; // changes into set mode
+
+    let count = 0,
+        addCount = () => count = set(count + 1); // declaring replacement of primitives
+
+    return () => html`<span>${count}</span>`;
+    // refresh when set() called, improves performance
+}
+
+const WriteMode = $ => {
+
+    const { write } = $;
+
+    let count = 0,
+        addCount = () => {
+            count++;
+            write();
+        };
+
+    return () => html`<span>${count}</span>`;
+    // refresh when write() called, improves performance
 }
 ```
 
