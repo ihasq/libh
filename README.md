@@ -173,7 +173,3 @@ const SetMode = $ => {
     // refresh when set() called, improves performance
 }
 ```
-
-### Double-Order-Function-Emforcing
-libh avoids using "reactive" things like ```state``` and ```hook``` to build the DOM tree.\
-By forcing the use of functions that return functions, so-called **DOFE** rules, you can use international standard scope variables such as ```let``` and ```const``` to maintain its state.
