@@ -161,8 +161,8 @@ const FrameMode = $ => {
     let count = 0,
         addCount = () => count++;
 
-    return () => html`<span>${count}</span>`;
-    // called every frame with requestAnimationFrame()
+    return () => html`<button onclick=${addCount}>${count}</button>`;
+    // refresh every frame with requestAnimationFrame()
 }
 
 const SetMode = $ => {
@@ -172,13 +172,13 @@ const SetMode = $ => {
     let count = 0,
         addCount = () => count = set(count + 1); // declaring replacement of primitives
 
-    return () => html`<span>${count}</span>`;
+    return () => html`<button onclick=${addCount}>${count}</button>`;
     // refresh when set() called, improves performance
 }
 
 const WriteMode = $ => {
 
-    const { write } = $;
+    const { write } = $; // changes into write mode
 
     let count = 0,
         addCount = () => {
@@ -186,7 +186,7 @@ const WriteMode = $ => {
             write();
         };
 
-    return () => html`<span>${count}</span>`;
+    return () => html`<button onclick=${addCount}>${count}</button>`;
     // refresh when write() called, improves performance
 }
 ```
