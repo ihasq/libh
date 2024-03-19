@@ -90,9 +90,9 @@ const TodoRow = ({ el, remove }) => html`
 
 const TodoList = $ => {
 
-    const [ todoInput ] = html.selector();
-
-    const todoMap = html.map((el, id) => html`
+    const
+        [ todoInput ] = html.selector();
+        todoMap = html.map((el, id) => html`
             <${TodoRow} el=${el} remove=${() => delete todoMap[id]}/>
         `),
         addTodo = () => {
@@ -153,8 +153,6 @@ const C2DApp = $ => {
 ```
 
 ```javascript
-// frame mode, set mode, write mode
-
 const FrameMode = $ => {
 
     let count = 0,
@@ -174,22 +172,8 @@ const SetMode = $ => {
     return () => html`<button onclick=${addCount}>${count}</button>`;
     // refresh when set() called, improves performance
 }
-
-const WriteMode = $ => {
-
-    const { write } = $; // changes into write mode
-
-    let count = 0,
-        addCount = () => {
-            count++;
-            write();
-        };
-
-    return () => html`<button onclick=${addCount}>${count}</button>`;
-    // refresh when write() called, improves performance
-}
 ```
 
 ### Double-Order-Function-Emforcing
 libh avoids using "reactive" things like ```state``` and ```hook``` to build the DOM tree.\
-By forcing the use of functions that return functions, so-called **DOFF** rules, you can use international standard scope variables such as ```let``` and ```const``` to maintain its state.
+By forcing the use of functions that return functions, so-called **DOFE** rules, you can use international standard scope variables such as ```let``` and ```const``` to maintain its state.
