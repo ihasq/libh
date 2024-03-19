@@ -56,9 +56,8 @@ import html from "libh";
 
 const Counter = $ => {
 
-    let { set } = $, // change into set mode
-        count = 0,
-        addCount = () => count = set(count + 1);
+    let count = 0,
+        addCount = () => count++;
 
     return () => html`
         <button onclick=${addCount} count=${count}> <!-- go public as top-level attributes -->
