@@ -67,23 +67,26 @@ const Counter = () => {
 }
 
 document.body = html.createElement($ => {
+
+    const [ counterRef ] = html.selector();
+
     return () => html`
         <body>
-            <p>👇 She got clicked ${$(Counter).count} times</p>
-            <${Counter}/>
-            <button onclick=${$(Counter).onclick}>Bring some more...</button>
+            <p>👇 She got clicked ${counterRef.count} times</p>
+            <${Counter} ${counterRef}/>
+            <button onclick=${counterRef.onclick}>Bring some more...</button>
         </body>
     `;
 });
 ```
 
 ```javascript
-const TodoRow = () => ({ el, remove }) => html`
+const TodoRow = ({ el, remove }) => html`
     <div>
         <span>${el}</span>
         <button onclick=${remove}>delete</button>
     </div>
-`;
+`; // this single order function does not have its own scoped values, just like lit-html does
 
 const TodoList = $ => {
 
@@ -149,6 +152,6 @@ const C2DApp = $ => {
 }
 ```
 
-### Double-Function Architecture
+### Double-Order-Function-Emforcing
 libh avoids using "reactive" things like ```state``` and ```hook``` to build the DOM tree.\
-By forcing the use of functions that return functions, so-called **double functions**, you can use international standard scope variables such as ```let``` and ```const``` to maintain its state.
+By forcing the use of functions that return functions, so-called **DOFF** rules, you can use international standard scope variables such as ```let``` and ```const``` to maintain its state.
