@@ -1,17 +1,19 @@
 import html from "../src/mod.js";
 
-const Counter = () => {
+const Counter = $ => {
+
+	const { set } = $;
 
 	let count = 0;
 
 	return () => html`
-		<button onclick=${() => count++}>
+		<button onclick=${() => set(count++)}>
 			${count}
 		</button>
 	`;
 };
 
-document.body.append(html.createElement(Counter)); // HTMLButtonElement should be appended
+document.body.appendChild(html`<${Counter}/>`); // HTMLButtonElement should be appended
 
 document.querySelector("body > button").click();
 

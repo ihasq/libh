@@ -31,7 +31,11 @@ const Count = () => {
 
 // create HTML Element
 
-document.body.appendChild(html.createElement(Count));
+document.body.appendChild(html.element(Count));
+
+// or define as Web Components
+
+customElements.define("counter-thing", html.class(Count));
 ```
 
 HTML in JavaScript.\

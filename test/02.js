@@ -1,4 +1,4 @@
-import { html } from "../src/mod.js";
+import html from "../src/mod.js";
 
 const Child = () => {
 
@@ -18,7 +18,7 @@ const Parent = $ => () => html`
 	</div>
 `;
 
-document.body.append(new html(Parent));
+document.body.append(html`<${Parent}/>`);
 
 document.querySelector("body > div > button").click();
 

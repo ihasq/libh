@@ -90,6 +90,9 @@ const Recorder = $ => {
 
 	return () => html`
 		<video></video>
-		<button onclick=${startRecording}>start recording</button>
+		<button @click=${startRecording}>start recording</button>
 	`;
 }
+
+
+document.body.appendChild(html`<${SomeTemplate}/>`); // ok

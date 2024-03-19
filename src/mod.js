@@ -1,4 +1,34 @@
 const htmlTempMap = new Map();
+const anchorMap = new Map();
+
+function createLHAnchor() {
+	let writeMode = "frame";
+	return [
+		{
+			get set() {
+				writeMode = "set";
+				return function() {
+
+				}
+			}
+		},
+
+	]
+}
+
+function createLHInstance(templateFn, attributes) {
+	
+}
+
+class LHInstance {
+	constructor(templateFn, attributes) {
+		templateFn(createLHAnchor()[0])
+	}
+}
+
+for(const anchorIndex in anchorList) {
+	anchorMap.set(anchorIndex, anchorList[anchorIndex])
+}
 
 class LHTemplate {
 	constructor() {
@@ -6,16 +36,11 @@ class LHTemplate {
 	}
 }
 
-class LHIdentifier {
+class LHSelector {
 	constructor() {
 
 	}
 }
-
-const idProxy = new Proxy([], {
-	get: () => new LHIdentifier(),
-
-})
 
 const templateConstructor = globalThis.document.createElement("div");
 
@@ -85,20 +110,17 @@ const html = (htmlTemplates, ...htmlValues) => {
 
 }
 
-html.createElement = (templateFn) => {
-	templateFn($);
-	return document.createElement("div");
-}
-
-html.createClass = (templateFn) => {
+html.class = function(templateFn) {
 
 }
 
-html.map = (constructorFn) => {
+html.map = function(constructorFn) {
 	
 };
 
-html.id = () => idProxy;
+html.selector = function() {
+
+};
 
 Object.freeze(html);
 
