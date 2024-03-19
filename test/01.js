@@ -1,4 +1,4 @@
-import { html } from "../src/mod.js";
+import html from "../src/mod.js";
 
 const Counter = () => {
 

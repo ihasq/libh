@@ -1,12 +1,21 @@
-const instanceBuffer = {
-	htmlTempMap: new Map()
-};
+const htmlTempMap = new Map();
 
 class LHTemplate {
 	constructor() {
 
 	}
 }
+
+class LHIdentifier {
+	constructor() {
+
+	}
+}
+
+const idProxy = new Proxy([], {
+	get: () => new LHIdentifier(),
+
+})
 
 const templateConstructor = globalThis.document.createElement("div");
 
@@ -54,13 +63,13 @@ const $ = new Proxy(localSelector, {
 
 const html = (htmlTemplates, ...htmlValues) => {
 	const joinedHTMLTemplates = htmlTemplates.join(initTag);
-	if(!instanceBuffer.htmlTempMap.has(joinedHTMLTemplates)) {
+	if(!htmlTempMap.has(joinedHTMLTemplates)) {
 		templateConstructor.innerHTML = joinedHTMLTemplates;
 		// instanceBuffer.htmlTempMap.set(joinedHTMLTemplates, );
 	}
 
 	const joinedString = htmlTemplates.join(""),
-		encodedHTMLTemp = instanceBuffer.htmlTempMap.get(joinedString);
+		encodedHTMLTemp = htmlTempMap.get(joinedString);
 
 	if(encodedHTMLTemp === undefined) {
 		// initialization start
@@ -87,7 +96,9 @@ html.createClass = (templateFn) => {
 
 html.map = (constructorFn) => {
 	
-}
+};
+
+html.id = () => idProxy;
 
 Object.freeze(html);
 

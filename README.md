@@ -78,29 +78,29 @@ document.body = html.createElement($ => {
 ```
 
 ```javascript
-
-const TodoRow = $ => () => html`
+const TodoRow = () => ({ el, remove }) => html`
     <div>
-        <span>${$.el}</span>
-        <button onclick=${$.remove}>delete</button>
+        <span>${el}</span>
+        <button onclick=${remove}>delete</button>
     </div>
 `;
 
 const TodoList = $ => {
 
-    const todo = html.map((el, id) => html`
-        <${TodoRow} el=${el} remove=${() => delete todo[id]}>
-    `);
+    const [ todoInput ] = html.selector();
 
-    const addTodo = async () => {
-        todo.push(await $`input[type=text]`.value);
-        $`input[type=text]`.value = "";
-    };
+    const todoMap = html.map((el, id) => html`
+            <${TodoRow} el=${el} remove=${() => delete todoMap[id]}/>
+        `),
+        addTodo = () => {
+            todoMap.push(todoInput.value);
+            todoInput.value = "";
+        };
 
     return () => html`
         <div>
-            <ul>${todo}</ul>
-            <input type=text/>
+            <ul>${todoMap}</ul>
+            <input type=text ${todoInput}/>
             <input type=button onclick=${addTodo}/>
         </div>
     `;
@@ -110,15 +110,18 @@ const TodoList = $ => {
 ```javascript
 const ReverseStr = $ => {
 
+    const [ baseText ] = html.selector();
+
     let revText = "",
 
-    $`input[type=text]`.onkeydown = async () => {
-        revText = (await $`input[type=text]`.value).split("").reverse().join("");
-    }
+    baseText.onkeydown = async () => {
+        revText = (baseText.value).split("").reverse().join("");
+    };
+    // async function called after refreshing DOM
 
     return () => html`
         <div>
-            <input type="text"/>
+            <input type="text" ${baseText}/>
             <h2>${revText}</h2>
         </div>
     `;
@@ -128,19 +131,21 @@ const ReverseStr = $ => {
 ```javascript
 const C2DApp = $ => {
 
+    const [ baseCanvas ] = html.selector();
+
     let ctx = undefined;
 
-    $.onload = () => {
+    baseCanvas.onload = () => {
 
-        $`canvas`.onmousedown = event => {
+        baseCanvas.onmousedown = event => {
 
         };
 
-        ctx = $`canvas`.element.getContext("2d");
+        ctx = baseCanvas.getContext("2d");
         // ...
     };
 
-    return () => html`<canvas></canvas>`;
+    return () => html`<canvas ${baseCanvas}></canvas>`;
 }
 ```
 
