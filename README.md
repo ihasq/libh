@@ -29,13 +29,13 @@ const Count = () => {
     `;
 }
 
-// create HTML Element
+// writing into HTML Document
 
 html.write(document.body, Count);
 
 // or define as Web Components
 
-customElements.define("counter-thing", html.class(Count));
+html.define("counter-thing", Count);
 ```
 
 HTML in JavaScript.\
@@ -70,7 +70,7 @@ const Counter = $ => {
     `;
 }
 
-document.body = html.createElement($ => () => html`
+html.write(document.body, $ => () => html`
     <body>
         <p>👇 She got clicked ${$(Counter).count} times</p>
         <${Counter} ${counterRef}/>
