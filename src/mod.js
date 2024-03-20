@@ -4,14 +4,7 @@ const anchorMap = new Map();
 function createLHAnchor() {
 	let writeMode = "frame";
 	return [
-		{
-			get set() {
-				writeMode = "set";
-				return function() {
-
-				}
-			}
-		},
+		{},
 
 	]
 }
@@ -119,6 +112,10 @@ html.map = function(constructorFn) {
 };
 
 html.selector = function() {
+
+};
+
+html.use = function(anchor) {
 
 };
 

@@ -31,7 +31,7 @@ const Count = () => {
 
 // create HTML Element
 
-document.body.appendChild(html.element(Count));
+html.write(document.body, Count);
 
 // or define as Web Components
 
@@ -70,18 +70,13 @@ const Counter = $ => {
     `;
 }
 
-document.body = html.createElement($ => {
-
-    const [ counterRef ] = html.selector();
-
-    return () => html`
-        <body>
-            <p>👇 She got clicked ${counterRef.count} times</p>
-            <${Counter} ${counterRef}/>
-            <button onclick=${counterRef.onclick}>Bring some more...</button>
-        </body>
-    `;
-});
+document.body = html.createElement($ => () => html`
+    <body>
+        <p>👇 She got clicked ${$(Counter).count} times</p>
+        <${Counter} ${counterRef}/>
+        <button onclick=${$(Counter).onclick}>Bring some more...</button>
+    </body>
+`;);
 ```
 
 ```javascript
@@ -95,19 +90,18 @@ const TodoRow = ({ el, remove }) => html`
 const TodoList = $ => {
 
     const
-        [ todoInput ] = html.selector();
         todoMap = html.map((el, id) => html`
             <${TodoRow} el=${el} remove=${() => delete todoMap[id]}/>
         `),
-        addTodo = () => {
-            todoMap.push(todoInput.value);
-            todoInput.value = "";
+        addTodo = async () => {
+            todoMap.push((await $`input[type=text]`).value);
+            $`input[type=text]`.value = "";
         };
 
     return () => html`
         <div>
             <ul>${todoMap}</ul>
-            <input type=text ${todoInput}/>
+            <input type=text/>
             <input type=button onclick=${addTodo}/>
         </div>
     `;
@@ -117,18 +111,16 @@ const TodoList = $ => {
 ```javascript
 const ReverseStr = $ => {
 
-    const [ baseText ] = html.selector();
-
     let revText = "",
 
-    baseText.onkeydown = async () => {
-        revText = (baseText.value).split("").reverse().join("");
+    $`input[type=text]`.onkeydown = async () => {
+        revText = (await $`input[type=text]`).value.split("").reverse().join("");
+        // get reference from rendered DOM
     };
-    // async function called after refreshing DOM
 
     return () => html`
         <div>
-            <input type="text" ${baseText}/>
+            <input type="text" />
             <h2>${revText}</h2>
         </div>
     `;
@@ -138,21 +130,19 @@ const ReverseStr = $ => {
 ```javascript
 const C2DApp = $ => {
 
-    const [ baseCanvas ] = html.selector();
-
     let ctx = undefined;
 
-    baseCanvas.onload = () => {
+    $`canvas`.onload = () => {
 
-        baseCanvas.onmousedown = event => {
+        $`canvas`.onmousedown = event => {
 
         };
 
-        ctx = baseCanvas.getContext("2d");
+        ctx = $`canvas`.getContext("2d");
         // ...
     };
 
-    return () => html`<canvas ${baseCanvas}></canvas>`;
+    return () => html`<canvas></canvas>`;
 }
 ```
 
@@ -168,10 +158,10 @@ const FrameMode = $ => {
 
 const SetMode = $ => {
 
-    const { set } = $; // changes into set mode
-
+    const { set } = html.use($)
+    
     let count = 0,
-        addCount = () => count = set(count + 1); // declaring replacement of primitives
+        addCount = () => set(count++); // declaring replacement of primitives
 
     return () => html`<button onclick=${addCount}>${count}</button>`;
     // refresh when set() called, improves performance

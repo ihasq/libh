@@ -2,15 +2,20 @@ import html from "../src/mod.js";
 
 const Counter = $ => {
 
-	const { set } = $;
+	const { set } = html.use($);
 
 	let count = 0;
 
-	return () => html`
-		<button onclick=${() => set(count++)}>
-			${count}
-		</button>
-	`;
+	return () => {
+
+		console.log("rendering!");
+
+		return html`
+			<button onclick=${() => set(count++)}>
+				${count}
+			</button>
+		`
+	};
 };
 
 document.body.appendChild(html`<${Counter}/>`); // HTMLButtonElement should be appended
