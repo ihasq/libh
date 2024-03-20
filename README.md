@@ -12,7 +12,7 @@
 </div>
 
 ```javascript
-import html from "https://esm.sh/libh";
+import { html, write, define } from "https://esm.sh/libh";
 
 const Count = () => {
 
@@ -31,11 +31,11 @@ const Count = () => {
 
 // writing into HTML Document
 
-html.write(Count, document.body);
+write(Count, document.body);
 
 // or define as Web Components
 
-html.define(Count, "counter-thing");
+define(Count, "counter-thing");
 ```
 
 HTML in JavaScript.\
@@ -56,7 +56,7 @@ npm run build
 
 ### Usage
 ```javascript
-import html from "libh";
+import { html, write } from "libh";
 
 const Counter = $ => {
 
@@ -70,7 +70,7 @@ const Counter = $ => {
     `;
 }
 
-html.write($ => () => html`
+write($ => () => html`
     <body>
         <p>👇 She got clicked ${$(Counter).count} times</p>
         <${Counter}/>
@@ -80,6 +80,8 @@ html.write($ => () => html`
 ```
 
 ```javascript
+import { html, map } from "libh";
+
 const TodoRow = ({ el, remove }) => html`
     <div>
         <span>${el}</span>
@@ -90,7 +92,7 @@ const TodoRow = ({ el, remove }) => html`
 const TodoList = $ => {
 
     const
-        todoMap = html.map((el, id) => html`
+        todoMap = map((el, id) => html`
             <${TodoRow} el=${el} remove=${() => delete todoMap[id]}/>
         `),
         addTodo = async () => {
@@ -147,6 +149,8 @@ const C2DApp = $ => {
 ```
 
 ```javascript
+import { html, use } from "libh";
+
 const FrameMode = $ => {
 
     let count = 0,
@@ -158,7 +162,7 @@ const FrameMode = $ => {
 
 const SetMode = $ => {
 
-    const { set } = html.use($)
+    const { set } = use($);
     
     let count = 0,
         addCount = () => set(count++); // declaring replacement of primitives
