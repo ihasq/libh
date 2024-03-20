@@ -31,14 +31,14 @@ const Count = () => {
 
 // writing into HTML Document
 
-libh.write(Count, document.body);
+libh.write({ "body > #counter": Count });
 
 // or define as Web Components
 
-libh.define(Count, "counter-thing");
+libh.define({ "counter-thing": Count });
 
 // ...or create HTTP server
-libh.serve(Count);
+libh.serve({ "/": Count });
 ```
 
 HTML in JavaScript.\
