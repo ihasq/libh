@@ -31,11 +31,11 @@ const Count = () => {
 
 // writing into HTML Document
 
-html.write(document.body, Count);
+html.write(Count, document.body);
 
 // or define as Web Components
 
-html.define("counter-thing", Count);
+html.define(Count, "counter-thing");
 ```
 
 HTML in JavaScript.\
@@ -70,13 +70,13 @@ const Counter = $ => {
     `;
 }
 
-html.write(document.body, $ => () => html`
+html.write($ => () => html`
     <body>
         <p>👇 She got clicked ${$(Counter).count} times</p>
         <${Counter} ${counterRef}/>
         <button @click=${$(Counter).onclick}>Bring some more...</button>
     </body>
-`;);
+`, document.body);
 ```
 
 ```javascript
