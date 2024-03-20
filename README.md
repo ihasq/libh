@@ -12,14 +12,14 @@
 </div>
 
 ```javascript
-import { html, write, define } from "https://esm.sh/libh";
+import { write, define } from "https://esm.sh/libh";
 
 const Count = () => {
 
     let count = 0,
         addCount = () => count++;
     
-    return () => html`
+    return h => h`
         <div>
             <p>You clicked ${count} times</p>
             <button @click=${addCount}>
@@ -56,21 +56,21 @@ npm run build
 
 ### Usage
 ```javascript
-import { html, write } from "libh";
+import { write } from "libh";
 
 const Counter = $ => {
 
     let count = 0,
         addCount = () => count++;
 
-    return () => html`
+    return h => h`
         <button .onclick=${addCount} .count=${count}> <!-- go public as binding attributes -->
             I got clicked ${count} times!
         </button>
     `;
 }
 
-write($ => () => html`
+write($ => h => h`
     <body>
         <p>👇 She got clicked ${$(Counter).count} times</p>
         <${Counter}/>
@@ -80,9 +80,9 @@ write($ => () => html`
 ```
 
 ```javascript
-import { html, map } from "libh";
+import { map } from "libh";
 
-const TodoRow = ({ el, remove }) => html`
+const TodoRow = ({ el, remove }) => h => h`
     <div>
         <span>${el}</span>
         <button @click=${remove}>delete</button>
@@ -92,7 +92,7 @@ const TodoRow = ({ el, remove }) => html`
 const TodoList = $ => {
 
     const
-        todoMap = map((el, id) => html`
+        todoMap = map((el, id, h) => h`
             <${TodoRow} el=${el} remove=${() => delete todoMap[id]}/>
         `),
         addTodo = async () => {
@@ -100,7 +100,7 @@ const TodoList = $ => {
             $`input[type=text]`.value = "";
         };
 
-    return () => html`
+    return h => h`
         <div>
             <ul>${todoMap}</ul>
             <input type=text/>
@@ -120,7 +120,7 @@ const ReverseStr = $ => {
         // get reference from rendered DOM
     };
 
-    return () => html`
+    return h => h`
         <div>
             <input type="text" />
             <h2>${revText}</h2>
@@ -144,7 +144,7 @@ const C2DApp = $ => {
         // ...
     };
 
-    return () => html`<canvas></canvas>`;
+    return h => h`<canvas></canvas>`;
 }
 ```
 
@@ -156,18 +156,18 @@ const FrameMode = $ => {
     let count = 0,
         addCount = () => count++;
 
-    return () => html`<button @click=${addCount}>${count}</button>`;
+    return h => h`<button @click=${addCount}>${count}</button>`;
     // refresh every frame with requestAnimationFrame()
 }
 
-const SetMode = $ => {
+const SetMode = ({ html, $ }) => {
 
     const { set } = use($);
     
     let count = 0,
         addCount = () => set(count++); // declaring replacement of primitives
 
-    return () => html`<button @click=${addCount}>${count}</button>`;
+    return h => h`<button @click=${addCount}>${count}</button>`;
     // refresh when set() called, improves performance
 }
 ```

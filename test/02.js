@@ -1,24 +1,24 @@
-import html from "../src/mod.js";
+import write from "../src/mod.js";
 
-const Child = () => {
+const Child = $ => {
 
 	let count = 0;
 
-	return () => html`
+	return h => h`
 		<button onclick=${() => count++} count=${count}>
 			${count}
 		</button>
 	`;
 };
 
-const Parent = $ => () => html`
+const Parent = $ => h => h`
 	<div>
 		<${Child}/>
 		<span>${$(Child).count}</span>
 	</div>
 `;
 
-document.body.append(html`<${Parent}/>`);
+write(Parent, document.body)
 
 document.querySelector("body > div > button").click();
 
