@@ -12,7 +12,7 @@
 </div>
 
 ```javascript
-import { write, define } from "https://esm.sh/libh";
+import * as libh from "https://esm.sh/libh";
 
 const Count = () => {
 
@@ -31,11 +31,14 @@ const Count = () => {
 
 // writing into HTML Document
 
-write(Count, document.body);
+libh.write(Count, document.body);
 
 // or define as Web Components
 
-define(Count, "counter-thing");
+libh.define(Count, "counter-thing");
+
+// ...or create HTTP server
+libh.serve(Count);
 ```
 
 HTML in JavaScript.\
@@ -58,7 +61,7 @@ npm run build
 ```javascript
 import { write } from "libh";
 
-const Counter = $ => {
+const Counter = () => {
 
     let count = 0,
         addCount = () => count++;
@@ -70,19 +73,21 @@ const Counter = $ => {
     `;
 }
 
-write($ => h => h`
-    <body>
-        <p>👇 She got clicked ${$(Counter).count} times</p>
-        <${Counter}/>
-        <button @click=${$(Counter).onclick}>Bring some more...</button>
-    </body>
-`, document.body);
+const Main = $ => {
+    return h => h`
+        <body>
+            <p>👇 She got clicked ${$(Counter).count} times</p>
+            <${Counter}/>
+            <button @click=${$(Counter).onclick}>Bring some more...</button>
+        </body>
+    `;
+}
+
+write(Main, document.body);
 ```
 
 ```javascript
-import { map } from "libh";
-
-const TodoRow = ({ el, remove }) => h => h`
+const TodoRow = ({ at: { el, remove } }) => h => h`
     <div>
         <span>${el}</span>
         <button @click=${remove}>delete</button>
@@ -92,8 +97,9 @@ const TodoRow = ({ el, remove }) => h => h`
 const TodoList = $ => {
 
     const
-        todoMap = map((el, id, h) => h`
-            <${TodoRow} el=${el} remove=${() => delete todoMap[id]}/>
+        { map } = $,
+        todoMap = map((el, id) => h => h`
+            <${TodoRow} .el=${el} .remove=${() => delete todoMap[id]}/>
         `),
         addTodo = async () => {
             todoMap.push((await $`input[type=text]`).value);
@@ -132,25 +138,21 @@ const ReverseStr = $ => {
 ```javascript
 const C2DApp = $ => {
 
-    let ctx = undefined;
+    const canvasOnload = ({ target: canvas }) => {
 
-    $`canvas`.onload = () => {
-
-        $`canvas`.onmousedown = event => {
+        canvas.onmousedown = event => {
 
         };
 
-        ctx = $`canvas`.getContext("2d");
+        const ctx = canvas.getContext("2d");
         // ...
     };
 
-    return h => h`<canvas></canvas>`;
+    return h => h`<canvas @load=${canvasOnload}></canvas>`;
 }
 ```
 
 ```javascript
-import { html, use } from "libh";
-
 const FrameMode = $ => {
 
     let count = 0,
@@ -160,9 +162,9 @@ const FrameMode = $ => {
     // refresh every frame with requestAnimationFrame()
 }
 
-const SetMode = ({ html, $ }) => {
+const SetMode = $ => {
 
-    const { set } = use($);
+    const { set } = $;
     
     let count = 0,
         addCount = () => set(count++); // declaring replacement of primitives
