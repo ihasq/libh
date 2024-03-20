@@ -22,7 +22,7 @@ const Count = () => {
     return () => html`
         <div>
             <p>You clicked ${count} times</p>
-            <button onclick=${addCount}>
+            <button @click=${addCount}>
                 Click me
             </button>
         </div>
@@ -64,7 +64,7 @@ const Counter = $ => {
         addCount = () => count++;
 
     return () => html`
-        <button onclick=${addCount} count=${count}> <!-- go public as top-level attributes -->
+        <button @click=${addCount} count=${count}> <!-- go public as top-level attributes -->
             I got clicked ${count} times!
         </button>
     `;
@@ -74,7 +74,7 @@ document.body = html.createElement($ => () => html`
     <body>
         <p>👇 She got clicked ${$(Counter).count} times</p>
         <${Counter} ${counterRef}/>
-        <button onclick=${$(Counter).onclick}>Bring some more...</button>
+        <button @click=${$(Counter).onclick}>Bring some more...</button>
     </body>
 `;);
 ```
@@ -102,7 +102,7 @@ const TodoList = $ => {
         <div>
             <ul>${todoMap}</ul>
             <input type=text/>
-            <input type=button onclick=${addTodo}/>
+            <input type=button @click=${addTodo}/>
         </div>
     `;
 }
@@ -152,7 +152,7 @@ const FrameMode = $ => {
     let count = 0,
         addCount = () => count++;
 
-    return () => html`<button onclick=${addCount}>${count}</button>`;
+    return () => html`<button @click=${addCount}>${count}</button>`;
     // refresh every frame with requestAnimationFrame()
 }
 
@@ -163,7 +163,7 @@ const SetMode = $ => {
     let count = 0,
         addCount = () => set(count++); // declaring replacement of primitives
 
-    return () => html`<button onclick=${addCount}>${count}</button>`;
+    return () => html`<button @click=${addCount}>${count}</button>`;
     // refresh when set() called, improves performance
 }
 ```
