@@ -64,7 +64,7 @@ const Counter = $ => {
         addCount = () => count++;
 
     return () => html`
-        <button @click=${addCount} count=${count}> <!-- go public as top-level attributes -->
+        <button .onclick=${addCount} .count=${count}> <!-- go public as binding attributes -->
             I got clicked ${count} times!
         </button>
     `;
@@ -73,7 +73,7 @@ const Counter = $ => {
 html.write($ => () => html`
     <body>
         <p>👇 She got clicked ${$(Counter).count} times</p>
-        <${Counter} ${counterRef}/>
+        <${Counter}/>
         <button @click=${$(Counter).onclick}>Bring some more...</button>
     </body>
 `, document.body);
@@ -83,7 +83,7 @@ html.write($ => () => html`
 const TodoRow = ({ el, remove }) => html`
     <div>
         <span>${el}</span>
-        <button onclick=${remove}>delete</button>
+        <button @click=${remove}>delete</button>
     </div>
 `; // this single order function does not have its own scoped values, just like lit-html does
 
