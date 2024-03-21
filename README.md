@@ -16,7 +16,7 @@ const Count = () => {
 
     let count = 0;
     
-    return h => h`
+    return html => html`
         <div *color=red>
             <p>You clicked ${count} times</p>
             <button @click=${() => count++}>
@@ -28,7 +28,7 @@ const Count = () => {
 
 const { write, define, serve } = await import("https://esm.sh/libh");
 
-// Write Directly Into The DOM Or An Emulator
+// Write Into The DOM Or An Emulator Directly
 
 write(document.body, Count);
 
@@ -36,7 +36,7 @@ write(document.body, Count);
 
 define("counter-thing", Count);
 
-// Build SSG Pipeline
+// Build SSG Pipeline On Server-side Runtime
 
 serve("/", Count);
 ```
@@ -46,13 +46,20 @@ less boilerplate, safe, built on top of standard html reference.
 
 [![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/edit/js-qfh42g?file=index.js)
 
-### Installation (cdn)
+### Installation
+
+#### CDN (Browser, Deno)
 ```javascript
-const libh = await import("https://esm.sh/libh");
+const libh = await import("https://esm.sh/libh"); // recommended
+```
+
+#### NPM (Node.js)
+```sh
+npm i libh
 ```
 
 ### Build From Source
-```
+```sh
 git clone https://github.com/ihasq/libh
 deno task build
 ```
@@ -60,28 +67,28 @@ deno task build
 ### Smart Attributes
 ```javascript
 // text
-h`<label>${text}</label>`;
+html`<label>${text}</label>`;
 
 // attribute
-h`<form id=${formId}/>`;
+html`<form id=${formId}/>`;
 
 // event handler
-h`<button @click=${() => alert("clicked")}/>`;
+html`<button @click=${() => alert("clicked")}/>`;
 
 // style
-h`<h1 *color=${titleColor}></h1>`;
+html`<h1 *color=${titleColor}></h1>`;
 
 // property
-h`<input type="text" .value=${value}/>`;
+html`<input type="text" .value=${value}/>`;
 
 // boolean
-h`<input type="checkbox" ?checked=${isChecked}/>`;
+html`<input type="checkbox" ?checked=${isChecked}/>`;
 
 // component
-h`<${DefinedComponent} my-attribute=1/>`;
+html`<${DefinedComponent} my-attribute=1/>`;
 
 // context
-h`<${DefinedContext}>
+html`<${DefinedContext}>
     <label></label>
 </${DefinedContext}>`
 
@@ -92,26 +99,26 @@ const linkTo = targetURL => ({
     rel: "noopener noreferrer"
 })
 
-h`<a ${linkTo}="https://ihasq.com"/>`;
+html`<a ${linkTo}="https://ihasq.com"/>`;
 ```
 
 ### Usage
 ```javascript
-import { createElement } from "libh";
+import { write } from "libh";
 
 const Counter = () => {
 
     let count = 0;
 
-    return h => h`
-        <button @click=${() => count++} .count=${count}> <!-- go public as binding attributes -->
+    return html => html`
+        <button @click=${() => count++} .count=${count}>
             I got clicked ${count} times!
         </button>
     `;
 }
 
 const Main = $ => {
-    return h => h`
+    return html => html`
         <body>
             <p>👇 She got clicked ${$(Counter).count} times</p>
             <${Counter}/>
@@ -124,21 +131,21 @@ write(document.body, Count)
 ```
 
 ```javascript
-const TodoRow = ({ at: { el, remove } }) => h => h`
+const TodoRow = ({ at: { el, remove } }) => html => html`
     <div>
         <span>${el}</span>
         <button @click=${remove}>delete</button>
     </div>
-`; // this single order function does not have its own scoped values, just like lit-html does
+`;
 
 const TodoList = $ => {
 
-    const todoMap = $.map((el, id) => h => h`
+    const todoMap = $.map((el, id) => html => html`
         <${TodoRow} .el=${el} .remove=${() => delete todoMap[id]}/>
     `);
 
-    return h => h`
-        <div>
+    return html => html`
+        <div *background-color=${app}>
             <ul>${todoMap}</ul>
             <input type=text/>
             <input type=button @click=${async () => {
@@ -155,7 +162,7 @@ const ReverseStr = $ => {
 
     let revText = "";
 
-    return h => h`
+    return html => html`
         <div>
             <input type="text" @keydown=${async () => {
                 revText = (await $`input[type=text]`).value.split("").reverse().join("");
@@ -175,7 +182,7 @@ const C2DApp = $ => {
         // ...
     };
 
-    return h => h`
+    return html => html`
         <canvas @load=${canvasOnload}></canvas>
     `;
 }
@@ -186,7 +193,7 @@ const FrameMode = $ => {
 
     let count = 0;
 
-    return h => h`
+    return html => html`
         <button @click=${() => count++}>${count}</button>
     `;
     // refresh every frame with requestAnimationFrame()
@@ -198,7 +205,7 @@ const SetMode = $ => {
     
     let count = 0;
 
-    return h => h`
+    return html => html`
         <button @click=${() => set(count++)}>${count}</button>
     `;
     // refresh when set() called, which reduces unchanged calls
