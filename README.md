@@ -84,6 +84,10 @@ html`<input type="text" .value=${value}/>`;
 // boolean
 html`<input type="checkbox" ?checked=${isChecked}/>`;
 
+// identifier (id attribute shorthand)
+html`<input #checkboxRef type=checkbox value=true/>`;
+$`#checkboxRef`.value // true
+
 // component
 html`<${DefinedComponent} my-attribute=1/>`;
 

@@ -16,17 +16,19 @@ const ReactTextReverser = () => {
 }
 
 const LibhTextReverser = $ => {
+	const { set } = $;
+	let revText = "";
 
-	let revText = "",
-		revStrOp = async () => {
-			revText = reverseString(await $`input[type=text]`.value)
-		};
+	const handleClick = async () => {
+		revText = reverseString((await $`#basetext`).value);
+		set();
+	};
 
-	return html => html`
+	return h => h`
 		<div>
-			<input type="text"/>
-			<button onclick=${revStrOp}>Reverse Me!</button>
-			<h2>${revText}</h2>
+			<input id=basetext type=text/>
+			<button @click=${handleClick}>Reverse Me!</button>
+			${revText && h`<h2>${revText}</h2>`}
 		</div>
 	`;
 }
@@ -34,43 +36,38 @@ const LibhTextReverser = $ => {
 const ReactText = () => {
 	const inputEl = useRef(null);
 	const [text, setText] = useState("");
-	const handleClick = () => {
-		setText(inputEl.current.value);
-	};
 
 	console.log("レンダリング！！");
 
 	return (
 		<>
 			<input ref={inputEl} type="text" />
-			<button onClick={handleClick}>set text</button>
+			<button onClick={() => setText(inputEl.current.value)}>set text</button>
 			<p>テキスト : {text}</p>
 		</>
 	);
 };
 
 const LibhText = $ => {
-
-	const style = stylex(s.redbox);
-
+	const { set } = $;
 	let text = "";
 
-	$`div > button`.onclick = async () => {
-		text = await $`input[type=text]`.value;
+	return h => {
+		console.log("レンダリング！！");
+
+		return h`
+			<div>
+				<input #inputEl type="text" />
+				<button @click=${async () => set(text = (await $`#inputEl`).value)}>set text</button>
+				<p>テキスト : ${text}</p>
+			</div>
+		`;
 	}
-
-	$.onchange = () => console.log("レンダリング！！")
-
-	return html => html`
-		<div style=${style}>
-			<input type="text" />
-			<button>set text</button>
-			<p>テキスト : ${text}</p>
-		</div>
-	`;
 }
 
 const Recorder = $ => {
+
+	let videoSrc = null;
 
 	const startRecording = async () => {
 
@@ -83,11 +80,11 @@ const Recorder = $ => {
 			audio: false,
 		});
 
-		$`video`.srcObject = src;
+		videoSrc = src;
 	};
 
-	return html => html`
-		<video></video>
+	return h => h`
+		<video .srcObject=${videoSrc}></video>
 		<button @click=${startRecording}>start recording</button>
 	`;
 }
