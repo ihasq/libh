@@ -131,7 +131,7 @@ write(document.body, Count)
 ```
 
 ```javascript
-const TodoRow = ({ at: { el, remove } }) => html => html`
+const TodoRow = ({ el, remove }) => html => html`
     <div>
         <span>${el}</span>
         <button @click=${remove}>delete</button>
@@ -145,7 +145,11 @@ const TodoList = $ => {
     `);
 
     return html => html`
-        <div *background-color=${app}>
+        <div
+            *background-color=#${
+                Math.floor((Math.sin(Date.now()) + 1) / 2 * 0xffffff).toString(16).padStart(6, "0")}
+            *color=white
+        >
             <ul>${todoMap}</ul>
             <input type=text/>
             <input type=button @click=${async () => {
