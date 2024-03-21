@@ -14,13 +14,12 @@
 ```javascript
 const Count = () => {
 
-    let count = 0,
-        addCount = () => count++;
+    let count = 0;
     
     return h => h`
         <div>
             <p>You clicked ${count} times</p>
-            <button @click=${addCount}>
+            <button @click=${() => count++}>
                 Click me
             </button>
         </div>
@@ -64,7 +63,7 @@ deno task build
 
 ### Usage
 ```javascript
-const { write } = await import("libh");
+import { write } from "libh";
 
 const Counter = () => {
 
@@ -72,7 +71,7 @@ const Counter = () => {
         addCount = () => count++;
 
     return h => h`
-        <button .onclick=${addCount} .count=${count}> <!-- go public as binding attributes -->
+        <button @click=${addCount} .count=${count}> <!-- go public as binding attributes -->
             I got clicked ${count} times!
         </button>
     `;
@@ -83,7 +82,7 @@ const Main = $ => {
         <body>
             <p>👇 She got clicked ${$(Counter).count} times</p>
             <${Counter}/>
-            <button @click=${$(Counter).onclick}>Bring some more...</button>
+            <button @click=${() => $(Counter).click()}>Bring some more...</button>
         </body>
     `;
 }
@@ -169,12 +168,12 @@ const FrameMode = $ => {
 
 const SetMode = $ => {
 
-    const { set } = $;
+    const { set } = $; // switching into "set" mode
     
     let count = 0,
         addCount = () => set(count++); // declaring replacement of primitives
 
     return h => h`<button @click=${addCount}>${count}</button>`;
-    // refresh when set() called, improves performance
+    // refresh when set() called, which reduces unchanged calls
 }
 ```
