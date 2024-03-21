@@ -28,17 +28,17 @@ const Count = () => {
 
 const { write, define, serve } = await import("https://esm.sh/libh");
 
-// write into HTML Document
+// Write Directly Into The DOM Or An Emulator
 
-write({ "body > #counter": Count });
+write(document.body, Count);
 
-// or define as Web Components
+// Define As Web Components
 
-define({ "counter-thing": Count });
+define("counter-thing", Count);
 
-// ...or create fully-routed HTTP server
+// Build SSG Pipeline
 
-serve({ "/": Count });
+serve("/", Count);
 ```
 
 HTML in JavaScript.\
@@ -78,7 +78,12 @@ h`<input type="text" .value=${value}/>`;
 h`<input type="checkbox" ?checked=${isChecked}/>`;
 
 // component
-h`<${DefinedComponent} my-attribute=1/>`
+h`<${DefinedComponent} my-attribute=1/>`;
+
+// context
+h`<${DefinedContext}>
+    <label></label>
+</${DefinedContext}>`
 
 // bundled
 const linkTo = targetURL => ({
@@ -87,12 +92,12 @@ const linkTo = targetURL => ({
     rel: "noopener noreferrer"
 })
 
-h`<a ${linkTo}="https://ihasq.com"/>`
+h`<a ${linkTo}="https://ihasq.com"/>`;
 ```
 
 ### Usage
 ```javascript
-import { write } from "libh";
+import { createElement } from "libh";
 
 const Counter = () => {
 
@@ -115,7 +120,7 @@ const Main = $ => {
     `;
 }
 
-write({ "body": Count });
+write(document.body, Count)
 ```
 
 ```javascript

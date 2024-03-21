@@ -119,6 +119,18 @@ html.use = function(anchor) {
 
 };
 
+class LHInstance {
+	constructor(templateFn, attributes) {
+		templateFn(createLHAnchor()[0])
+	}
+}
+
 Object.freeze(html);
 
-export default html;
+const write = (targetSelectors) => {
+	for(const targetSelectorIndex in targetSelectors) {
+		globalThis.document.querySelector(targetSelectorIndex)
+	}
+}
+
+export { write };
