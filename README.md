@@ -124,7 +124,11 @@ const Count = $ => {
             <p>You clicked ${count} times</p>
             <button
                 #clicker
+
                 @click=${() => set(count++)}
+                @mouseover=${set}
+                @mouseleave=${set}
+
                 *${btnHoverStyle}
             >
                 ${$`#clicker:hover`? 'Click' : 'Hover'} me
