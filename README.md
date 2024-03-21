@@ -30,7 +30,7 @@ const { write, define, serve } = await import("https://esm.sh/libh");
 
 // write into HTML Document
 
-eval(write({ "body > #counter": Count }));
+write({ "body > #counter": Count });
 
 // or define as Web Components
 
@@ -48,11 +48,7 @@ less boilerplate, safe, built on top of standard html reference.
 
 ### Installation (cdn)
 ```javascript
-const libh = await (
-    import("https://esm.sh/libh") ||
-    import("https://unpkg.com/libh") ||
-    import("https://cdn.jsdelivr.net/npm/libh")
-);
+const libh = await import("https://esm.sh/libh");
 ```
 
 ### Build From Source
@@ -76,10 +72,22 @@ h`<button @click=${() => alert("clicked")}/>`;
 h`<h1 *color=${titleColor}></h1>`;
 
 // property
-h`<input type=text .value=${value} />`;
+h`<input type="text" .value=${value}/>`;
 
 // boolean
-h`<input type=checkbox ?checked=${isChecked} />`;
+h`<input type="checkbox" ?checked=${isChecked}/>`;
+
+// component
+h`<${DefinedComponent} my-attribute=1/>`
+
+// bundled
+const linkTo = targetURL => ({
+    href: targetURL,
+    target: "_blank",
+    rel: "noopener noreferrer"
+})
+
+h`<a ${linkTo}="https://ihasq.com"/>`
 ```
 
 ### Usage
