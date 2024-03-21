@@ -115,8 +115,8 @@ const Count = $ => {
 
     let count = 0,
         btnHoverStyle = () => ({
-            '*background-color': $`#clicker`.is.hover? 'red' : null,
-            '*color': $`#clicker`.is.hover? 'white' : null
+            'background-color': $`#clicker:hover`? 'red' : null,
+            'color': $`#clicker:hover`? 'white' : null
         });
     
     return html => html`
@@ -125,9 +125,9 @@ const Count = $ => {
             <button
                 #clicker
                 @click=${() => set(count++)}
-                ${btnHoverStyle}
+                *${btnHoverStyle}
             >
-                ${$`#clicker`.is.hover? 'Click' : 'Hover'} me
+                ${$`#clicker:hover`? 'Click' : 'Hover'} me
             </button>
         </div>
     `;
@@ -152,9 +152,9 @@ const Counter = () => {
 const Main = $ => {
     return html => html`
         <body>
-            <p>👇 She got clicked ${$(Counter).count} times</p>
-            <${Counter}/>
-            <button @click=${() => $(Counter).click()}>Bring some more...</button>
+            <p>👇 She got clicked ${$`#counter`.count} times</p>
+            <${Counter} #counter/>
+            <button @click=${() => $`#counter`.click()}>Bring some more...</button>
         </body>
     `;
 }
