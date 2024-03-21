@@ -12,8 +12,6 @@
 </div>
 
 ```javascript
-import * as libh from "https://esm.sh/libh";
-
 const Count = () => {
 
     let count = 0,
@@ -29,7 +27,9 @@ const Count = () => {
     `;
 }
 
-// writing into HTML Document
+const libh = await import("https://esm.sh/libh");
+
+// write into HTML Document
 
 libh.write({ "body > #counter": Count });
 
@@ -37,7 +37,8 @@ libh.write({ "body > #counter": Count });
 
 libh.define({ "counter-thing": Count });
 
-// ...or create HTTP server
+// ...or create fully-routed HTTP server
+
 libh.serve({ "/": Count });
 ```
 
@@ -46,20 +47,24 @@ less boilerplate, safe, built on top of standard html reference.
 
 [![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/edit/js-qfh42g?file=index.js)
 
-### Installation (npm)
-```
-npm i libh
+### Installation (cdn)
+```javascript
+const libh = await (
+    import("https://esm.sh/libh") ||
+    import("https://unpkg.com/libh") ||
+    import("https://cdn.jsdelivr.net/npm/libh")
+)
 ```
 
 ### Build From Source
 ```
 git clone https://github.com/ihasq/libh
-npm run build
+deno task build
 ```
 
 ### Usage
 ```javascript
-import { write } from "libh";
+const { write } = await import("libh");
 
 const Counter = () => {
 
@@ -83,7 +88,7 @@ const Main = $ => {
     `;
 }
 
-write(Main, document.body);
+write({ "body": Count });
 ```
 
 ```javascript
