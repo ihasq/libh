@@ -52,7 +52,7 @@ const libh = await (
     import("https://esm.sh/libh") ||
     import("https://unpkg.com/libh") ||
     import("https://cdn.jsdelivr.net/npm/libh")
-)
+);
 ```
 
 ### Build From Source
@@ -67,11 +67,10 @@ import { write } from "libh";
 
 const Counter = () => {
 
-    let count = 0,
-        addCount = () => count++;
+    let count = 0;
 
     return h => h`
-        <button @click=${addCount} .count=${count}> <!-- go public as binding attributes -->
+        <button @click=${() => count++} .count=${count}> <!-- go public as binding attributes -->
             I got clicked ${count} times!
         </button>
     `;
@@ -100,21 +99,18 @@ const TodoRow = ({ at: { el, remove } }) => h => h`
 
 const TodoList = $ => {
 
-    const
-        { map } = $,
-        todoMap = map((el, id) => h => h`
-            <${TodoRow} .el=${el} .remove=${() => delete todoMap[id]}/>
-        `),
-        addTodo = async () => {
-            todoMap.push((await $`input[type=text]`).value);
-            $`input[type=text]`.value = "";
-        };
+    const todoMap = $.map((el, id) => h => h`
+        <${TodoRow} .el=${el} .remove=${() => delete todoMap[id]}/>
+    `);
 
     return h => h`
         <div>
             <ul>${todoMap}</ul>
             <input type=text/>
-            <input type=button @click=${addTodo}/>
+            <input type=button @click=${async () => {
+                todoMap.push((await $`input[type=text]`).value);
+                $`input[type=text]`.value = "";
+            }}/>
         </div>
     `;
 }
@@ -125,14 +121,11 @@ const ReverseStr = $ => {
 
     let revText = "",
 
-    $`input[type=text]`.onkeydown = async () => {
-        revText = (await $`input[type=text]`).value.split("").reverse().join("");
-        // get reference from rendered DOM
-    };
-
     return h => h`
         <div>
-            <input type="text" />
+            <input type="text" @keydown=${async () => {
+                revText = (await $`input[type=text]`).value.split("").reverse().join("");
+            }}/>
             <h2>${revText}</h2>
         </div>
     `;
@@ -159,10 +152,9 @@ const C2DApp = $ => {
 ```javascript
 const FrameMode = $ => {
 
-    let count = 0,
-        addCount = () => count++;
+    let count = 0;
 
-    return h => h`<button @click=${addCount}>${count}</button>`;
+    return h => h`<button @click=${() => count++}>${count}</button>`;
     // refresh every frame with requestAnimationFrame()
 }
 
@@ -170,10 +162,9 @@ const SetMode = $ => {
 
     const { set } = $; // switching into "set" mode
     
-    let count = 0,
-        addCount = () => set(count++); // declaring replacement of primitives
+    let count = 0;
 
-    return h => h`<button @click=${addCount}>${count}</button>`;
+    return h => h`<button @click=${() => set(count++)}>${count}</button>`;
     // refresh when set() called, which reduces unchanged calls
 }
 ```
