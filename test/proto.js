@@ -1,5 +1,3 @@
-import html from "../src/mod";
-
 const ReactTextReverser = () => {
 	const [revText, setRevText] = useState("");
 	const inputElem = useRef();
@@ -24,7 +22,7 @@ const LibhTextReverser = $ => {
 			revText = reverseString(await $`input[type=text]`.value)
 		};
 
-	return () => html`
+	return html => html`
 		<div>
 			<input type="text"/>
 			<button onclick=${revStrOp}>Reverse Me!</button>
@@ -63,7 +61,7 @@ const LibhText = $ => {
 
 	$.onchange = () => console.log("レンダリング！！")
 
-	return () => html`
+	return html => html`
 		<div style=${style}>
 			<input type="text" />
 			<button>set text</button>
@@ -88,11 +86,8 @@ const Recorder = $ => {
 		$`video`.srcObject = src;
 	};
 
-	return () => html`
+	return html => html`
 		<video></video>
 		<button @click=${startRecording}>start recording</button>
 	`;
 }
-
-
-document.body.appendChild(html`<${SomeTemplate}/>`); // ok

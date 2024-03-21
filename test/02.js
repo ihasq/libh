@@ -4,14 +4,14 @@ const Child = $ => {
 
 	let count = 0;
 
-	return h => h`
+	return html => html`
 		<button onclick=${() => count++} count=${count}>
 			${count}
 		</button>
 	`;
 };
 
-const Parent = $ => h => h`
+const Parent = $ => html => html`
 	<div>
 		<${Child}/>
 		<span>${$(Child).count}</span>

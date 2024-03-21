@@ -16,7 +16,7 @@ const Count = () => {
 
     let count = 0;
     
-    return html => html`
+    return h => h`
         <div *color=red>
             <p>You clicked ${count} times</p>
             <button @click=${() => count++}>
@@ -26,19 +26,19 @@ const Count = () => {
     `;
 }
 
-const libh = await import("https://esm.sh/libh");
+const { write, define, serve } = await import("https://esm.sh/libh");
 
 // write into HTML Document
 
-libh.write({ "body > #counter": Count });
+eval(write({ "body > #counter": Count }));
 
 // or define as Web Components
 
-libh.define({ "counter-thing": Count });
+define({ "counter-thing": Count });
 
 // ...or create fully-routed HTTP server
 
-libh.serve({ "/": Count });
+serve({ "/": Count });
 ```
 
 HTML in JavaScript.\
@@ -64,22 +64,22 @@ deno task build
 ### Smart Attributes
 ```javascript
 // text
-html`<label>${text}</label>`;
+h`<label>${text}</label>`;
 
 // attribute
-html`<form id=${formId}/>`;
+h`<form id=${formId}/>`;
 
 // event handler
-html`<button @click=${() => alert("clicked")}/>`;
+h`<button @click=${() => alert("clicked")}/>`;
 
 // style
-html`<h1 *color=${titleColor}></h1>`;
+h`<h1 *color=${titleColor}></h1>`;
 
 // property
-html`<input type=text .value=${value} />`;
+h`<input type=text .value=${value} />`;
 
 // boolean
-html`<input type=checkbox ?checked=${isChecked} />`;
+h`<input type=checkbox ?checked=${isChecked} />`;
 ```
 
 ### Usage
@@ -90,7 +90,7 @@ const Counter = () => {
 
     let count = 0;
 
-    return html => html`
+    return h => h`
         <button @click=${() => count++} .count=${count}> <!-- go public as binding attributes -->
             I got clicked ${count} times!
         </button>
@@ -98,7 +98,7 @@ const Counter = () => {
 }
 
 const Main = $ => {
-    return html => html`
+    return h => h`
         <body>
             <p>👇 She got clicked ${$(Counter).count} times</p>
             <${Counter}/>
@@ -124,7 +124,7 @@ const TodoList = $ => {
         <${TodoRow} .el=${el} .remove=${() => delete todoMap[id]}/>
     `);
 
-    return html => html`
+    return h => h`
         <div>
             <ul>${todoMap}</ul>
             <input type=text/>
@@ -142,7 +142,7 @@ const ReverseStr = $ => {
 
     let revText = "";
 
-    return html => html`
+    return h => h`
         <div>
             <input type="text" @keydown=${async () => {
                 revText = (await $`input[type=text]`).value.split("").reverse().join("");
@@ -162,7 +162,7 @@ const C2DApp = $ => {
         // ...
     };
 
-    return html => html`
+    return h => h`
         <canvas @load=${canvasOnload}></canvas>
     `;
 }
@@ -173,7 +173,9 @@ const FrameMode = $ => {
 
     let count = 0;
 
-    return h => h`<button @click=${() => count++}>${count}</button>`;
+    return h => h`
+        <button @click=${() => count++}>${count}</button>
+    `;
     // refresh every frame with requestAnimationFrame()
 }
 
@@ -183,7 +185,7 @@ const SetMode = $ => {
     
     let count = 0;
 
-    return html => html`
+    return h => h`
         <button @click=${() => set(count++)}>${count}</button>
     `;
     // refresh when set() called, which reduces unchanged calls
