@@ -17,7 +17,7 @@ const Count = () => {
     let count = 0;
     
     return html => html`
-        <div *color=red>
+        <div>
             <p>You clicked ${count} times</p>
             <button @click=${() => count++}>
                 Click me
@@ -70,7 +70,7 @@ deno task build
 html`<label>${text}</label>`;
 
 // attribute
-html`<form id=${formId}/>`;
+html`<iframe src=${formURL}/>`;
 
 // event handler
 html`<button @click=${() => alert("clicked")}/>`;
@@ -84,8 +84,8 @@ html`<input type="text" .value=${value}/>`;
 // boolean
 html`<input type="checkbox" ?checked=${isChecked}/>`;
 
-// identifier (id attribute shorthand)
-html`<input #checkboxRef type=checkbox value=true/>`;
+// identifier (not the id attribute)
+html`<input #checkboxRef type=checkbox .value=true/>`;
 $`#checkboxRef`.value // true
 
 // component
@@ -110,6 +110,34 @@ html`<a ${linkTo}="https://ihasq.com"/>`;
 ```javascript
 import { write } from "libh";
 
+const Count = $ => {
+    const { set } = $
+
+    let count = 0,
+        btnHoverStyle = () => ({
+            '*background-color': $`#clicker`.is.hover? 'red' : null,
+            '*color': $`#clicker`.is.hover? 'white' : null
+        });
+    
+    return html => html`
+        <div>
+            <p>You clicked ${count} times</p>
+            <button
+                #clicker
+                @click=${() => set(count++)}
+                ${btnHoverStyle}
+            >
+                ${$`#clicker`.is.hover? 'Click' : 'Hover'} me
+            </button>
+        </div>
+    `;
+}
+
+write(document.body, Count)
+```
+
+```javascript
+
 const Counter = () => {
 
     let count = 0;
@@ -130,8 +158,6 @@ const Main = $ => {
         </body>
     `;
 }
-
-write(document.body, Count)
 ```
 
 ```javascript
