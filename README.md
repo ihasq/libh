@@ -16,8 +16,8 @@ const Count = () => {
 
     let count = 0;
     
-    return h => h`
-        <div>
+    return html => html`
+        <div *color=red>
             <p>You clicked ${count} times</p>
             <button @click=${() => count++}>
                 Click me
@@ -61,6 +61,27 @@ git clone https://github.com/ihasq/libh
 deno task build
 ```
 
+### Smart Attributes
+```javascript
+// text
+html`<label>${text}</label>`;
+
+// attribute
+html`<form id=${formId}/>`;
+
+// event handler
+html`<button @click=${() => alert("clicked")}/>`;
+
+// style
+html`<h1 *color=${titleColor}></h1>`;
+
+// property
+html`<input type=text .value=${value} />`;
+
+// boolean
+html`<input type=checkbox ?checked=${isChecked} />`;
+```
+
 ### Usage
 ```javascript
 import { write } from "libh";
@@ -69,7 +90,7 @@ const Counter = () => {
 
     let count = 0;
 
-    return h => h`
+    return html => html`
         <button @click=${() => count++} .count=${count}> <!-- go public as binding attributes -->
             I got clicked ${count} times!
         </button>
@@ -77,7 +98,7 @@ const Counter = () => {
 }
 
 const Main = $ => {
-    return h => h`
+    return html => html`
         <body>
             <p>👇 She got clicked ${$(Counter).count} times</p>
             <${Counter}/>
@@ -103,7 +124,7 @@ const TodoList = $ => {
         <${TodoRow} .el=${el} .remove=${() => delete todoMap[id]}/>
     `);
 
-    return h => h`
+    return html => html`
         <div>
             <ul>${todoMap}</ul>
             <input type=text/>
@@ -119,9 +140,9 @@ const TodoList = $ => {
 ```javascript
 const ReverseStr = $ => {
 
-    let revText = "",
+    let revText = "";
 
-    return h => h`
+    return html => html`
         <div>
             <input type="text" @keydown=${async () => {
                 revText = (await $`input[type=text]`).value.split("").reverse().join("");
@@ -137,15 +158,13 @@ const C2DApp = $ => {
 
     const canvasOnload = ({ target: canvas }) => {
 
-        canvas.onmousedown = event => {
-
-        };
-
         const ctx = canvas.getContext("2d");
         // ...
     };
 
-    return h => h`<canvas @load=${canvasOnload}></canvas>`;
+    return html => html`
+        <canvas @load=${canvasOnload}></canvas>
+    `;
 }
 ```
 
@@ -164,7 +183,9 @@ const SetMode = $ => {
     
     let count = 0;
 
-    return h => h`<button @click=${() => set(count++)}>${count}</button>`;
+    return html => html`
+        <button @click=${() => set(count++)}>${count}</button>
+    `;
     // refresh when set() called, which reduces unchanged calls
 }
 ```
