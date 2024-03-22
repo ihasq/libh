@@ -122,27 +122,24 @@ $.std = {
 import { write } from "libh";
 
 const Count = $ => {
-    const { set } = $.std
+    const { ptr } = $.std
 
-    let count = 0,
-        btnHoverStyle = () => ({
-            'background-color': $`#clicker:hover`? 'red' : null,
-            'color': $`#clicker:hover`? 'white' : null
-        });
-    
+    const count = ptr(0);
+    const isHovering = ptr(false);
+
     return html => html`
         <div>
             <p>You clicked ${count} times</p>
             <button
-                #clicker
-
-                @click=${() => set(count++)}
-                @mouseover=${set}
-                @mouseleave=${set}
-
-                *${btnHoverStyle}
+                @click=${() => count.v++}
+                ?${isHovering}=false
+                :hover {
+                    *background-color=red
+                    *color=white
+                    ?${isHovering}=true
+                }
             >
-                ${$`#clicker:hover`? 'Click' : 'Hover'} me
+                ${isHovering.v? 'Click' : 'Hover'} me
             </button>
         </div>
     `;
@@ -265,13 +262,3 @@ const SetMode = $ => {
     // refresh when set() called, which reduces unchanged calls
 }
 ```
-
-```javascript
-const ContentEditable = $ => {
-    const { ptr } = $.std;
-    const [ contentEditableHolder ] = ptr();
-
-    return html => html`
-        <div>${contentEditableHolder}</div>
-    `;
-}
