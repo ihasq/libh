@@ -261,4 +261,16 @@ const SetMode = $ => {
     `;
     // refresh when set() called, which reduces unchanged calls
 }
+
+const PointerMode = $ => {
+
+    const { ptr } = $.std; // switching into "pointer" mode
+    
+    const count = ptr(0, newValue => console.log(`counter updated: ${newValue}`));
+
+    return html => html`
+        <button @click=${() => count.v++}>${count}</button>
+    `;
+    // refresh when pointer value changed, which reduces unchanged calls
+}
 ```
