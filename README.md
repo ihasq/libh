@@ -100,7 +100,9 @@ html`<${DefinedContext}>
 const linkTo = targetURL => ({
     href: targetURL,
     target: "_blank",
-    rel: "noopener noreferrer"
+    rel: "noopener noreferrer",
+
+    ...otherBundle()
 })
 
 html`<a ${linkTo}="https://ihasq.com"/>`;
@@ -195,7 +197,7 @@ const TodoList = $ => {
             *background-color=#${Math.floor((Math.sin(Date.now()) + 1) / 2 * 0xffffff).toString(16).padStart(6, "0")}
             *color=white
         >
-            <ul>${todoMap}</ul>
+            <ul ${map}=${todoMap}></ul>
             <input type=text .value=${todoValue} />
             <input type=button @click=${async () => {
                 todoMap.push(todoValue.value);
