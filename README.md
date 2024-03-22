@@ -66,46 +66,46 @@ deno task build
 
 ### Smart Attributes
 ```javascript
-// text
-html`<label>${text}</label>`;
+return html => html`
+    <div>
+        <!-- text -->
+        <label>${text}</label>
 
-// attribute
-html`<iframe src=${formURL}/>`;
+        <!-- attribute -->
+        <iframe src=${formURL}/>
 
-// event handler
-html`<button @click=${() => alert("clicked")}/>`;
+        <!-- event handler -->
+        <button @click=${() => alert("clicked")}/>
+        <input @^keydown=${() => alert("cancelled")}/> <!-- preventDefault() -->
 
-// style
-html`<h1 *color=${titleColor}></h1>`;
+        <!-- style -->
+        <h1 *color=${titleColor}></h1>
 
-// property
-html`<input type="text" .value=${value}/>`;
+        <!-- property -->
+        <input type="text" .value=${value}/>
 
-// boolean
-html`<input type="checkbox" ?checked=${isChecked}/>`;
+        <!-- identifier (not the id attribute) -->
+        <input #checkboxRef type=checkbox .value=true/>
 
-// identifier (not the id attribute)
-html`<input #checkboxRef type=checkbox .value=true/>`;
-$`#checkboxRef`.value // true
+        <!-- child component -->
+        <${DefinedComponent} my-attribute=1/>
 
-// component
-html`<${DefinedComponent} my-attribute=1/>`;
+        <!-- branching with psuedo class -->
+        <button *color:hover=red *color:active=blue></button>
 
-// context
-html`<${DefinedContext}>
-    <label></label>
-</${DefinedContext}>`
+        <!-- psuedo class nesting -->
+        <button
+            :hover {
+                *color=red
+                :active {
+                    *color=blue
+                }
+            }
+        ></button>
 
-// bundled
-const linkTo = targetURL => ({
-    href: targetURL,
-    target: "_blank",
-    rel: "noopener noreferrer",
+    </div>
+`;
 
-    ...otherBundle()
-})
-
-html`<a ${linkTo}="https://ihasq.com"/>`;
 ```
 
 ### Standard Directives
@@ -269,7 +269,7 @@ const SetMode = $ => {
 ```javascript
 const ContentEditable = $ => {
     const { ptr } = $.std;
-    const contentEditableHolder = ptr();
+    const [ contentEditableHolder ] = ptr();
 
     return html => html`
         <div>${contentEditableHolder}</div>

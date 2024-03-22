@@ -84,7 +84,9 @@ const Recorder = $ => {
 	};
 
 	return h => h`
-		<video .srcObject=${videoSrc}></video>
-		<button @click=${startRecording}>start recording</button>
+		<div>
+			<video .srcObject=${videoSrc}></video>
+			<button @click=${startRecording}>start recording</button>
+		</div>
 	`;
 }
