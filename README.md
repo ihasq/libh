@@ -106,12 +106,21 @@ const linkTo = targetURL => ({
 html`<a ${linkTo}="https://ihasq.com"/>`;
 ```
 
+### Standard Directives
+```javascript
+$.std = {
+    set(value) { /* ... */ },
+    ptr(setup, setCallbackFn, getCallbackFn) { /* ... */ },
+    map(templateFn) { /* ... */ },
+}
+```
+
 ### Usage
 ```javascript
 import { write } from "libh";
 
 const Count = $ => {
-    const { set } = $
+    const { set } = $.std
 
     let count = 0,
         btnHoverStyle = () => ({
@@ -165,7 +174,7 @@ const Main = $ => {
 ```
 
 ```javascript
-const TodoRow = ({ pr: { el, remove }}) => html => html`
+const TodoRow = ({ el, remove }) => html => html`
     <div>
         <span>${el}</span>
         <button @click=${remove}>delete</button>
@@ -173,10 +182,13 @@ const TodoRow = ({ pr: { el, remove }}) => html => html`
 `;
 
 const TodoList = $ => {
+    const { map, ptr } = $.std;
 
-    const todoMap = $.map((el, id) => html => html`
+    const todoMap = map((el, id) => html => html`
         <${TodoRow} .el=${el} .remove=${() => delete todoMap[id]}/>
     `);
+
+    const [ todoValue ] = ptr();
 
     return html => html`
         <div
@@ -184,10 +196,10 @@ const TodoList = $ => {
             *color=white
         >
             <ul>${todoMap}</ul>
-            <input type=text/>
+            <input type=text .value=${todoValue} />
             <input type=button @click=${async () => {
-                todoMap.push((await $`input[type=text]`).value);
-                $`input[type=text]`.value = "";
+                todoMap.push(todoValue.value);
+                todoValue.reset();
             }}/>
         </div>
     `;
@@ -196,14 +208,17 @@ const TodoList = $ => {
 
 ```javascript
 const ReverseStr = $ => {
+    const { ptr } = $.std;
 
     let revText = "";
 
+    const textValuePtr = ptr("", value => {
+        revText = value.split("").reverse().join("");
+    });
+
     return html => html`
         <div>
-            <input type="text" @keydown=${async () => {
-                revText = (await $`input[type=text]`).value.split("").reverse().join("");
-            }}/>
+            <input type="text" .value=${textValuePtr}/>
             <h2>${revText}</h2>
         </div>
     `;
@@ -238,7 +253,7 @@ const FrameMode = $ => {
 
 const SetMode = $ => {
 
-    const { set } = $; // switching into "set" mode
+    const { set } = $.std; // switching into "set" mode
     
     let count = 0;
 
@@ -248,3 +263,13 @@ const SetMode = $ => {
     // refresh when set() called, which reduces unchanged calls
 }
 ```
+
+```javascript
+const ContentEditable = $ => {
+    const { ptr } = $.std;
+    const contentEditableHolder = ptr();
+
+    return html => html`
+        <div>${contentEditableHolder}</div>
+    `;
+}
