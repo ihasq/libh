@@ -23,22 +23,13 @@ const Count = () => {
     `;
 }
 
-const { write, define, serve } = await import("https://esm.sh/libh");
-
 // Write Into The DOM Or An Emulator Directly
 
-write(document.body, Count);
-
-// Define As Web Components
-
-define("counter-thing", Count);
-
-// Build SSG Pipeline On Server-side Runtime
-
-serve("/", Count);
+import("https://esm.sh/@libh/write")
+    .then(write => write(document.body, Count));
 ```
 
-HTML in JavaScript.\
+**libh.js** is a JavaScript library for empowering the DOM manipulation.\
 less boilerplate, safe, built on top of standard html reference.
 
 [![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/edit/js-qfh42g?file=index.js)
@@ -47,12 +38,12 @@ less boilerplate, safe, built on top of standard html reference.
 
 #### CDN (Browser, Deno)
 ```javascript
-const libh = await import("https://esm.sh/libh"); // recommended
+const write = await import("https://esm.sh/@libh/write");
 ```
 
 #### NPM (Node.js)
 ```sh
-npm i libh
+npm i @libh/write
 ```
 
 ### Build From Source
@@ -61,7 +52,7 @@ git clone https://github.com/ihasq/libh
 deno task build
 ```
 
-### Smart Attributes
+### Smart Attributes on libh.js
 ```javascript
 return html => html`
     <div>
@@ -69,23 +60,26 @@ return html => html`
         <label>${text}</label>
 
         <!-- attribute -->
-        <iframe src=${formURL}/>
+        <iframe src=${formURL} />
 
         <!-- event handler -->
-        <button @click=${() => alert("clicked")}/>
-        <input @^keydown=${() => alert("cancelled")}/> <!-- preventDefault() -->
+        <button @click=${() => alert("clicked")} />
+        <input @^keydown=${() => alert("cancelled")} /> <!-- preventDefault() -->
 
         <!-- style -->
         <h1 *color=${titleColor}></h1>
 
         <!-- property -->
-        <input type="text" .value=${value}/>
+        <input type=text .value=ok />
+
+        <input type=checkbox .value=${true} /> <!-- CORRECT type forcing -->
+        <input type=checkbox .value=true /> <!-- This is NOT boolean -->
 
         <!-- identifier (not the id attribute) -->
-        <input #checkboxRef type=checkbox .value=true/>
+        <img #mainImgRef />
 
         <!-- child component -->
-        <${DefinedComponent} my-attribute=1/>
+        <${DefinedComponent} my-attribute=1 />
 
         <!-- branching with psuedo class -->
         <button *color:hover=red *color:active=blue></button>
@@ -105,48 +99,67 @@ return html => html`
 
 ```
 
-### Standard Directives
+### Directives
 ```javascript
 $.std = {
-    set(value) { /* ... */ },
-    ptr(setup, setCallbackFn, getCallbackFn) { /* ... */ },
-    map(templateFn) { /* ... */ },
+    ptr(setup, setCallbackFn, getCallbackFn) {
+        /* create pointer */
+    },
+
+    get set() {
+        /* forces 'set mode' to component */
+        return function(value) {
+            /* it calls html function when its called */
+            return value
+        }
+    },
+
+    map(templateFn) {
+        /* create map */
+        return {
+            push(initValue) {}
+        }
+    },
 }
 ```
 
 ### Usage
 ```javascript
-import { write } from "libh";
+import write from "@libh/write";
 
 const Count = $ => {
-    const { ptr } = $.std
+    const { ptr } = $.std;
 
-    const count = ptr(0);
-    const isHovering = ptr(false);
+    let count = 0,
+        buttonText = 'Hover me!';
+
+    const isHovering = ptr(false, value => {
+        buttonText = `${value? 'Click' : 'Hover'} me!`
+    });
 
     return html => html`
         <div>
             <p>You clicked ${count} times</p>
             <button
-                @click=${() => count.v++}
-                ?${isHovering}=false
+                @click=${() => count++}
+                ${isHovering}=${false}
+
                 :hover {
                     *background-color=red
                     *color=white
-                    ?${isHovering}=true
+                    ${isHovering}=${true}
                 }
             >
-                ${isHovering.v? 'Click' : 'Hover'} me
+                ${buttonText} me
             </button>
         </div>
     `;
 }
 
-write(document.body, Count)
+write(document.body, Count);
 ```
 
 ```javascript
-
 const Counter = () => {
 
     let count = 0;
