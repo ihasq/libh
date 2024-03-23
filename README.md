@@ -131,11 +131,11 @@ const Count = $ => {
     const { ptr } = $.std;
 
     let count = 0,
-        buttonText = 'Hover me!';
+        buttonText = '';
 
-    const isHovering = ptr(false, value => {
-        buttonText = `${value? 'Click' : 'Hover'} me!`
-    });
+    const isHovering = () => value => {
+        buttonText = value? 'Click me!' : ''
+    }
 
     return html => html`
         <div>
@@ -150,7 +150,7 @@ const Count = $ => {
                     ${isHovering}=${true}
                 }
             >
-                ${buttonText} me
+                ${buttonText || 'Hover me!'}
             </button>
         </div>
     `;
@@ -275,7 +275,7 @@ const SetMode = $ => {
 
 ```javascript
 import nitro from 'https://esm.sh/@libh/nitro'
-// Nitro - The Design By libh.js
+// Nitro - The Design System By libh.js
 
 const StyleImport = () => {
     return html => html`
