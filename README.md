@@ -1,6 +1,4 @@
-<div align="center">
-
-![logo](https://raw.githubusercontent.com/ihasq/libh/main/resources/logo.svg)
+# [libh.js](https://libh.js.org)
 
 [![npm](https://img.shields.io/npm/v/libh?logo=npm&label=%20&labelColor=%23eee)](https://www.npmjs.com/package/libh)
 ![GitHub Repo stars](https://img.shields.io/github/stars/ihasq/libh?logo=github)
@@ -9,7 +7,6 @@
 ![npm package minimized gzipped size (select exports)](https://img.shields.io/bundlejs/size/libh)
 
 <hr/>
-</div>
 
 ```javascript
 const Count = () => {
@@ -187,7 +184,7 @@ const TodoList = $ => {
         <${TodoRow} .el=${el} .remove=${() => delete todoMap[id]}/>
     `);
 
-    const [ todoValue ] = ptr();
+    const todoValue = ptr("");
 
     return html => html`
         <div
@@ -260,20 +257,5 @@ const SetMode = $ => {
         <button @click=${() => set(count++)}>${count}</button>
     `;
     // refresh when set() called, which reduces unchanged calls
-}
-
-const PointerMode = $ => {
-
-    const { ptr, h: html } = $.std; // switching into "pointer" mode
-    
-    const count = ptr(0, {
-        set: newValue => console.log(`counter updated: ${newValue}`)
-    });
-
-    return html`
-        <button @click=${() => count.v++}>${count}</button>
-    `;
-    // refresh where pointer value changed, which reduces calls of unchanged primitives (most performant)
-    // this component could describe itself as single-order function
 }
 ```
