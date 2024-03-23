@@ -6,7 +6,7 @@
 
 ![npm package minimized gzipped size (select exports)](https://img.shields.io/bundlejs/size/libh)
 
-<hr/>
+---
 
 ```javascript
 const Count = () => {
@@ -257,5 +257,15 @@ const SetMode = $ => {
         <button @click=${() => set(count++)}>${count}</button>
     `;
     // refresh when set() called, which reduces unchanged calls
+}
+```
+
+```javascript
+const Binding = $ => {
+    return html => html`
+        <${BaseComponent}
+            .bind=${html`<${OtherComponent}/>`}
+        />
+    `
 }
 ```
