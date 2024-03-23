@@ -274,6 +274,19 @@ const SetMode = $ => {
 ```
 
 ```javascript
+import nitro from 'https://esm.sh/@libh/nitro'
+// Nitro - The Design By libh.js
+
+const StyleImport = () => {
+    return html => html`
+        <div>
+            <button ${nitro}=system>I am themed by Nitro from libh.js!</button>
+        </div>
+    `
+}
+```
+
+```javascript
 const Binding = $ => {
     return html => html`
         <${BaseComponent}
