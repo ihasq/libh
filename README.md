@@ -137,7 +137,7 @@ const Count = $ => {
         buttonText = value? 'Click me!' : ''
     }
 
-    return html => html`
+    return h => h`
         <div>
             <p>You clicked ${count} times</p>
             <button
@@ -287,11 +287,31 @@ const StyleImport = () => {
 ```
 
 ```javascript
-const Binding = $ => {
-    return html => html`
-        <${BaseComponent}
-            .bind=${html`<${OtherComponent}/>`}
-        />
-    `
-}
+/*
+    $ = {
+        value: value from attribute
+        element: element reference
+    }
+*/
+
+const sampleAttrModule = $ => attr => attr`
+    *background-color=${$.value === 'system'
+        ? '#000'
+        : $.value === 'dark'
+            ? '#fff'
+            : '#000'
+    }
+    *color=red
+    ${anotherAttrModule}=${true}
+
+    :hover {
+        *color=blue
+    }
+`;
+
+const WithAttributeModule = () => html => html`
+    <div>
+        <button ${sampleAttrModule}=system />
+    </div>
+`
 ```

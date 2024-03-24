@@ -1,4 +1,4 @@
-const htmlTempMap = new Map();
+const templateCache = new WeakMap();
 const anchorMap = new Map();
 
 function createLHAnchor() {
@@ -80,14 +80,14 @@ const $ = new Proxy(localSelector, {
 });
 
 const html = (htmlTemplates, ...htmlValues) => {
-	const joinedHTMLTemplates = htmlTemplates.join(initTag);
-	if(!htmlTempMap.has(joinedHTMLTemplates)) {
+	if(!templateCache.has(htmlTemplates)) {
+		const joinedHTMLTemplates = htmlTemplates.join(initTag);
 		templateConstructor.innerHTML = joinedHTMLTemplates;
 		// instanceBuffer.htmlTempMap.set(joinedHTMLTemplates, );
 	}
 
 	const joinedString = htmlTemplates.join(""),
-		encodedHTMLTemp = htmlTempMap.get(joinedString);
+		encodedHTMLTemp = templateCache.get(joinedString);
 
 	if(encodedHTMLTemp === undefined) {
 		// initialization start
