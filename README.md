@@ -137,7 +137,7 @@ const Count = $ => {
         buttonText = value? 'Click me!' : ''
     }
 
-    return h => h`
+    return html => html`
         <div>
             <p>You clicked ${count} times</p>
             <button
@@ -314,4 +314,13 @@ const WithAttributeModule = () => html => html`
         <button ${sampleAttrModule}=system />
     </div>
 `
+```
+
+```javascript
+import r from '@libh/react';
+import { SomeReactComponent } from 'some-react-package';
+
+const ReactEmbedded = () => html => html`
+    <${r(SomeReactComponent)} />
+`;
 ```
