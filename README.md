@@ -1,4 +1,4 @@
-# [libh.js](https://libh.js.org)
+# [Libh.js](https://libh.js.org)
 
 [![npm](https://img.shields.io/npm/v/libh?logo=npm&label=%20&labelColor=%23eee)](https://www.npmjs.com/package/libh)
 ![GitHub Repo stars](https://img.shields.io/github/stars/ihasq/libh?logo=github)
@@ -29,7 +29,7 @@ import("https://esm.sh/@libh/write")
     .then(write => write(document.body, Count));
 ```
 
-**libh.js** is a JavaScript library for empowering the DOM manipulation.\
+**Libh.js** is a JavaScript library for empowering the DOM manipulation.\
 less boilerplate, safe, built on top of standard html reference.
 
 [![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/edit/js-qfh42g?file=index.js)
@@ -64,7 +64,7 @@ return html => html`
 
         <!-- event handler -->
         <button @click=${() => alert("clicked")} />
-        <input @^keydown=${() => alert("cancelled")} /> <!-- preventDefault() -->
+        <input @@keydown=${() => alert("cancelled")} /> <!-- preventDefault() -->
 
         <!-- style -->
         <h1 *color=${titleColor}></h1>
@@ -133,8 +133,8 @@ const Count = $ => {
     let count = 0,
         buttonText = '';
 
-    const isHovering = () => value => {
-        buttonText = value? 'Click me!' : ''
+    const isHovering = $ => () => {
+        buttonText = $.value? 'Click me!' : ''
     }
 
     return html => html`
@@ -183,33 +183,38 @@ const Main = $ => {
 ```
 
 ```javascript
-const TodoRow = ({ el, remove }) => html => html`
-    <div>
-        <span>${el}</span>
-        <button @click=${remove}>delete</button>
-    </div>
-`;
 
-const TodoList = $ => {
-    const { map, ptr } = $.std;
+const TodoApp = $ => {
 
-    const todoMap = map((el, id) => html => html`
-        <${TodoRow} .el=${el} .remove=${() => delete todoMap[id]}/>
-    `);
+    const TodoRow = $ => {
+        let isEditable = false;
 
-    const todoValue = ptr("");
+        return html => html`
+            <div @outerclick=${() => isEditable = false;}>
+                <span contentEditable=${isEditable}>${$.el}</span>
+                <button @click=${$.remove}>delete</button>
+            </div>
+        `;
+    }
+
+    const addTodo = async () => {
+        const todoValue = $`#todoInput`.value;
+
+        $`#todoList`.push(html => html`
+            <${TodoRow} #todoValue-${todoValue} .value=${todoValue}>
+        `);
+
+        $`#todoInput`.value = "";
+    };
 
     return html => html`
         <div
             *background-color=#${Math.floor((Math.sin(Date.now()) + 1) / 2 * 0xffffff).toString(16).padStart(6, "0")}
             *color=white
         >
-            <ul ${map}=${todoMap}></ul>
-            <input type=text .value=${todoValue} />
-            <input type=button @click=${async () => {
-                todoMap.push(todoValue.value);
-                todoValue.reset();
-            }}/>
+            <ul #todoList></ul>
+            <input #todoInput type=text />
+            <input type=button @click=${addTodo}/>
         </div>
     `;
 }
@@ -322,7 +327,7 @@ import { Button } from "@shadcn/ui/components/ui/button"
 
 const ReactEmbedded = () => html => html`
     <div>
-        <${Button} ${react}>I am the Button from @shadcn/ui in libh.js!</${Button}>
+        <${Button} ${react}>I am the Button from @shadcn/ui in Libh.js!</${Button}>
     </div>
 `;
 ```

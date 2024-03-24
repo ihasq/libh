@@ -1,5 +1,14 @@
-const templateCache = new WeakMap();
-const anchorMap = new Map();
+const htmlStrTempCache = new WeakMap();
+const anchorStrTempCache = new WeakMap();
+
+const h = (htmlTempStrings, ...htmlTempValues) => {
+	const prebuiltTemp = htmlStrTempCache.get(htmlTempStrings);
+	if(prebuiltTemp === undefined) {
+		htmlStrTempCache.set(htmlTempStrings, {
+
+		})
+	}
+}
 
 function createLHAnchor() {
 	let writeMode = "frame";
@@ -17,10 +26,6 @@ class LHInstance {
 	constructor(templateFn, attributes) {
 		templateFn(createLHAnchor()[0])
 	}
-}
-
-for(const anchorIndex in anchorList) {
-	anchorMap.set(anchorIndex, anchorList[anchorIndex])
 }
 
 class LHTemplate {
