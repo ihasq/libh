@@ -1,4 +1,4 @@
-# [Libh.js](https://libh.js.org)
+# [libh.js](https://libh.js.org)
 
 [![npm](https://img.shields.io/npm/v/libh?logo=npm&label=%20&labelColor=%23eee)](https://www.npmjs.com/package/libh)
 ![GitHub Repo stars](https://img.shields.io/github/stars/ihasq/libh?logo=github)
@@ -29,7 +29,7 @@ import("https://esm.sh/@libh/write")
     .then(write => write(document.body, Count));
 ```
 
-**Libh.js** is a JavaScript library for empowering the DOM manipulation.\
+**libh.js** is a JavaScript library for empowering the DOM manipulation.\
 less boilerplate, safe, built on top of standard html reference.
 
 [![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/edit/js-qfh42g?file=index.js)
@@ -327,7 +327,7 @@ import { Button } from "@shadcn/ui/components/ui/button"
 
 const ReactEmbedded = () => html => html`
     <div>
-        <${Button} ${react}>I am the Button from @shadcn/ui in Libh.js!</${Button}>
+        <${Button} ${react}>I am the Button from @shadcn/ui in libh.js!</${Button}>
     </div>
 `;
 ```
