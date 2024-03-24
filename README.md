@@ -317,10 +317,12 @@ const WithAttributeModule = () => html => html`
 ```
 
 ```javascript
-import r from '@libh/react';
-import { SomeReactComponent } from 'some-react-package';
+import react from '@libh/react';
+import { Button } from "@shadcn/ui/components/ui/button"
 
 const ReactEmbedded = () => html => html`
-    <${r(SomeReactComponent)} />
+    <div>
+        <${Button} ${react}>I am the Button from @shadcn/ui in libh.js!</${Button}>
+    </div>
 `;
 ```
