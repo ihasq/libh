@@ -103,8 +103,8 @@ return html => html`
     </div>
 `;
 
-$`button`.get`@click`; // () => console.log("clicked")
-$`#hasNested:hover`.get`*color`; // 'blue'
+$`button`.getAttribute`@click`; // () => console.log("clicked")
+$`#hasNested:hover`.getAttribute`*color`; // 'blue'
 
 ```
 
