@@ -161,10 +161,10 @@ const PtrMode = $ => {
 
     const { ptr } = $.std; // switching into "pointer" mode
     
-    let count = ptr(0, false); // create modifiable pointer
+    let count = ptr(0); // create modifiable pointer
 
     return html => html`
-        <button @click=${() => count.value++}>${count}</button>
+        <button @click=${() => count.v++}>${count}</button>
     `;
     // refresh only where pointer object got set (most performant)
 }
@@ -178,18 +178,18 @@ const Count = $ => {
     const { ptr } = $.std;
 
     const
-        count = ptr(0, false),
-        buttonText = ptr('Hover me!', false),
+        count = ptr(0),
+        buttonText = ptr('Hover me!'),
 
         isHovering = $ => () => {
-            buttonText.value = $.value? 'Click me!' : 'Hover me!'
+            buttonText.v = $.value? 'Click me!' : 'Hover me!'
         };
 
     return html => html`
         <div>
             <p>You clicked ${count} times</p>
             <button
-                @click=${() => count.value++};
+                @click=${() => count.v++};
                 ${isHovering}=${false};
 
                 :hover {
@@ -256,10 +256,10 @@ const TodoApp = $ => {
 
     const addTodo = () => {
         $`#todoList`.push($ => html => html`
-            <${TodoRow} .value=${inputPlaceHolder.value}/>
+            <${TodoRow} .value=${inputPlaceHolder.v}/>
         `);
 
-        inputPlaceHolder.value = "";
+        inputPlaceHolder.v = "";
     };
 
     return html => html`
@@ -277,9 +277,9 @@ const ReverseStr = $ => {
     const { ptr } = $.std;
 
     const
-        revText = ptr("", false),
+        revText = ptr(""),
         textValuePtr = ptr("", true, value => {
-            revText.value = value.split("").reverse().join("");
+            revText.v = value.split("").reverse().join("");
         });
 
     return html => html`
