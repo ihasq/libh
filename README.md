@@ -63,8 +63,8 @@ return html => html`
         <iframe src=${formURL}; />
 
         <!-- event handler -->
-        <button @click=${() => alert("clicked")}; />
-        <input @@keydown=${() => alert("cancelled")}; /> <!-- preventDefault() -->
+        <button @click=${() => console.log("clicked")}; />
+        <input @@keydown=${() => console.log("cancelled")}; /> <!-- preventDefault() -->
 
         <!-- style -->
         <h1 *color=${titleColor}></h1>
@@ -76,7 +76,7 @@ return html => html`
         <input type=checkbox; .value=true; /> <!-- This is NOT boolean -->
 
         <!-- identifier (not the id attribute) -->
-        <img #mainImgRef; />
+        <img #mainImgRef/>
 
         <!-- child component -->
         <${DefinedComponent} my-attribute=1; />
@@ -86,11 +86,14 @@ return html => html`
 
         <!-- psuedo class nesting -->
         <button
+            #hasNested
+
             :hover {
                 *color=red;
-                :active {
-                    *color=blue;
-                };
+            };
+
+            :active {
+                *color=blue;
             };
         ></button>
 
@@ -99,6 +102,9 @@ return html => html`
         <div @mouseover*=${({ target }) => console.log(target)}></div>
     </div>
 `;
+
+$`button`.get`@click`; // () => console.log("clicked")
+$`#hasNested:hover`.get`*color`; // 'blue'
 
 ```
 
