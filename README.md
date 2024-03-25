@@ -9,24 +9,25 @@
 ---
 
 ```javascript
-const Count = () => {
+const Main = () => {
 
     let count = 0;
     
     return html => html`
-        <div>
+        <body>
             <p>You clicked ${count} times</p>
             <button @click=${() => count++};>
                 Click me
             </button>
-        </div>
+        </body>
     `;
 }
 
 // Write Into The DOM Or An Emulator Directly
 
-import("https://esm.sh/@libh/write")
-    .then(write => write(document.body, Count));
+const write = await import("https://esm.sh/@libh/write");
+
+document.body = write(Count);
 ```
 
 **libh.js** is a JavaScript library for empowering the DOM manipulation.\
@@ -38,7 +39,7 @@ less boilerplate, safe, built on top of standard html reference.
 
 #### CDN (Browser, Deno)
 ```javascript
-const write = await import("https://esm.sh/@libh/write");
+import write from 'https://esm.sh/@libh/write';
 ```
 
 #### NPM (Node.js)
@@ -194,26 +195,36 @@ const Main = $ => {
 ```javascript
 
 const TodoApp = $ => {
+    const { ptr } = $.std;
+
+    const inputPlaceholder = ptr("", true)
 
     const TodoRow = $ => {
-        let isEditable = false;
+        const { ptr } = $.std;
+
+        const editableTextnode = ptr($.value, true); // create contenteditable=plaintext-only
 
         return html => html`
-            <div @blur=${() => isEditable = false};>
-                <span contenteditable=${isEditable};>${$.el}</span>
-                <button @click=${$.remove};>delete</button>
+            <div @blur=${() => editableTextnode.close()}>
+                <span @blur=${() => editableTextnode.close()}>${editableTextnode}</span>
+
+                <button @click=${() => editableTextnode.open()}>edit</button>
+                <button @click=${() => $.element.remove()}>delete</button>
+                <button @click=${() => $.swap("above")}>swap with above</button>
+                <button @click=${() => $.swap("below")}>swap with below</button>
             </div>
         `;
     }
 
     const addTodo = async () => {
-        const todoValue = $`#todoInput`.value;
-
         $`#todoList`.push(html => html`
-            <${TodoRow} #todoValue-${todoValue} .value=${todoValue}>
+            <${TodoRow}
+                #todoValue-${inputPlaceHolder.value}
+                .value=${inputPlaceHolder.value}
+            />
         `);
 
-        $`#todoInput`.value = "";
+        inputPlaceHolder.value = "";
     };
 
     return html => html`
@@ -222,7 +233,7 @@ const TodoApp = $ => {
             *color=white;
         >
             <ul #todoList></ul>
-            <input #todoInput; type=text; />
+            <input #todoInput; type=text; value=${inputPlaceHolder}/>
             <input type=button; @click=${addTodo};/>
         </div>
     `;
