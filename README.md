@@ -292,9 +292,21 @@ const SetMode = $ => {
     let count = 0;
 
     return html => html`
-        <button @click=${() => set(count++)};>${count}</button>
+        <button @click=${() => set(count++)}>${count}</button>
     `;
     // refresh when set() called, which reduces unchanged calls
+}
+
+const PtrMode = $ => {
+
+    const { ptr, html } = $.std; // switching into "pointer" mode
+    
+    let count = ptr(0, true); // create modifiable pointer
+
+    return html`
+        <button @click=${() => count.value++}>${count}</button>
+    `;
+    // refresh when pointer object got set, which reduces unchanged calls
 }
 ```
 
