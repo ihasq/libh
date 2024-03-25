@@ -166,7 +166,7 @@ const PtrMode = $ => {
     return html => html`
         <button @click=${() => count.value++}>${count}</button>
     `;
-    // refresh when pointer object got set, which reduces unchanged calls
+    // refresh only where pointer object got set (most performant)
 }
 ```
 
@@ -222,7 +222,7 @@ const Main = $ => {
     return html => html`
         <body>
             <p>👇 She got clicked ${$`#counter`.count} times</p>
-            <${Counter} #counter;/>
+            <${Counter} #counter/>
             <button @click=${() => $`#counter`.click()};>Bring some more...</button>
         </body>
     `;
@@ -237,11 +237,11 @@ const TodoApp = $ => {
     const inputPlaceholder = ptr("", true)
 
     const TodoRow = $ => {
-        const { ptr, html } = $.std;
+        const { ptr } = $.std;
 
         const editableTextnode = ptr($.value, true); // create contenteditable=plaintext-only
 
-        return html`
+        return html => html`
             <div @blur=${() => editableTextnode.close()}>
                 <span @blur=${() => editableTextnode.close()}>${editableTextnode}</span>
 
