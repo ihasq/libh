@@ -133,6 +133,43 @@ $.std = {
 }
 ```
 
+### Select Your Writing Mode
+```javascript
+const FrameMode = $ => {
+
+    let count = 0; // this is a "frame" mode
+
+    return html => html`
+        <button @click=${() => count++};>${count}</button>
+    `;
+    // refresh every frame with requestAnimationFrame()
+}
+
+const SetMode = $ => {
+
+    const { set } = $.std; // switching into "set" mode
+    
+    let count = 0;
+
+    return html => html`
+        <button @click=${() => set(count++)}>${count}</button>
+    `;
+    // refresh when set() called, which reduces unchanged calls
+}
+
+const PtrMode = $ => {
+
+    const { ptr } = $.std; // switching into "pointer" mode
+    
+    let count = ptr(0, false); // create modifiable pointer
+
+    return html => html`
+        <button @click=${() => count.value++}>${count}</button>
+    `;
+    // refresh when pointer object got set, which reduces unchanged calls
+}
+```
+
 ### Usage
 ```javascript
 import write from "@libh/write";
@@ -200,11 +237,11 @@ const TodoApp = $ => {
     const inputPlaceholder = ptr("", true)
 
     const TodoRow = $ => {
-        const { ptr } = $.std;
+        const { ptr, html } = $.std;
 
         const editableTextnode = ptr($.value, true); // create contenteditable=plaintext-only
 
-        return html => html`
+        return html`
             <div @blur=${() => editableTextnode.close()}>
                 <span @blur=${() => editableTextnode.close()}>${editableTextnode}</span>
 
@@ -217,11 +254,8 @@ const TodoApp = $ => {
     }
 
     const addTodo = async () => {
-        $`#todoList`.push(html => html`
-            <${TodoRow}
-                #todoValue-${inputPlaceHolder.value}
-                .value=${inputPlaceHolder.value}
-            />
+        $`#todoList`.push($ => html => html`
+            <${TodoRow} .value=${inputPlaceHolder.value}/>
         `);
 
         inputPlaceHolder.value = "";
@@ -271,42 +305,6 @@ const C2DApp = $ => {
     return html => html`
         <canvas @load=${canvasOnload};></canvas>
     `;
-}
-```
-
-```javascript
-const FrameMode = $ => {
-
-    let count = 0;
-
-    return html => html`
-        <button @click=${() => count++};>${count}</button>
-    `;
-    // refresh every frame with requestAnimationFrame()
-}
-
-const SetMode = $ => {
-
-    const { set } = $.std; // switching into "set" mode
-    
-    let count = 0;
-
-    return html => html`
-        <button @click=${() => set(count++)}>${count}</button>
-    `;
-    // refresh when set() called, which reduces unchanged calls
-}
-
-const PtrMode = $ => {
-
-    const { ptr, html } = $.std; // switching into "pointer" mode
-    
-    let count = ptr(0, true); // create modifiable pointer
-
-    return html`
-        <button @click=${() => count.value++}>${count}</button>
-    `;
-    // refresh when pointer object got set, which reduces unchanged calls
 }
 ```
 
