@@ -279,13 +279,17 @@ const ReverseStr = $ => {
 
     const
         revText = ptr(""),
-        textValuePtr = ptr("", true, value => {
+        textValuePtr = ptr("", true);
+
+    $`#stringInput`.set({
+        async '@keydown'() {
             revText.v = value.split("").reverse().join("");
-        });
+        }
+    })
 
     return html => html`
         <div>
-            <input type=text; .value=${textValuePtr};/>
+            <input #stringInput type=text; .value=${textValuePtr};/>
             <h2>${revText}</h2>
         </div>
     `;
