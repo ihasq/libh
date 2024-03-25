@@ -177,18 +177,19 @@ import write from "@libh/write";
 const Count = $ => {
     const { ptr } = $.std;
 
-    let count = 0,
-        buttonText = '';
+    const
+        count = ptr(0, false),
+        buttonText = ptr('Hover me!', false),
 
-    const isHovering = $ => () => {
-        buttonText = $.value? 'Click me!' : ''
-    }
+        isHovering = $ => () => {
+            buttonText.value = $.value? 'Click me!' : 'Hover me!'
+        };
 
     return html => html`
         <div>
             <p>You clicked ${count} times</p>
             <button
-                @click=${() => count++};
+                @click=${() => count.value++};
                 ${isHovering}=${false};
 
                 :hover {
@@ -197,7 +198,7 @@ const Count = $ => {
                     ${isHovering}=${true};
                 }
             >
-                ${buttonText || 'Hover me!'}
+                ${buttonText}
             </button>
         </div>
     `;
@@ -234,7 +235,7 @@ const Main = $ => {
 const TodoApp = $ => {
     const { ptr } = $.std;
 
-    const inputPlaceholder = ptr("", true)
+    const inputPlaceholder = ptr("", true);
 
     const TodoRow = $ => {
         const { ptr } = $.std;
@@ -253,7 +254,7 @@ const TodoApp = $ => {
         `;
     }
 
-    const addTodo = async () => {
+    const addTodo = () => {
         $`#todoList`.push($ => html => html`
             <${TodoRow} .value=${inputPlaceHolder.value}/>
         `);
@@ -262,10 +263,7 @@ const TodoApp = $ => {
     };
 
     return html => html`
-        <div
-            *background-color=#${Math.floor((Math.sin(Date.now()) + 1) / 2 * 0xffffff).toString(16).padStart(6, "0")};
-            *color=white;
-        >
+        <div *background-color=#red; *color=white;>
             <ul #todoList></ul>
             <input #todoInput; type=text; value=${inputPlaceHolder}/>
             <input type=button; @click=${addTodo};/>
@@ -278,11 +276,11 @@ const TodoApp = $ => {
 const ReverseStr = $ => {
     const { ptr } = $.std;
 
-    let revText = "";
-
-    const textValuePtr = ptr("", value => {
-        revText = value.split("").reverse().join("");
-    });
+    const
+        revText = ptr("", false),
+        textValuePtr = ptr("", true, value => {
+            revText.value = value.split("").reverse().join("");
+        });
 
     return html => html`
         <div>
