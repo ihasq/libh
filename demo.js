@@ -15,6 +15,19 @@ const SomeReactComponent = () => {
 	)
 }
 
+const cardToolBarItem = $ => at => at`
+	*color=#333
+	*flex=1
+	*padding=1rem
+	*border=none
+	*background-color=#fff
+	*transition='background-color 0.2s ease-in-out'
+	*cursor=pointer
+
+	:hover {
+		*background-color='rgb(218, 218, 218)'
+	}
+`;
 
 const Ours = () => {
 	
@@ -24,11 +37,11 @@ const Ours = () => {
 
 	return h => h`
 		<div>
-			<button @click=${addCount}>
+			<button ${cardToolBarItem} @click=${addCount};>
 				私は${count}回クリックされました
 			</button>
 		</div>
-	`
+	`;
 }
 
 const Main = $ => {

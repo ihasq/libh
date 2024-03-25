@@ -16,7 +16,7 @@ const Count = () => {
     return html => html`
         <div>
             <p>You clicked ${count} times</p>
-            <button @click=${() => count++}>
+            <button @click=${() => count++};>
                 Click me
             </button>
         </div>
@@ -60,38 +60,38 @@ return html => html`
         <label>${text}</label>
 
         <!-- attribute -->
-        <iframe src=${formURL} />
+        <iframe src=${formURL}; />
 
         <!-- event handler -->
-        <button @click=${() => alert("clicked")} />
-        <input @@keydown=${() => alert("cancelled")} /> <!-- preventDefault() -->
+        <button @click=${() => alert("clicked")}; />
+        <input @@keydown=${() => alert("cancelled")}; /> <!-- preventDefault() -->
 
         <!-- style -->
         <h1 *color=${titleColor}></h1>
 
         <!-- property -->
-        <input type=text .value=ok />
+        <input type=text; .value=ok; />
 
-        <input type=checkbox .value=${true} /> <!-- CORRECT type forcing -->
-        <input type=checkbox .value=true /> <!-- This is NOT boolean -->
+        <input type=checkbox; .value=${true}; /> <!-- CORRECT type forcing -->
+        <input type=checkbox; .value=true; /> <!-- This is NOT boolean -->
 
         <!-- identifier (not the id attribute) -->
-        <img #mainImgRef />
+        <img #mainImgRef; />
 
         <!-- child component -->
-        <${DefinedComponent} my-attribute=1 />
+        <${DefinedComponent} my-attribute=1; />
 
         <!-- branching with psuedo class -->
-        <button *color:hover=red *color:active=blue></button>
+        <button *color:hover=red; *color:active=blue;></button>
 
         <!-- psuedo class nesting -->
         <button
             :hover {
-                *color=red
+                *color=red;
                 :active {
-                    *color=blue
-                }
-            }
+                    *color=blue;
+                };
+            };
         ></button>
 
     </div>
@@ -141,13 +141,13 @@ const Count = $ => {
         <div>
             <p>You clicked ${count} times</p>
             <button
-                @click=${() => count++}
-                ${isHovering}=${false}
+                @click=${() => count++};
+                ${isHovering}=${false};
 
                 :hover {
-                    *background-color=red
-                    *color=white
-                    ${isHovering}=${true}
+                    *background-color=red;
+                    *color=white;
+                    ${isHovering}=${true};
                 }
             >
                 ${buttonText || 'Hover me!'}
@@ -165,7 +165,7 @@ const Counter = () => {
     let count = 0;
 
     return html => html`
-        <button @click=${() => count++} .count=${count}>
+        <button @click=${() => count++}; .count=${count};>
             I got clicked ${count} times!
         </button>
     `;
@@ -175,8 +175,8 @@ const Main = $ => {
     return html => html`
         <body>
             <p>👇 She got clicked ${$`#counter`.count} times</p>
-            <${Counter} #counter/>
-            <button @click=${() => $`#counter`.click()}>Bring some more...</button>
+            <${Counter} #counter;/>
+            <button @click=${() => $`#counter`.click()};>Bring some more...</button>
         </body>
     `;
 }
@@ -190,9 +190,9 @@ const TodoApp = $ => {
         let isEditable = false;
 
         return html => html`
-            <div @outerclick=${() => isEditable = false;}>
-                <span contentEditable=${isEditable}>${$.el}</span>
-                <button @click=${$.remove}>delete</button>
+            <div @outerclick=${() => isEditable = false};>
+                <span contentEditable=${isEditable};>${$.el}</span>
+                <button @click=${$.remove};>delete</button>
             </div>
         `;
     }
@@ -209,12 +209,12 @@ const TodoApp = $ => {
 
     return html => html`
         <div
-            *background-color=#${Math.floor((Math.sin(Date.now()) + 1) / 2 * 0xffffff).toString(16).padStart(6, "0")}
-            *color=white
+            *background-color=#${Math.floor((Math.sin(Date.now()) + 1) / 2 * 0xffffff).toString(16).padStart(6, "0")};
+            *color=white;
         >
             <ul #todoList></ul>
-            <input #todoInput type=text />
-            <input type=button @click=${addTodo}/>
+            <input #todoInput; type=text; />
+            <input type=button; @click=${addTodo};/>
         </div>
     `;
 }
@@ -232,7 +232,7 @@ const ReverseStr = $ => {
 
     return html => html`
         <div>
-            <input type="text" .value=${textValuePtr}/>
+            <input type=text; .value=${textValuePtr};/>
             <h2>${revText}</h2>
         </div>
     `;
@@ -249,7 +249,7 @@ const C2DApp = $ => {
     };
 
     return html => html`
-        <canvas @load=${canvasOnload}></canvas>
+        <canvas @load=${canvasOnload};></canvas>
     `;
 }
 ```
@@ -260,7 +260,7 @@ const FrameMode = $ => {
     let count = 0;
 
     return html => html`
-        <button @click=${() => count++}>${count}</button>
+        <button @click=${() => count++};>${count}</button>
     `;
     // refresh every frame with requestAnimationFrame()
 }
@@ -272,7 +272,7 @@ const SetMode = $ => {
     let count = 0;
 
     return html => html`
-        <button @click=${() => set(count++)}>${count}</button>
+        <button @click=${() => set(count++)};>${count}</button>
     `;
     // refresh when set() called, which reduces unchanged calls
 }
@@ -285,7 +285,7 @@ import nitro from 'https://esm.sh/@libh/nitro'
 const StyleImport = () => {
     return html => html`
         <div>
-            <button ${nitro}=system>I am themed by Nitro from libh.js!</button>
+            <button ${nitro}=system;>I am themed by Nitro from libh.js!</button>
         </div>
     `
 }
@@ -306,17 +306,17 @@ const sampleAttrModule = $ => attr => attr`
             ? '#fff'
             : '#000'
     }
-    *color=red
+    *color=red;
     ${anotherAttrModule}=${true}
 
     :hover {
-        *color=blue
-    }
+        *color=blue;
+    };
 `;
 
 const WithAttributeModule = () => html => html`
     <div>
-        <button ${sampleAttrModule}=system />
+        <button ${sampleAttrModule}=system; />
     </div>
 `
 ```
