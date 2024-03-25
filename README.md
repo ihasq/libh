@@ -94,6 +94,9 @@ return html => html`
             };
         ></button>
 
+        <!-- force to all children (same as * selector) -->
+        <div *color*=${forcedColor}></div>
+        <div @mouseover*=${({ target }) => console.log(target)}></div>
     </div>
 `;
 
@@ -190,8 +193,8 @@ const TodoApp = $ => {
         let isEditable = false;
 
         return html => html`
-            <div @outerclick=${() => isEditable = false};>
-                <span contentEditable=${isEditable};>${$.el}</span>
+            <div @blur=${() => isEditable = false};>
+                <span contenteditable=${isEditable};>${$.el}</span>
                 <button @click=${$.remove};>delete</button>
             </div>
         `;
