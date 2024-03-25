@@ -63,6 +63,9 @@ return html => html`
         <!-- attribute -->
         <iframe src=${formURL}; />
 
+        <!-- identifier (not the id attribute) -->
+        <img #mainImgRef/>
+
         <!-- event handler -->
         <button @click=${() => console.log("clicked")}; />
         <input @@keydown=${() => console.log("cancelled")}; /> <!-- preventDefault() -->
@@ -71,13 +74,10 @@ return html => html`
         <h1 *color=${titleColor}></h1>
 
         <!-- property -->
-        <input type=text; .value=ok; />
+        <input #inputWithProp type=text; .value=ok; />
 
         <input type=checkbox; .value=${true}; /> <!-- CORRECT type forcing -->
         <input type=checkbox; .value=true; /> <!-- This is NOT boolean -->
-
-        <!-- identifier (not the id attribute) -->
-        <img #mainImgRef/>
 
         <!-- child component -->
         <${DefinedComponent} my-attribute=1; />
@@ -104,8 +104,9 @@ return html => html`
     </div>
 `;
 
+$`#inputWithProp`.get`.value` === $`#inputWithProp`.value; // true
 $`button`.get`@click`; // () => console.log("clicked")
-$`#hasNested:hover`.get`*color`; // 'blue'
+$`#hasNested`.get`*color:hover`; // 'blue'
 
 ```
 
