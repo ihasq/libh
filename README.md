@@ -82,8 +82,11 @@ return html => html`
         <!-- child component -->
         <${DefinedComponent} my-attribute=1; />
 
-        <!-- branching with psuedo class -->
-        <button *color:hover=red; *color:active=blue;></button>
+        <!-- custom attribute -->
+        <div ${name}=taro;></div>
+
+        <!-- branching with psuedo class or boolean -->
+        <button *color:hover=red; *color:${someBoolean}=blue;></button>
 
         <!-- psuedo class nesting -->
         <button
@@ -93,14 +96,10 @@ return html => html`
                 *color=red;
             };
 
-            :active {
+            :${someBoolean} {
                 *color=blue;
             };
         ></button>
-
-        <!-- force to all children (same as * selector) -->
-        <div *color*=${forcedColor}></div>
-        <div @mouseover*=${({ target }) => console.log(target)}></div>
     </div>
 `;
 
