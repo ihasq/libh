@@ -10,6 +10,7 @@
 
 ```javascript
 const Main = () => {
+
     let count = 0;
     
     return html => html`
@@ -205,6 +206,7 @@ write(document.body, Count);
 
 ```javascript
 const Counter = () => {
+
     let count = 0;
 
     return html => html`
