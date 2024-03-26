@@ -254,19 +254,16 @@ const TodoApp = $ => {
         `;
     }
 
-    const addTodo = () => {
-        $`#todoList`.push($ => html => html`
-            <${TodoRow} .value=${inputPlaceHolder.v}/>
-        `);
-
-        inputPlaceHolder.v = "";
-    };
-
     return html => html`
         <div *background-color=#red; *color=white;>
             <ul #todoList></ul>
             <input #todoInput; type=text; value=${inputPlaceHolder}/>
-            <input type=button; @click=${addTodo};/>
+            <input type=button; @click=${() => {
+                $`#todoList`.push($ => html => html`
+                    <${TodoRow} .value=${inputPlaceHolder.v}/>
+                `);
+                inputPlaceHolder.v = "";
+            }};/>
         </div>
     `;
 }
@@ -280,15 +277,14 @@ const ReverseStr = $ => {
         revText = ptr(""),
         textValuePtr = ptr("", true);
 
-    $`#stringInput`.set({
-        async '@keydown'() {
-            revText.v = value.split("").reverse().join("");
-        }
-    })
-
     return html => html`
         <div>
-            <input #stringInput type=text; .value=${textValuePtr};/>
+            <input
+                #stringInput
+                type=text;
+                .value=${textValuePtr};
+                @keydown=${async () => revText.v = value.split("").reverse().join("")}
+            />
             <h2>${revText}</h2>
         </div>
     `;
@@ -296,18 +292,12 @@ const ReverseStr = $ => {
 ```
 
 ```javascript
-const C2DApp = $ => {
-
-    const canvasOnload = ({ target: canvas }) => {
-
+const C2DApp = $ => html => html`
+    <canvas @load=${({ target: canvas }) => {
         const ctx = canvas.getContext("2d");
         // ...
-    };
-
-    return html => html`
-        <canvas @load=${canvasOnload};></canvas>
-    `;
-}
+    }};></canvas>
+`;
 ```
 
 ```javascript
