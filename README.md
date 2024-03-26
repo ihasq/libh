@@ -10,7 +10,6 @@
 
 ```javascript
 const Main = () => {
-
     let count = 0;
     
     return html => html`
@@ -27,7 +26,7 @@ const Main = () => {
 
 const write = await import("https://esm.sh/@libh/write");
 
-document.body = write(Count);
+write(Main); // to globalThis.document.body
 ```
 
 **libh.js** is a JavaScript library for empowering the DOM manipulation.\
@@ -136,7 +135,6 @@ $.std = {
 ### Select Your Writing Mode
 ```javascript
 const FrameMode = $ => {
-
     let count = 0; // this is a "frame" mode
 
     return html => html`
@@ -146,7 +144,6 @@ const FrameMode = $ => {
 }
 
 const SetMode = $ => {
-
     const { set } = $.std; // switching into "set" mode
     
     let count = 0;
@@ -158,7 +155,6 @@ const SetMode = $ => {
 }
 
 const PtrMode = $ => {
-
     const { ptr } = $.std; // switching into "pointer" mode
     
     let count = ptr(0); // create modifiable pointer
@@ -209,7 +205,6 @@ write(document.body, Count);
 
 ```javascript
 const Counter = () => {
-
     let count = 0;
 
     return html => html`
