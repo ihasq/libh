@@ -1,6 +1,6 @@
 {
   "name": "libh",
-  "version": "0.0.29",
+  "version": "0.0.30",
   "description": "libh.js is the public domain JavaScript library for empowering the DOM manipulation.",
   "main": "demo.js",
   "directories": {
@@ -14,5 +14,5 @@
     "url": "https://github.com/ihasq/libh.git"
   },
   "author": "ihasq",
-  "license": "MIT"
+  "license": "CC0-1.0"
 }
