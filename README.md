@@ -28,7 +28,7 @@ const write = await import('https://esm.sh/@libh/write');
 write(document.body, Counter);
 ```
 
-**libh** is the simplest 'Write Less Do More' JavaScript library for empowering the DOM manipulation.
+**libh** is the public domain JavaScript library for empowering the DOM manipulation.
 
 [![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/edit/js-qfh42g?file=index.js)
 
