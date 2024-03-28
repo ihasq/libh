@@ -1,4 +1,4 @@
-# [libh.js](https://libh.js.org)
+# lib[h](https://libh.js.org)
 
 [![npm](https://img.shields.io/npm/v/libh?logo=npm&label=%20&labelColor=%23eee)](https://www.npmjs.com/package/libh)
 ![GitHub Repo stars](https://img.shields.io/github/stars/ihasq/libh?logo=github)
@@ -9,29 +9,26 @@
 ---
 
 ```javascript
-const Main = () => {
+const Counter = () => {
 
     let count = 0;
-    
+
     return html => html`
-        <body>
-            <p>You clicked ${count} times</p>
-            <button @click=${() => count++};>
-                Click me
+        <div>
+            <h1>${count}</h1>
+            <button @click=${() => count++}>
+                Increment
             </button>
-        </body>
+        </div>
     `;
 }
 
-// Write Into The DOM Or An Emulator Directly
+const write = await import('https://esm.sh/@libh/write');
 
-const write = await import("https://esm.sh/@libh/write");
-
-write(Main); // to globalThis.document.body
+write(document.body, Counter);
 ```
 
-**libh.js** is a JavaScript library for empowering the DOM manipulation.\
-less boilerplate, safe, built on top of standard html reference.
+**libh** is the simplest 'Write Less Do More' JavaScript library for empowering the DOM manipulation.
 
 [![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/edit/js-qfh42g?file=index.js)
 
@@ -39,12 +36,12 @@ less boilerplate, safe, built on top of standard html reference.
 
 #### CDN (Browser, Deno)
 ```javascript
-import write from 'https://esm.sh/@libh/write';
+import { write } from 'https://esm.sh/libh';
 ```
 
 #### NPM (Node.js)
 ```sh
-npm i @libh/write
+npm create libh
 ```
 
 ### Build From Source
@@ -53,7 +50,7 @@ git clone https://github.com/ihasq/libh
 deno task build
 ```
 
-### Smart Attributes on libh.js
+### Smart Attributes on libh
 ```javascript
 return html => html`
     <div>
@@ -76,36 +73,40 @@ return html => html`
         <!-- property -->
         <input #inputWithProp type=text; .value=ok; />
 
-        <input type=checkbox; .value=${true}; /> <!-- CORRECT type forcing -->
-        <input type=checkbox; .value=true; /> <!-- This is NOT boolean -->
+        <input type=checkbox; .value=${true}; /> <!-- CORRECT type -->
+        <input type=checkbox; .value=true; /> <!-- This is NOT boolean, this is string -->
+
+        <div .someprop.deeper='more deeper'; />
 
         <!-- child component -->
         <${DefinedComponent} my-attribute=1; />
 
         <!-- custom attribute -->
-        <div ${name}=taro;></div>
+        <div ${name}=taro></div>
+        <div ${alsoWithType}=${true}></div>
 
-        <!-- branching with psuedo class or boolean -->
-        <button *color:hover=red; *color:${someBoolean}=blue;></button>
+        <!-- branching with psuedo class or booleanish -->
+        <button *color:hover=red; *color${Date.now() % 2}=blue></button>
 
-        <!-- psuedo class nesting -->
-        <button
+        <!-- nesting -->
+        <div
             #hasNested
 
             :hover {
                 *color=red;
             };
 
-            :${someBoolean} {
+            ${window.clientHeight >= 100} {
                 *color=blue;
             };
-        ></button>
+        ></div>
+
     </div>
 `;
 
 $`#inputWithProp`.get`.value` === $`#inputWithProp`.value; // true
 $`button`.get`@click`; // () => console.log("clicked")
-$`#hasNested`.get`*color:hover`; // 'blue'
+$`#hasNested`.get`*color`; // 'blue'
 
 ```
 
@@ -299,12 +300,12 @@ const C2DApp = $ => html => html`
 
 ```javascript
 import nitro from 'https://esm.sh/@libh/nitro'
-// Nitro - The Design System By libh.js
+// Nitro Design - The Design System By libh
 
 const StyleImport = () => {
     return html => html`
         <div>
-            <button ${nitro}=system;>I am themed by Nitro from libh.js!</button>
+            <button ${nitro}>I am themed by Nitro Design!</button>
         </div>
     `
 }
@@ -330,14 +331,37 @@ const sampleAttrModule = $ => attr => attr`
 
     :hover {
         *color=blue;
+        @click=${() => alert('I am hovered')}
     };
-`;
+
+    button {
+        @@click=${() => alert('prevented by parent!')}
+    };
+
+    div[${someAttrModule}=${true}] {
+        span {
+            .moreDeeperChild=${true}
+        };
+    };
+
+    ::selection {
+        *background-color=black; 
+    };
+`; // psuedo elements are style attributes only
 
 const WithAttributeModule = () => html => html`
-    <div>
-        <button ${sampleAttrModule}=system; />
+    <div ${sampleAttrModule}=system;>
+        <button></button>
     </div>
 `
+```
+
+```javascript
+import layout from '@libh/layout';
+
+const HowToCenterADiv = $ => html => html`
+    <div ${layout.center}>Now I am centered!</div>
+`;
 ```
 
 ```javascript
@@ -346,7 +370,39 @@ import { Button } from "@shadcn/ui/components/ui/button"
 
 const ReactEmbedded = () => html => html`
     <div>
-        <${Button} ${react}>I am the Button from @shadcn/ui in libh.js!</${Button}>
+        <${Button} ${react}>I am the Button from @shadcn/ui in libh!</${Button}>
     </div>
 `;
 ```
+
+```javascript
+import render from '@libh/three';
+
+const ThreeScene = $ => {
+
+    let isClicked = false,
+        isHover = false;
+
+    return three => {
+        const { state, delta } = $.frame;
+        return three`
+            <mesh
+                #meshRef
+
+                ${...$}
+                .rotation.x+=${delta}
+                .scale=${isClicked ? 1.5 : 1}
+                @click=${() => isClicked = !isClicked}
+                @pointerover=${() => isHover = true}
+                @pointerout=${() => isHover = false}
+            >
+                <${boxGeometry} .args=${[1, 1, 1]} />
+                <${meshStandardMaterial} .color=${isHovered ? 'hotpink' : 'orange'}/>
+            </mesh>
+        `
+    }
+};
+```
+
+### License
+Creative Commons Zero 1.0
