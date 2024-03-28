@@ -1,7 +1,7 @@
 {
   "name": "libh",
-  "version": "0.0.28",
-  "description": "libh.js is a JavaScript library for empowering the DOM manipulation.",
+  "version": "0.0.29",
+  "description": "libh.js is the public domain JavaScript library for empowering the DOM manipulation.",
   "main": "demo.js",
   "directories": {
     "doc": "docs"

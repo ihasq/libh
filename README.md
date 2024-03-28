@@ -1,9 +1,10 @@
 # lib[h](https://libh.js.org)
 
 [![npm](https://img.shields.io/npm/v/libh?logo=npm&label=%20&labelColor=%23eee)](https://www.npmjs.com/package/libh)
-![GitHub Repo stars](https://img.shields.io/github/stars/ihasq/libh?logo=github)
+![GitHub Repo stars](https://img.shields.io/github/stars/ihasq/libh)
 ![npm](https://img.shields.io/npm/dt/libh?logo=stackblitz)
 
+![GitHub License](https://img.shields.io/github/license/ihasq/libh)
 ![npm package minimized gzipped size (select exports)](https://img.shields.io/bundlejs/size/libh)
 
 ---
